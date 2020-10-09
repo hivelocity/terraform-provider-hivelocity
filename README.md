@@ -1,5 +1,7 @@
 ⚠️⚠️⚠️ WARNING! This provider is currently in active development. ⚠️⚠️⚠️
+
 ⚠️⚠️⚠️ Documentation may lag functionality, and vice-versa. ⚠️⚠️⚠️
+
 ⚠️⚠️⚠️ Use at your own risk in a production environment. ⚠️⚠️⚠️
 
 Terraform Provider Hivelocity 
@@ -81,7 +83,7 @@ resource "hivelocity_bare_metal_devices" "tampa_server" {
 Developing the provider
 ---------------------------
 
-Please see https://www.github.com/hivelocity/terraform-provider-hivelocity/CONTRIBUTING.md
+Please see https://github.com/hivelocity/terraform-provider-hivelocity/blob/main/CONTRIBUTING.md
 
 
 
