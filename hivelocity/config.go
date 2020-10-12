@@ -13,6 +13,7 @@ import (
 // provider.
 type Config struct {
 	ApiKey string
+	ApiUrl string
 }
 
 // Client wraps the Hivelocity Client
@@ -32,7 +33,7 @@ func (c *Config) Client() (*Client, error) {
 	client.Transport = logging.NewTransport("Hivelocity", client.Transport)
 
 	conf := hv.NewConfiguration()
-	conf.BasePath = "http://localhost:5065/api/v2"
+	conf.BasePath = c.ApiUrl
 	hvClient := hv.NewAPIClient(conf)
 	authContext := context.WithValue(context.Background(), hv.ContextAPIKey, hv.APIKey{
 		Key: c.ApiKey,

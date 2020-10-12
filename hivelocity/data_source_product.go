@@ -3,18 +3,17 @@ package hivelocity
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"strconv"
-	"time"
 )
 
-func dataSourceProducts() *schema.Resource {
+func dataSourceProduct() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataSourceProductRead,
 		Schema: map[string]*schema.Schema{
 			"filter":                         dataSourceFiltersSchema(),
-			"first":                          {Type: schema.TypeBool, Optional: true, Default: true},
+			"first":                          dataSourceFilterFirstSchema(),
 			"product_id":                     {Type: schema.TypeInt, Computed: true},
 			"product_name":                   {Type: schema.TypeString, Computed: true},
 			"location":                       {Type: schema.TypeString, Computed: true},
@@ -48,8 +47,6 @@ func dataSourceProducts() *schema.Resource {
 }
 
 func dataSourceProductRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	filters, filtersOk := d.GetOk("filter")
-
 	hv, _ := m.(*Client)
 
 	productInfo, _, err := hv.client.ProductApi.GetProductListResource(hv.auth, nil)
@@ -70,28 +67,20 @@ func dataSourceProductRead(ctx context.Context, d *schema.ResourceData, m interf
 
 	products = convertKeysOfList(products)
 
-	var filteredProducts []map[string]interface{}
-	if filtersOk {
-		f := buildFilters(filters.(*schema.Set))
-		for _, product := range products {
-			if matchFilters(f, product) {
-				filteredProducts = append(filteredProducts, product)
-			}
-		}
-	} else {
-		filteredProducts = products
+	product, err := doFiltering(d, products)
+	if err != nil {
+		return diag.FromErr(err)
 	}
 
-	if !d.Get("first").(bool) && len(filteredProducts) != 1 {
-		return diag.Errorf("found %s matches. set first = true or modify your filters", len(filteredProducts))
+	if product == nil {
+		return nil
 	}
 
-	for k, v := range filteredProducts[0] {
+	for k, v := range product {
 		d.Set(k, v)
 	}
 
-	// always run
-	d.SetId(strconv.FormatInt(time.Now().Unix(), 10))
+	d.SetId(fmt.Sprint(product["product_id"]))
 
 	return nil
 }

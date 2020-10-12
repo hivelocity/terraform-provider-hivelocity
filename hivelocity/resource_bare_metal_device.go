@@ -11,15 +11,15 @@ import (
 	"time"
 )
 
-func resourceDevice() *schema.Resource {
+func resourceBareMetalDevice() *schema.Resource {
 	return &schema.Resource{
 		Timeouts: &schema.ResourceTimeout{
 			Create: schema.DefaultTimeout(60 * time.Minute),
 		},
-		CreateContext: resourceDeviceCreate,
-		ReadContext:   resourceDeviceRead,
-		UpdateContext: resourceDeviceUpdate,
-		DeleteContext: resourceDeviceDelete,
+		CreateContext: resourceBareMetalDeviceCreate,
+		ReadContext:   resourceBareMetalDeviceRead,
+		UpdateContext: resourceBareMetalDeviceUpdate,
+		DeleteContext: resourceBareMetalDeviceDelete,
 		Schema: map[string]*schema.Schema{
 			"last_updated": &schema.Schema{
 				Type:     schema.TypeString,
@@ -93,7 +93,7 @@ func resourceDevice() *schema.Resource {
 
 // TODO: Test what happens when you change hostname, tags, etc anything that is required.
 
-func resourceDeviceCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	hv, _ := m.(*Client)
 
 	tags, err := getTags(d)
@@ -139,10 +139,10 @@ func resourceDeviceCreate(ctx context.Context, d *schema.ResourceData, m interfa
 	}
 	d.SetId(fmt.Sprint(newDeviceId))
 
-	return resourceDeviceRead(ctx, d, m)
+	return resourceBareMetalDeviceRead(ctx, d, m)
 }
 
-func resourceDeviceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
@@ -173,7 +173,7 @@ func resourceDeviceRead(ctx context.Context, d *schema.ResourceData, m interface
 	return diags
 }
 
-func resourceDeviceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	hv, _ := m.(*Client)
 
 	deviceId, err := strconv.Atoi(d.Id())
@@ -206,10 +206,10 @@ func resourceDeviceUpdate(ctx context.Context, d *schema.ResourceData, m interfa
 	}
 
 	d.Set("last_updated", time.Now().Format(time.RFC850))
-	return resourceDeviceRead(ctx, d, m)
+	return resourceBareMetalDeviceRead(ctx, d, m)
 }
 
-func resourceDeviceDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceBareMetalDeviceDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 

@@ -8,7 +8,7 @@ terraform {
 }
 
 // Find a plan with 16GB of memory in Tampa.
-data "hivelocity_products" "tampa_product" {
+data "hivelocity_product" "tampa_product" {
   first = true
 
   filter {
@@ -28,10 +28,10 @@ data "hivelocity_products" "tampa_product" {
 }
 
 // Provision your device with CentOS 7.
-resource "hivelocity_bare_metal_devices" "tampa_server" {
-    product_id = "${data.hivelocity_products.tampa_product.product_id}"
+resource "hivelocity_bare_metal_device" "tampa_server" {
+    product_id = "${data.hivelocity_product.tampa_product.product_id}"
     os_name = "CentOS 7.x"
-    location_name = "${data.hivelocity_products.tampa_product.location}"
+    location_name = "${data.hivelocity_product.tampa_product.location}"
     hostname = "hivelocity.terraform.test"
     tags = ["hello", "world"]
 }

@@ -60,8 +60,8 @@ func waitForDevice(d *schema.ResourceData, hv *Client, orderId int32) (interface
 			return nil, "waiting", nil
 		},
 		Timeout:                   d.Timeout(schema.TimeoutCreate),
-		Delay:                     10 * time.Second,
-		MinTimeout:                5 * time.Second,
+		Delay:                     30 * time.Second,
+		MinTimeout:                10 * time.Second,
 		ContinuousTargetOccurence: 1,
 	}
 	return waitForDevice.WaitForState()
@@ -86,7 +86,7 @@ func waitForOrder(d *schema.ResourceData, hv *Client, orderId int32) (interface{
 			return resp, resp.Status, nil
 		},
 		Timeout:                   d.Timeout(schema.TimeoutCreate),
-		Delay:                     10 * time.Second,
+		Delay:                     5 * time.Second,
 		MinTimeout:                5 * time.Second,
 		ContinuousTargetOccurence: 1,
 	}

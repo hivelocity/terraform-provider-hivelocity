@@ -7,36 +7,45 @@ terraform {
   }
 }
 
-module "devices" {
-  source = "./devices"
+data "hivelocity_product" "tampa" {
+  filter {
+    name = "location"
+    values = ["TPA1"]
+  }
 }
 
-output "devices" {
-  value = module.devices.all_devices
+output "tampa_product" {
+  value = data.hivelocity_product.tampa
 }
 
-module "products" {
-  source = "./products"
+data "hivelocity_product" "all" {}
+
+output "first_product" {
+  value = data.hivelocity_product.all
 }
 
-output "products" {
-  value = module.products.all_products
+data "hivelocity_bare_metal_device" "mine" {}
+
+output "my_bare_metal" {
+  value = data.hivelocity_bare_metal_device.mine
 }
 
-module "tampa_products" {
-  source = "./products"
+data "hivelocity_device" "reg_device" {
+  first = true
 }
 
-output "tampa_products" {
-  value = module.tampa_products.tampa_products
+output "reg_device" {
+  value = data.hivelocity_device.reg_device
 }
 
-
-module "product_operating_systems" {
-  source = "./product_operating_systems"
+data "hivelocity_device" "ip_find" {
+  first = true
+  filter {
+    name = "ip_addresses"
+    values = ["66.165.245.225"]
+  }
 }
 
-output "product_operating_systems" {
-  value = module.product_operating_systems.all_product_operating_systems
+output "ip_find" {
+  value = data.hivelocity_device.ip_find
 }
-

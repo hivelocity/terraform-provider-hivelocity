@@ -11,6 +11,11 @@ This document contains instructions and best practices for developing against `t
 3. You are familiar with the basics of using Terraform to create custom API calls: https://learn.hashicorp.com/tutorials/terraform/provider-use?in=terraform/providers
 4. You are familiar with the best practices for extending Terraform: https://www.terraform.io/docs/extend/best-practices/index.html
 
+## ENV VARS
+
+You may set `HIVELOCITY_API_HOST` to `https://localhost:5065/api/v2` for development.
+You may set `HIVELOCITY_API_KEY` if you'd like.
+
 ## Building the most recent hivelocity-client-go
 
 If API endpoints have been added to the core, you will want to update the go client.
@@ -50,11 +55,11 @@ Once you have updated the example, you can test your new data source from the ro
 
 To Create/Update:
 
-`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_devices && terraform init && terraform apply --auto-approve"`
+`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_device && terraform init && terraform apply --auto-approve"`
 
 To Delete:
 
-`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_devices && terraform init && terraform delete --auto-approve"`
+`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_device && terraform init && terraform delete --auto-approve"`
 
 
 Testing provider code

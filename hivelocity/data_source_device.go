@@ -3,14 +3,15 @@ package hivelocity
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"strconv"
-	"time"
 )
 
 func buildDeviceSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
+		"filter": dataSourceFiltersSchema(),
+		"first":  dataSourceFilterFirstSchema(),
 		"device_id": &schema.Schema{
 			Type:     schema.TypeInt,
 			Computed: true,
@@ -78,18 +79,10 @@ func buildDeviceSchema() map[string]*schema.Schema {
 	}
 }
 
-func dataSourceDevices() *schema.Resource {
+func dataSourceDevice() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataSourceDeviceRead,
-		Schema: map[string]*schema.Schema{
-			"devices": &schema.Schema{
-				Type:     schema.TypeList,
-				Computed: true,
-				Elem: &schema.Resource{
-					Schema: buildDeviceSchema(),
-				},
-			},
-		},
+		Schema: buildDeviceSchema(),
 	}
 }
 
@@ -120,12 +113,20 @@ func dataSourceDeviceRead(ctx context.Context, d *schema.ResourceData, m interfa
 	devices = forceValuesToStringOfList(devices, "metadata")
 	devices = filterNonSchemaKeysForList(devices, buildDeviceSchema())
 
-	if err := d.Set("devices", devices); err != nil {
+	device, err := doFiltering(d, devices)
+	if err != nil {
 		return diag.FromErr(err)
 	}
 
-	// always run
-	d.SetId(strconv.FormatInt(time.Now().Unix(), 10))
+	if device == nil {
+		return nil
+	}
+
+	for k, v := range device {
+		d.Set(k, v)
+	}
+
+	d.SetId(fmt.Sprint(device["device_id"]))
 
 	return diags
 }

@@ -18,15 +18,21 @@ func Provider() *schema.Provider {
 				Description: descriptions["api_key"],
 				DefaultFunc: schema.EnvDefaultFunc("HIVELOCITY_API_KEY", nil),
 			},
+			"api_url": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Sensitive:   false,
+				Description: descriptions["api_key"],
+				DefaultFunc: schema.EnvDefaultFunc("HIVELOCITY_API_URL", "https://core.hivelocity.net/api/v2"),
+			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"hivelocity_devices":                   dataSourceDevices(),
-			"hivelocity_products":                  dataSourceProducts(),
-			"hivelocity_product_options":           dataSourceProductOption(),
-			"hivelocity_product_operating_systems": dataSourceProductOperatingSystem(),
+			"hivelocity_bare_metal_device": dataSourceBareMetalDevice(),
+			"hivelocity_device":            dataSourceDevice(),
+			"hivelocity_product":           dataSourceProduct(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"hivelocity_bare_metal_devices": resourceDevice(),
+			"hivelocity_bare_metal_device": resourceBareMetalDevice(),
 		},
 		ConfigureContextFunc: configureProvider,
 	}
@@ -37,18 +43,21 @@ var descriptions map[string]string
 func init() {
 	descriptions = map[string]string{
 		"api_key": "Your API Key from the https://my.hivelocity.net portal.",
+		"api_url": "The API instance to communicate with defaults to https://core.hivelocity.net/api/v2",
 	}
 
 }
 
 func configureProvider(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
 	apiKey := d.Get("api_key").(string)
+	apiUrl := d.Get("api_url").(string)
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
 	config := Config{
 		ApiKey: apiKey,
+		ApiUrl: apiUrl,
 	}
 
 	client, err := config.Client()

@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-resource "hivelocity_bare_metal_devices" "demo" {
+resource "hivelocity_bare_metal_device" "demo" {
   product_id = 525
   os_name = "CentOS 7.x"
   location_name = "DAL1"
@@ -16,5 +16,5 @@ resource "hivelocity_bare_metal_devices" "demo" {
 }
 
 output "demo_device" {
-  value = hivelocity_bare_metal_devices.demo
+  value = hivelocity_bare_metal_device.demo
 }
