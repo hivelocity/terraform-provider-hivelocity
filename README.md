@@ -21,19 +21,22 @@ Requirements
 Building the provider
 ---------------------
 
-Clone repository to: `$GOPATH/src/github.com/hivelocity/terraform-provider-hivelocity`
-
+In order to build and install the provider from the latest commit on master, run:
 ```sh
-$ mkdir -p $GOPATH/src/github.com/hivelocity; cd $GOPATH/src/github.com/hivelocity
-$ git clone git@github.com:hivelocity/terraform-provider-hivelocity
+go get -u github.com/hivelocity/terraform-provider-hivelocity
 ```
 
-Enter the provider directory and build the provider
-
+and then register the plugin by symlinking the binary to the [third-party plugins directory](https://www.terraform.io/docs/configuration/providers.html#third-party-plugins):
 ```sh
-$ cd $GOPATH/src/github.com/hivelocity/terraform-provider-hivelocity
-$ make build
+mkdir -p ~/.terraform.d/plugins
+ln -s "$GOPATH/bin/terraform-provider-hivelocity" ~/.terraform.d/plugins/terraform-provider-hivelocity
 ```
+
+Set an environment variable containing the Vultr API key:
+```
+export HIVELOCITY_API_KEY=<your-api-key>
+```
+The API key can also be specified in the provider configuration as shown below.
 
 Example Usage
 -------------
@@ -41,13 +44,8 @@ Example Usage
 You may set the environment variable `HIVELOCITY_API_KEY` instead of setting it on the provider itself.
 
 ```tf
-terraform {
-  required_providers {
-    hivelocity = {
-      versions = ["0.1"]
-      source = "hivelocity.net/dev/hivelocity"
-    }
-  }
+provider "hivelocity" {
+  api_key=<your-api-key>
 }
 
 // Find first in stock product with 16GB of memory in Tampa.
