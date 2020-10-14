@@ -28,8 +28,9 @@ Next, create the Hivelocity provider plugin directory.
 mkdir -p ~/.terraform.d/plugins/hivelocity.net/prod/hivelocity/<VERSION>/<OS>_<ARCH>
 ```
 
-Note: <VERSION> is the most recent version of this provider.
-Note: <OS> and <ARCH> use the Go language's standard OS and architecture names; for example, darwin_amd64.
+Note: `<VERSION>` is the most recent version of this provider.
+
+Note: `<OS>` and `<ARCH>` use the Go language's standard OS and architecture names; for example, darwin_amd64.
 
 Finally, symlink your binary to the new plugin directory
 
