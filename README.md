@@ -1,9 +1,3 @@
-⚠️⚠️⚠️ WARNING! This provider is currently in active development. ⚠️⚠️⚠️
-
-⚠️⚠️⚠️ Documentation may lag functionality, and vice-versa. ⚠️⚠️⚠️
-
-⚠️⚠️⚠️ Use at your own risk in a production environment. ⚠️⚠️⚠️
-
 Terraform Provider Hivelocity 
 =============================
 
