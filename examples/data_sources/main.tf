@@ -42,7 +42,7 @@ data "hivelocity_device" "ip_find" {
   first = true
   filter {
     name = "ip_addresses"
-    values = ["66.165.245.225"]
+    values = ["66.165.231.122"]
   }
 }
 

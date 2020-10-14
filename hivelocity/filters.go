@@ -3,6 +3,7 @@ package hivelocity
 import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"reflect"
 )
 
 func dataSourceFiltersSchema() *schema.Schema {
@@ -73,18 +74,20 @@ func matches(filter filter, m map[string]interface{}) bool {
 		return false
 	}
 
-	arrayV, fail := v.([]interface{})
-	if !fail {
-		return filterArrayIntersection(filter, arrayV)
+	rt := reflect.TypeOf(v)
+	if reflect.Array == rt.Kind() {
+		arrayV, fail := v.([]interface{})
+		if !fail {
+			return filterArrayIntersection(filter, arrayV)
+		}
 	}
 
 	for _, value := range filter.values {
 		if v == value {
-			return true
-		}
+				  return true
+				  }
 	}
 	return false
-
 }
 
 func matchFilters(filters []filter, m map[string]interface{}) bool {
