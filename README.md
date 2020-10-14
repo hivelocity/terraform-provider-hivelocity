@@ -15,24 +15,42 @@ Terraform Provider Hivelocity
 Requirements
 ------------
 
--	[Terraform](https://www.terraform.io/downloads.html) 0.12.x
--	[Go](https://golang.org/doc/install) 1.13+ (to build the provider plugin)
+-	[Terraform](https://www.terraform.io/downloads.html) 0.13.x
+-	[Go](https://golang.org/doc/install) 1.15+ (to build the provider plugin)
 
 Building the provider
 ---------------------
 
+You need to install the provider based on instructions for [installing 3rd-party provider plugins for Terraform 0.13](https://www.hashicorp.com/blog/automatic-installation-of-third-party-providers-with-terraform-0-13).
+
 In order to build and install the provider from the latest commit on master, run:
+
 ```sh
 go get -u github.com/hivelocity/terraform-provider-hivelocity
 ```
 
-and then register the plugin by symlinking the binary to the [third-party plugins directory](https://www.terraform.io/docs/configuration/providers.html#third-party-plugins):
+Create the Hivelocity provider plugin directory. 
+
 ```sh
-mkdir -p ~/.terraform.d/plugins
-ln -s "$GOPATH/bin/terraform-provider-hivelocity" ~/.terraform.d/plugins/terraform-provider-hivelocity
+mkdir -p ~/.terraform.d/plugins/hivelocity.net/prod/hivelocity/<VERSION>/<OS>_<ARCH>
 ```
 
-Set an environment variable containing the Vultr API key:
+Note: <VERSION> is the most recent version of this provider.  The current version (and version of examples) is: **0.0.1**
+Note: <OS> and <ARCH> use the Go language's standard OS and architecture names; for example, darwin_amd64.
+
+As an example the following command is for the most recent version of the provider and OSX.
+
+```sh
+mkdir -p ~/.terraform.d/plugins/hivelocity.net/prod/hivelocity/0.0.1/darwin_amd64
+```
+
+Finally, symlink your binary to the new plugin directory
+
+```sh
+ln -s $GOPATH/bin/terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/prod/hivelocity/0.0.1/darwin_amd64/terraform-provider-hivelocity
+```
+
+Set an environment variable containing the Hivlocity API key:
 ```
 export HIVELOCITY_API_KEY=<your-api-key>
 ```
@@ -44,6 +62,15 @@ Example Usage
 You may set the environment variable `HIVELOCITY_API_KEY` instead of setting it on the provider itself.
 
 ```tf
+terraform {
+  required_providers {
+    hivelocity = {
+      versions = ["0.0.1"]
+      source = "hivelocity.net/prod/hivelocity"
+    }
+  }
+}
+
 provider "hivelocity" {
   api_key=<your-api-key>
 }
