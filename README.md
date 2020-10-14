@@ -23,34 +23,27 @@ Building the provider
 
 You need to install the provider based on instructions for [installing 3rd-party provider plugins for Terraform 0.13](https://www.hashicorp.com/blog/automatic-installation-of-third-party-providers-with-terraform-0-13).
 
-In order to build and install the provider from the latest commit on master, run:
+First you must download the binary for the provider.  You have two options:
 
-```sh
-go get -u github.com/hivelocity/terraform-provider-hivelocity
-```
+1. You can download the latest release from the [release page](https://github.com/hivelocity/terraform-provider-hivelocity/releases).
+2. Download the repository directly as a go binary `go get -u github.com/hivelocity/terraform-provider-hivelocity`
 
-Create the Hivelocity provider plugin directory. 
+Next, create the Hivelocity provider plugin directory. 
 
 ```sh
 mkdir -p ~/.terraform.d/plugins/hivelocity.net/prod/hivelocity/<VERSION>/<OS>_<ARCH>
 ```
 
-Note: <VERSION> is the most recent version of this provider.  The current version (and version of examples) is: **0.0.1**
+Note: <VERSION> is the most recent version of this provider.
 Note: <OS> and <ARCH> use the Go language's standard OS and architecture names; for example, darwin_amd64.
-
-As an example the following command is for the most recent version of the provider and OSX.
-
-```sh
-mkdir -p ~/.terraform.d/plugins/hivelocity.net/prod/hivelocity/0.0.1/darwin_amd64
-```
 
 Finally, symlink your binary to the new plugin directory
 
 ```sh
-ln -s $GOPATH/bin/terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/prod/hivelocity/0.0.1/darwin_amd64/terraform-provider-hivelocity
+ln -s $GOPATH/bin/terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/prod/hivelocity/<VERSION>/<OS>_<ARCH>/terraform-provider-hivelocity
 ```
 
-Set an environment variable containing the Hivlocity API key:
+Set an environment variable containing the Hivelocity API key:
 ```
 export HIVELOCITY_API_KEY=<your-api-key>
 ```
@@ -65,14 +58,14 @@ You may set the environment variable `HIVELOCITY_API_KEY` instead of setting it 
 terraform {
   required_providers {
     hivelocity = {
-      versions = ["0.0.1"]
+      versions = ["<VERSION>"]
       source = "hivelocity.net/prod/hivelocity"
     }
   }
 }
 
 provider "hivelocity" {
-  api_key=<your-api-key>
+  api_key=<YOUR-API-KEY>
 }
 
 // Find first in stock product with 16GB of memory in Tampa.
@@ -114,7 +107,7 @@ a solution to help users avoid this issue.
 
 ### Filtering
 
-All data sources are filterable.  You may create as many filters as you like. The data source will return the value that matches all filters.
+All data sources are filterable.  You may create as many filters as you like as demonstrated above. The data source will return the value that matches all filters.
 
 ```tf
 data "hivelocity_product" "tampa_product" {
