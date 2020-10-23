@@ -126,7 +126,7 @@ data "hivelocity_device" "ip_filter" {
 
   filter {
     name   = "ip_addresses"
-    values = ["66.165.245.226"], "66.165.245.226"]
+    values = ["66.165.245.226", "66.165.245.226"]
   }
 }
 ```
