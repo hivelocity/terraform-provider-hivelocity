@@ -9,11 +9,9 @@
 
 package swagger
 
-type ContactCreate struct {
-	Phone string `json:"phone,omitempty"`
-	Description string `json:"description,omitempty"`
+type DeviceInitialCreds struct {
 	Password string `json:"password,omitempty"`
-	FullName string `json:"fullName"`
-	Active int32 `json:"active"`
-	Email string `json:"email"`
+	LockerUrl string `json:"lockerUrl,omitempty"`
+	Port int32 `json:"port,omitempty"`
+	User string `json:"user,omitempty"`
 }

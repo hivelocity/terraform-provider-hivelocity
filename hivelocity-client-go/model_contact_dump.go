@@ -10,12 +10,12 @@
 package swagger
 
 type ContactDump struct {
+	Phone string `json:"phone,omitempty"`
+	Description string `json:"description,omitempty"`
+	ContactId int32 `json:"contactId,omitempty"`
 	FullName string `json:"fullName"`
+	ClientId int32 `json:"clientId,omitempty"`
+	Active int32 `json:"active"`
 	Email string `json:"email"`
 	IsClient bool `json:"isClient,omitempty"`
-	Description string `json:"description,omitempty"`
-	ClientId int32 `json:"clientId,omitempty"`
-	Phone string `json:"phone,omitempty"`
-	ContactId int32 `json:"contactId,omitempty"`
-	Active int32 `json:"active"`
 }

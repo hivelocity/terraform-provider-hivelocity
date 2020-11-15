@@ -6,7 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetCancellationDeviceResource**](CancellationApi.md#GetCancellationDeviceResource) | **Get** /cancellation/device/{deviceId} | Return the Cancellation found for a Device
 [**GetCancellationIdResource**](CancellationApi.md#GetCancellationIdResource) | **Get** /cancellation/cancellation/{cancellationId} | Return any cancellation by ID
-[**GetCancellationResource**](CancellationApi.md#GetCancellationResource) | **Get** /cancellation/cancellation | Returns the services cancellations of a client
+[**GetCancellationResource**](CancellationApi.md#GetCancellationResource) | **Get** /cancellation/cancellation | Return the services cancellations of a client
 [**GetCancellationServiceResource**](CancellationApi.md#GetCancellationServiceResource) | **Get** /cancellation/service/{serviceId} | Return the Cancellation found for a Service
 [**PostCancellationResource**](CancellationApi.md#PostCancellationResource) | **Post** /cancellation/cancellation | Creates Cancellation for a device/service
 
@@ -83,7 +83,7 @@ Name | Type | Description  | Notes
 
 # **GetCancellationResource**
 > []Cancellation GetCancellationResource(ctx, optional)
-Returns the services cancellations of a client
+Return the services cancellations of a client
 
 ### Required Parameters
 

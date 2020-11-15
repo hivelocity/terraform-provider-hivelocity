@@ -13,7 +13,7 @@ This document contains instructions and best practices for developing against `t
 
 ## ENV VARS
 
-You may set `HIVELOCITY_API_HOST` to `https://localhost:5065/api/v2` for development.
+You may set `HIVELOCITY_API_URL` to `http://localhost:5065/api/v2` for development.
 You may set `HIVELOCITY_API_KEY` if you'd like.
 
 ## Building the most recent hivelocity-client-go
@@ -31,6 +31,10 @@ To rebuild the client and add it to your project repo:
 First, make sure that this folder structure exists: `
 
 `~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/`
+
+Watch out for the naming convention (OS and distribution).
+
+Also, while developing, you may want to change the `source = "hivelocity.net/prod/hivelocity"` line to `source = "hivelocity.net/dev/hivelocity"` in the `./examples/data_sources/main.tf` file. Please don't commit this change.
 
 Then, whenever you update the project run the following cmd to add the changes to your Terraform plugins:
 

@@ -27,7 +27,7 @@ var (
 
 type WebhookApiService service
 
-/* 
+/*
 WebhookApiService Deletes a single webhook
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param webhookId ID of Webhook to View / Update
@@ -110,7 +110,7 @@ func (a *WebhookApiService) DeleteWebhookIdResource(ctx context.Context, webhook
 	return localVarHttpResponse, nil
 }
 
-/* 
+/*
 WebhookApiService Returns all available Webhook Events
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *WebhookApiGetWebhookEventResourceOpts - Optional Parameters:
@@ -191,9 +191,7 @@ func (a *WebhookApiService) GetWebhookEventResource(ctx context.Context, localVa
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -219,7 +217,7 @@ func (a *WebhookApiService) GetWebhookEventResource(ctx context.Context, localVa
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 WebhookApiService Returns detailed information for a Single Webhook
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param webhookId ID of Webhook to View / Update
@@ -302,9 +300,7 @@ func (a *WebhookApiService) GetWebhookIdResource(ctx context.Context, webhookId 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -330,7 +326,7 @@ func (a *WebhookApiService) GetWebhookIdResource(ctx context.Context, webhookId 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 WebhookApiService Returns your active Webhooks
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *WebhookApiGetWebhookResourceOpts - Optional Parameters:
@@ -411,9 +407,7 @@ func (a *WebhookApiService) GetWebhookResource(ctx context.Context, localVarOpti
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -439,7 +433,7 @@ func (a *WebhookApiService) GetWebhookResource(ctx context.Context, localVarOpti
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 WebhookApiService Queues a webhook for the event script action that was triggered
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *WebhookApiPostEventScriptActionTriggerResourceOpts - Optional Parameters:
@@ -530,7 +524,7 @@ func (a *WebhookApiService) PostEventScriptActionTriggerResource(ctx context.Con
 	return localVarHttpResponse, nil
 }
 
-/* 
+/*
 WebhookApiService Create a new Webhook for a Webhook Event
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -614,9 +608,7 @@ func (a *WebhookApiService) PostWebhookResource(ctx context.Context, payload Web
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -642,7 +634,7 @@ func (a *WebhookApiService) PostWebhookResource(ctx context.Context, payload Web
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 WebhookApiService Updates a Single Webhook
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param webhookId ID of Webhook to View / Update
@@ -728,9 +720,7 @@ func (a *WebhookApiService) PutWebhookIdResource(ctx context.Context, webhookId 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -755,3 +745,4 @@ func (a *WebhookApiService) PutWebhookIdResource(ctx context.Context, webhookId 
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
+

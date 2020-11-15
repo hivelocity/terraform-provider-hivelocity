@@ -49,3 +49,12 @@ data "hivelocity_device" "ip_find" {
 output "ip_find" {
   value = data.hivelocity_device.ip_find
 }
+
+data "hivelocity_initial_creds" "initial_creds" {
+  device_id = 123456
+}
+
+output "initial_creds" {
+  value = data.hivelocity_initial_creds.initial_creds
+}
+

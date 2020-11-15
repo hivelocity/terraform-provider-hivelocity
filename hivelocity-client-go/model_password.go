@@ -10,6 +10,6 @@
 package swagger
 
 type Password struct {
-	NewPassword string `json:"newPassword"`
 	Password string `json:"password"`
+	NewPassword string `json:"newPassword"`
 }

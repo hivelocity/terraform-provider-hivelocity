@@ -22,7 +22,7 @@ func Provider() *schema.Provider {
 				Type:        schema.TypeString,
 				Required:    true,
 				Sensitive:   false,
-				Description: descriptions["api_key"],
+				Description: descriptions["api_url"],
 				DefaultFunc: schema.EnvDefaultFunc("HIVELOCITY_API_URL", "https://core.hivelocity.net/api/v2"),
 			},
 		},
@@ -30,6 +30,7 @@ func Provider() *schema.Provider {
 			"hivelocity_bare_metal_device": dataSourceBareMetalDevice(),
 			"hivelocity_device":            dataSourceDevice(),
 			"hivelocity_product":           dataSourceProduct(),
+			"hivelocity_initial_creds":     dataSourceInitialCreds(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"hivelocity_bare_metal_device": resourceBareMetalDevice(),
