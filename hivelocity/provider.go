@@ -27,10 +27,10 @@ func Provider() *schema.Provider {
 			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"hivelocity_bare_metal_device": dataSourceBareMetalDevice(),
-			"hivelocity_device":            dataSourceDevice(),
-			"hivelocity_product":           dataSourceProduct(),
-			"hivelocity_initial_creds":     dataSourceInitialCreds(),
+			"hivelocity_bare_metal_device":    dataSourceBareMetalDevice(),
+			"hivelocity_device":               dataSourceDevice(),
+			"hivelocity_product":              dataSourceProduct(),
+			"hivelocity_device_initial_creds": dataSourceDeviceInitialCreds(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"hivelocity_bare_metal_device": resourceBareMetalDevice(),

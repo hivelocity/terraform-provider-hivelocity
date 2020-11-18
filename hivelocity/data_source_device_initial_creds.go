@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func buildInitialCredsSchema() map[string]*schema.Schema {
+func buildDeviceInitialCredsSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"device_id": &schema.Schema{
 			Type:     schema.TypeInt,
@@ -34,14 +34,14 @@ func buildInitialCredsSchema() map[string]*schema.Schema {
 	}
 }
 
-func dataSourceInitialCreds() *schema.Resource {
+func dataSourceDeviceInitialCreds() *schema.Resource {
 	return &schema.Resource{
-		ReadContext: dataSourceInitialCredsRead,
-		Schema:      buildInitialCredsSchema(),
+		ReadContext: dataSourceDeviceInitialCredsRead,
+		Schema:      buildDeviceInitialCredsSchema(),
 	}
 }
 
-func dataSourceInitialCredsRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func dataSourceDeviceInitialCredsRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
