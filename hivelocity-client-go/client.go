@@ -65,6 +65,8 @@ type APIClient struct {
 
 	InvoiceApi *InvoiceApiService
 
+	NetworkApi *NetworkApiService
+
 	OrderApi *OrderApiService
 
 	PermissionApi *PermissionApiService
@@ -110,6 +112,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.DeviceApi = (*DeviceApiService)(&c.common)
 	c.InventoryApi = (*InventoryApiService)(&c.common)
 	c.InvoiceApi = (*InvoiceApiService)(&c.common)
+	c.NetworkApi = (*NetworkApiService)(&c.common)
 	c.OrderApi = (*OrderApiService)(&c.common)
 	c.PermissionApi = (*PermissionApiService)(&c.common)
 	c.ProductApi = (*ProductApiService)(&c.common)

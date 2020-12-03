@@ -33,7 +33,7 @@ Class | Method | HTTP request | Description
 *BillingInfoApi* | [**GetBillingInfoResource**](docs/BillingInfoApi.md#getbillinginforesource) | **Get** /billing-info/ | Return a list with all Billing Info
 *CancellationApi* | [**GetCancellationDeviceResource**](docs/CancellationApi.md#getcancellationdeviceresource) | **Get** /cancellation/device/{deviceId} | Return the Cancellation found for a Device
 *CancellationApi* | [**GetCancellationIdResource**](docs/CancellationApi.md#getcancellationidresource) | **Get** /cancellation/cancellation/{cancellationId} | Return any cancellation by ID
-*CancellationApi* | [**GetCancellationResource**](docs/CancellationApi.md#getcancellationresource) | **Get** /cancellation/cancellation | Returns the services cancellations of a client
+*CancellationApi* | [**GetCancellationResource**](docs/CancellationApi.md#getcancellationresource) | **Get** /cancellation/cancellation | Return the services cancellations of a client
 *CancellationApi* | [**GetCancellationServiceResource**](docs/CancellationApi.md#getcancellationserviceresource) | **Get** /cancellation/service/{serviceId} | Return the Cancellation found for a Service
 *CancellationApi* | [**PostCancellationResource**](docs/CancellationApi.md#postcancellationresource) | **Post** /cancellation/cancellation | Creates Cancellation for a device/service
 *ContactApi* | [**DeleteContactIdResource**](docs/ContactApi.md#deletecontactidresource) | **Delete** /contact/{contactId} | Delete a Contact
@@ -50,7 +50,7 @@ Class | Method | HTTP request | Description
 *DeploymentApi* | [**DeleteDeploymentIdResource**](docs/DeploymentApi.md#deletedeploymentidresource) | **Delete** /deploy/{deploymentId} | Delete the specified deployment
 *DeploymentApi* | [**GetDeploymentIdResource**](docs/DeploymentApi.md#getdeploymentidresource) | **Get** /deploy/{deploymentId} | Return a dictionary with deployment information
 *DeploymentApi* | [**GetDeploymentResource**](docs/DeploymentApi.md#getdeploymentresource) | **Get** /deploy/ | Return a list with all client deployments
-*DeploymentApi* | [**PostDeploymentIdResource**](docs/DeploymentApi.md#postdeploymentidresource) | **Post** /deploy/{deploymentId} | Input a billing info id to process and finish a deployment
+*DeploymentApi* | [**PostDeploymentIdResource**](docs/DeploymentApi.md#postdeploymentidresource) | **Post** /deploy/{deploymentId} | Input a billing info id and public ssh keys ids to process and finish a deployment
 *DeploymentApi* | [**PostDeploymentResource**](docs/DeploymentApi.md#postdeploymentresource) | **Post** /deploy/ | Start a new deployment
 *DeploymentApi* | [**PutDeploymentIdResource**](docs/DeploymentApi.md#putdeploymentidresource) | **Put** /deploy/{deploymentId} | Receive product, quantity and options to be added on the deployment
 *DeviceApi* | [**GetAllDeviceTagOrderResource**](docs/DeviceApi.md#getalldevicetagorderresource) | **Get** /device/tags-order/all | Get all device tags order
@@ -58,17 +58,18 @@ Class | Method | HTTP request | Description
 *DeviceApi* | [**GetClientDeviceTagResource**](docs/DeviceApi.md#getclientdevicetagresource) | **Get** /device/tags | Get all device tags for current client
 *DeviceApi* | [**GetDeviceIdEventResource**](docs/DeviceApi.md#getdeviceideventresource) | **Get** /device/{deviceId}/events | Returns all Events found for a single device
 *DeviceApi* | [**GetDeviceIdResource**](docs/DeviceApi.md#getdeviceidresource) | **Get** /device/{deviceId} | Returns detailed information for a Single Device
-*DeviceApi* | [**GetDeviceIpmiWhitelistActionResource**](docs/DeviceApi.md#getdeviceipmiwhitelistactionresource) | **Get** /device/{deviceId}/ipmi/whitelist/{actionId} | Retrieve the state of the action to add the IP into Whitelist
-*DeviceApi* | [**GetDeviceIpmiWhitelistPublicIp**](docs/DeviceApi.md#getdeviceipmiwhitelistpublicip) | **Get** /device/{deviceId}/ipmi/whitelist/{actionId}/public-ip | Retrieve the Public IP using the Device ID and the Action ID that was used to add it to Whitelist
 *DeviceApi* | [**GetDeviceResource**](docs/DeviceApi.md#getdeviceresource) | **Get** /device/ | Returns Active Devices and basic MetaData
 *DeviceApi* | [**GetDeviceTagIdResource**](docs/DeviceApi.md#getdevicetagidresource) | **Get** /device/{deviceId}/tags | Get device tags
+*DeviceApi* | [**GetInitialCredsIdResource**](docs/DeviceApi.md#getinitialcredsidresource) | **Get** /device/{deviceId}/initial-creds | Returns initial password for the device
 *DeviceApi* | [**GetInitialPasswordIdResource**](docs/DeviceApi.md#getinitialpasswordidresource) | **Get** /device/{deviceId}/initial-password | Returns initial password for the device
 *DeviceApi* | [**GetIpmiInfoIdResource**](docs/DeviceApi.md#getipmiinfoidresource) | **Get** /device/{deviceId}/ipmi | Returns IPMI info data
+*DeviceApi* | [**GetIpmiInfoLoginDataResource**](docs/DeviceApi.md#getipmiinfologindataresource) | **Get** /device/{deviceId}/ipmi/login-data | Returns IPMI login credentials
 *DeviceApi* | [**GetIpmiThresholdsIdResource**](docs/DeviceApi.md#getipmithresholdsidresource) | **Get** /device/{deviceId}/ipmi/thresholds | Returns IPMI thresholds data
 *DeviceApi* | [**GetIpmiValidLoginIdResource**](docs/DeviceApi.md#getipmivalidloginidresource) | **Get** /device/{deviceId}/ipmi/valid-login | Returns if device have valid credentials for IPMI login
 *DeviceApi* | [**GetNetworkInterfaceResource**](docs/DeviceApi.md#getnetworkinterfaceresource) | **Get** /device/{deviceId}/interfaces | Returns a list of all Network Interfaces bound to a Device
 *DeviceApi* | [**GetPowerResource**](docs/DeviceApi.md#getpowerresource) | **Get** /device/{deviceId}/power | Get device&#39;s current power status
-*DeviceApi* | [**PostDeviceIpmiWhitelistResource**](docs/DeviceApi.md#postdeviceipmiwhitelistresource) | **Post** /device/{deviceId}/ipmi/whitelist/ | Include the custip (custom IP) on IPMI WhiteList
+*DeviceApi* | [**PostDeviceIpmiWhitelistResource**](docs/DeviceApi.md#postdeviceipmiwhitelistresource) | **Post** /device/{deviceId}/ipmi/whitelist/ | Add a public IP on IPMI whitelist
+*DeviceApi* | [**PostDeviceReloadResource**](docs/DeviceApi.md#postdevicereloadresource) | **Post** /device/{deviceId}/reload | Reload any SPS Device with any available OS
 *DeviceApi* | [**PostPowerResource**](docs/DeviceApi.md#postpowerresource) | **Post** /device/{deviceId}/power | Apply action to device power
 *DeviceApi* | [**PutClientDeviceTagOrderResource**](docs/DeviceApi.md#putclientdevicetagorderresource) | **Put** /device/tags-order | Update device tags order for current user
 *DeviceApi* | [**PutDeviceIdResource**](docs/DeviceApi.md#putdeviceidresource) | **Put** /device/{deviceId} | Updates Device MetaData for a Single Device
@@ -81,6 +82,10 @@ Class | Method | HTTP request | Description
 *InvoiceApi* | [**GetInvoiceIdResource**](docs/InvoiceApi.md#getinvoiceidresource) | **Get** /invoice/{invoiceId} | Return serialized data on a single invoice
 *InvoiceApi* | [**GetInvoicePdfResource**](docs/InvoiceApi.md#getinvoicepdfresource) | **Get** /invoice/{invoiceId}/pdf-download | Return an Invoice PDF file in Base64 Encoded Format
 *InvoiceApi* | [**GetInvoiceResource**](docs/InvoiceApi.md#getinvoiceresource) | **Get** /invoice/ | Return serialized data on all invoices
+*InvoiceApi* | [**GetInvoiceSearchResource**](docs/InvoiceApi.md#getinvoicesearchresource) | **Get** /invoice/search | Return results of invoice search
+*NetworkApi* | [**GetNullRouteResource**](docs/NetworkApi.md#getnullrouteresource) | **Get** /network/null/{ip} | Null route an IP
+*NetworkApi* | [**GetRemoveNullRouteResource**](docs/NetworkApi.md#getremovenullrouteresource) | **Get** /network/unnull/{ip} | Remove null route from an IP
+*NetworkApi* | [**PostDetailedNullRouteResource**](docs/NetworkApi.md#postdetailednullrouteresource) | **Post** /network/null | Null route an IP (with custom comments)
 *OrderApi* | [**GetOrderIdResource**](docs/OrderApi.md#getorderidresource) | **Get** /order/{orderId} | Return details of a specific Order
 *OrderApi* | [**GetOrderResource**](docs/OrderApi.md#getorderresource) | **Get** /order/ | Return a list with all Orders
 *PermissionApi* | [**GetPermissionAllResource**](docs/PermissionApi.md#getpermissionallresource) | **Get** /permission/ | Endpoint to get All Permissions
@@ -97,6 +102,7 @@ Class | Method | HTTP request | Description
 *ServiceApi* | [**GetServiceIdResource**](docs/ServiceApi.md#getserviceidresource) | **Get** /service/{serviceId} | Return a dictionary with data from a specific account service
 *ServiceApi* | [**GetServiceResource**](docs/ServiceApi.md#getserviceresource) | **Get** /service/ | Return a list of all account services
 *SshKeyApi* | [**DeleteSshKeyIdResource**](docs/SshKeyApi.md#deletesshkeyidresource) | **Delete** /ssh_key/{sshKeyId} | Removes public ssh key
+*SshKeyApi* | [**GetSshKeyIdResource**](docs/SshKeyApi.md#getsshkeyidresource) | **Get** /ssh_key/{sshKeyId} | Get public ssh key
 *SshKeyApi* | [**GetSshKeyResource**](docs/SshKeyApi.md#getsshkeyresource) | **Get** /ssh_key/ | Gets all public ssh key
 *SshKeyApi* | [**PostSshKeyResource**](docs/SshKeyApi.md#postsshkeyresource) | **Post** /ssh_key/ | Adds public ssh key
 *SshKeyApi* | [**PutSshKeyIdResource**](docs/SshKeyApi.md#putsshkeyidresource) | **Put** /ssh_key/{sshKeyId} | Updates public ssh key
@@ -141,14 +147,17 @@ Class | Method | HTTP request | Description
  - [Deployment](docs/Deployment.md)
  - [DeploymentCustomization](docs/DeploymentCustomization.md)
  - [DeploymentStart](docs/DeploymentStart.md)
+ - [DetailedNullIp](docs/DetailedNullIp.md)
  - [Device](docs/Device.md)
  - [DeviceEvent](docs/DeviceEvent.md)
+ - [DeviceInitialCreds](docs/DeviceInitialCreds.md)
  - [DeviceInterface](docs/DeviceInterface.md)
  - [DeviceIpmiInfo](docs/DeviceIpmiInfo.md)
  - [DeviceIpmiThresholds](docs/DeviceIpmiThresholds.md)
  - [DeviceIpmiWhitelistIp](docs/DeviceIpmiWhitelistIp.md)
  - [DevicePassword](docs/DevicePassword.md)
  - [DevicePower](docs/DevicePower.md)
+ - [DeviceReload](docs/DeviceReload.md)
  - [DeviceTag](docs/DeviceTag.md)
  - [DeviceUpdate](docs/DeviceUpdate.md)
  - [DevicesIpmiThresholds](docs/DevicesIpmiThresholds.md)
@@ -157,7 +166,9 @@ Class | Method | HTTP request | Description
  - [InvoiceDetails](docs/InvoiceDetails.md)
  - [InvoiceDetailsServiceItems](docs/InvoiceDetailsServiceItems.md)
  - [InvoicePdf](docs/InvoicePdf.md)
+ - [InvoiceSeachResult](docs/InvoiceSeachResult.md)
  - [IpmiInfo](docs/IpmiInfo.md)
+ - [IpmiLoginData](docs/IpmiLoginData.md)
  - [IpmiSensor](docs/IpmiSensor.md)
  - [IpmiValidLogin](docs/IpmiValidLogin.md)
  - [Option](docs/Option.md)

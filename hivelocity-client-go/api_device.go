@@ -27,7 +27,7 @@ var (
 
 type DeviceApiService service
 
-/* 
+/*
 DeviceApiService Get all device tags order
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *DeviceApiGetAllDeviceTagOrderResourceOpts - Optional Parameters:
@@ -108,9 +108,7 @@ func (a *DeviceApiService) GetAllDeviceTagOrderResource(ctx context.Context, loc
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -136,7 +134,7 @@ func (a *DeviceApiService) GetAllDeviceTagOrderResource(ctx context.Context, loc
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Get device tags order for current user
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *DeviceApiGetClientDeviceTagOrderResourceOpts - Optional Parameters:
@@ -217,9 +215,7 @@ func (a *DeviceApiService) GetClientDeviceTagOrderResource(ctx context.Context, 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -245,7 +241,7 @@ func (a *DeviceApiService) GetClientDeviceTagOrderResource(ctx context.Context, 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Get all device tags for current client
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *DeviceApiGetClientDeviceTagResourceOpts - Optional Parameters:
@@ -326,9 +322,7 @@ func (a *DeviceApiService) GetClientDeviceTagResource(ctx context.Context, local
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -354,7 +348,7 @@ func (a *DeviceApiService) GetClientDeviceTagResource(ctx context.Context, local
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Returns all Events found for a single device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId
@@ -437,9 +431,7 @@ func (a *DeviceApiService) GetDeviceIdEventResource(ctx context.Context, deviceI
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -465,7 +457,7 @@ func (a *DeviceApiService) GetDeviceIdEventResource(ctx context.Context, deviceI
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Returns detailed information for a Single Device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View / Update
@@ -548,9 +540,7 @@ func (a *DeviceApiService) GetDeviceIdResource(ctx context.Context, deviceId int
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -576,177 +566,7 @@ func (a *DeviceApiService) GetDeviceIdResource(ctx context.Context, deviceId int
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
-DeviceApiService Retrieve the state of the action to add the IP into Whitelist
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param deviceId ID of the Device to add IP in Whitelist
- * @param actionId
-
-
-*/
-func (a *DeviceApiService) GetDeviceIpmiWhitelistActionResource(ctx context.Context, deviceId int32, actionId string) (*http.Response, error) {
-	var (
-		localVarHttpMethod = strings.ToUpper("Get")
-		localVarPostBody   interface{}
-		localVarFileName   string
-		localVarFileBytes  []byte
-		
-	)
-
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/device/{deviceId}/ipmi/whitelist/{actionId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"deviceId"+"}", fmt.Sprintf("%v", deviceId), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"actionId"+"}", fmt.Sprintf("%v", actionId), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{"application/json"}
-
-	// set Content-Type header
-	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
-	if localVarHttpContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHttpContentType
-	}
-
-	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
-	if localVarHttpHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
-	}
-	if ctx != nil {
-		// API Key Authentication
-		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
-			var key string
-			if auth.Prefix != "" {
-				key = auth.Prefix + " " + auth.Key
-			} else {
-				key = auth.Key
-			}
-			localVarHeaderParams["X-API-KEY"] = key
-			
-		}
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return nil, err
-	}
-
-	localVarHttpResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHttpResponse == nil {
-		return localVarHttpResponse, err
-	}
-
-	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
-	localVarHttpResponse.Body.Close()
-	if err != nil {
-		return localVarHttpResponse, err
-	}
-
-
-	if localVarHttpResponse.StatusCode >= 300 {
-		newErr := GenericSwaggerError{
-			body: localVarBody,
-			error: localVarHttpResponse.Status,
-		}
-		
-		return localVarHttpResponse, newErr
-	}
-
-	return localVarHttpResponse, nil
-}
-
-/* 
-DeviceApiService Retrieve the Public IP using the Device ID and the Action ID that was used to add it to Whitelist
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param actionId ID of the action to add IP in Whitelist
- * @param deviceId ID of the Device to add IP in Whitelist
-
-
-*/
-func (a *DeviceApiService) GetDeviceIpmiWhitelistPublicIp(ctx context.Context, actionId string, deviceId int32) (*http.Response, error) {
-	var (
-		localVarHttpMethod = strings.ToUpper("Get")
-		localVarPostBody   interface{}
-		localVarFileName   string
-		localVarFileBytes  []byte
-		
-	)
-
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/device/{deviceId}/ipmi/whitelist/{actionId}/public-ip"
-	localVarPath = strings.Replace(localVarPath, "{"+"actionId"+"}", fmt.Sprintf("%v", actionId), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"deviceId"+"}", fmt.Sprintf("%v", deviceId), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{"application/json"}
-
-	// set Content-Type header
-	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
-	if localVarHttpContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHttpContentType
-	}
-
-	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
-	if localVarHttpHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
-	}
-	if ctx != nil {
-		// API Key Authentication
-		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
-			var key string
-			if auth.Prefix != "" {
-				key = auth.Prefix + " " + auth.Key
-			} else {
-				key = auth.Key
-			}
-			localVarHeaderParams["X-API-KEY"] = key
-			
-		}
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return nil, err
-	}
-
-	localVarHttpResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHttpResponse == nil {
-		return localVarHttpResponse, err
-	}
-
-	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
-	localVarHttpResponse.Body.Close()
-	if err != nil {
-		return localVarHttpResponse, err
-	}
-
-
-	if localVarHttpResponse.StatusCode >= 300 {
-		newErr := GenericSwaggerError{
-			body: localVarBody,
-			error: localVarHttpResponse.Status,
-		}
-		
-		return localVarHttpResponse, newErr
-	}
-
-	return localVarHttpResponse, nil
-}
-
-/* 
+/*
 DeviceApiService Returns Active Devices and basic MetaData
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *DeviceApiGetDeviceResourceOpts - Optional Parameters:
@@ -827,9 +647,7 @@ func (a *DeviceApiService) GetDeviceResource(ctx context.Context, localVarOption
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -855,7 +673,7 @@ func (a *DeviceApiService) GetDeviceResource(ctx context.Context, localVarOption
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Get device tags
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View / Update
@@ -938,9 +756,7 @@ func (a *DeviceApiService) GetDeviceTagIdResource(ctx context.Context, deviceId 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -966,7 +782,116 @@ func (a *DeviceApiService) GetDeviceTagIdResource(ctx context.Context, deviceId 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
+DeviceApiService Returns initial password for the device
+ * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param deviceId ID of Device to retrieve initial authentication credentials for
+ * @param optional nil or *DeviceApiGetInitialCredsIdResourceOpts - Optional Parameters:
+     * @param "XFields" (optional.String) -  An optional fields mask
+
+@return DeviceInitialCreds
+*/
+
+type DeviceApiGetInitialCredsIdResourceOpts struct { 
+	XFields optional.String
+}
+
+func (a *DeviceApiService) GetInitialCredsIdResource(ctx context.Context, deviceId int32, localVarOptionals *DeviceApiGetInitialCredsIdResourceOpts) (DeviceInitialCreds, *http.Response, error) {
+	var (
+		localVarHttpMethod = strings.ToUpper("Get")
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+		localVarReturnValue DeviceInitialCreds
+	)
+
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/device/{deviceId}/initial-creds"
+	localVarPath = strings.Replace(localVarPath, "{"+"deviceId"+"}", fmt.Sprintf("%v", deviceId), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHttpContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
+	if localVarHttpContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHttpContentType
+	}
+
+	// to determine the Accept header
+	localVarHttpHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
+	if localVarHttpHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
+	}
+	if localVarOptionals != nil && localVarOptionals.XFields.IsSet() {
+		localVarHeaderParams["X-Fields"] = parameterToString(localVarOptionals.XFields.Value(), "")
+	}
+	if ctx != nil {
+		// API Key Authentication
+		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
+			var key string
+			if auth.Prefix != "" {
+				key = auth.Prefix + " " + auth.Key
+			} else {
+				key = auth.Key
+			}
+			localVarHeaderParams["X-API-KEY"] = key
+			
+		}
+	}
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHttpResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHttpResponse == nil {
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
+	localVarHttpResponse.Body.Close()
+	if err != nil {
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode < 300 {
+		// If we succeed, return the data, otherwise pass on to decode error.
+		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode >= 300 {
+		newErr := GenericSwaggerError{
+			body: localVarBody,
+			error: localVarHttpResponse.Status,
+		}
+		
+		if localVarHttpResponse.StatusCode == 200 {
+			var v DeviceInitialCreds
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
+				if err != nil {
+					newErr.error = err.Error()
+					return localVarReturnValue, localVarHttpResponse, newErr
+				}
+				newErr.model = v
+				return localVarReturnValue, localVarHttpResponse, newErr
+		}
+		
+		return localVarReturnValue, localVarHttpResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHttpResponse, nil
+}
+
+/*
 DeviceApiService Returns initial password for the device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to retrieve initial password
@@ -1049,9 +974,7 @@ func (a *DeviceApiService) GetInitialPasswordIdResource(ctx context.Context, dev
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1077,7 +1000,7 @@ func (a *DeviceApiService) GetInitialPasswordIdResource(ctx context.Context, dev
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Returns IPMI info data
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to retrieve IPMI info.
@@ -1160,9 +1083,7 @@ func (a *DeviceApiService) GetIpmiInfoIdResource(ctx context.Context, deviceId i
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1188,7 +1109,116 @@ func (a *DeviceApiService) GetIpmiInfoIdResource(ctx context.Context, deviceId i
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
+DeviceApiService Returns IPMI login credentials
+ * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param deviceId ID of Device to retrieve IPMI Login data.
+ * @param optional nil or *DeviceApiGetIpmiInfoLoginDataResourceOpts - Optional Parameters:
+     * @param "XFields" (optional.String) -  An optional fields mask
+
+@return IpmiLoginData
+*/
+
+type DeviceApiGetIpmiInfoLoginDataResourceOpts struct { 
+	XFields optional.String
+}
+
+func (a *DeviceApiService) GetIpmiInfoLoginDataResource(ctx context.Context, deviceId int32, localVarOptionals *DeviceApiGetIpmiInfoLoginDataResourceOpts) (IpmiLoginData, *http.Response, error) {
+	var (
+		localVarHttpMethod = strings.ToUpper("Get")
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+		localVarReturnValue IpmiLoginData
+	)
+
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/device/{deviceId}/ipmi/login-data"
+	localVarPath = strings.Replace(localVarPath, "{"+"deviceId"+"}", fmt.Sprintf("%v", deviceId), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHttpContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
+	if localVarHttpContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHttpContentType
+	}
+
+	// to determine the Accept header
+	localVarHttpHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
+	if localVarHttpHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
+	}
+	if localVarOptionals != nil && localVarOptionals.XFields.IsSet() {
+		localVarHeaderParams["X-Fields"] = parameterToString(localVarOptionals.XFields.Value(), "")
+	}
+	if ctx != nil {
+		// API Key Authentication
+		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
+			var key string
+			if auth.Prefix != "" {
+				key = auth.Prefix + " " + auth.Key
+			} else {
+				key = auth.Key
+			}
+			localVarHeaderParams["X-API-KEY"] = key
+			
+		}
+	}
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHttpResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHttpResponse == nil {
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
+	localVarHttpResponse.Body.Close()
+	if err != nil {
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode < 300 {
+		// If we succeed, return the data, otherwise pass on to decode error.
+		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode >= 300 {
+		newErr := GenericSwaggerError{
+			body: localVarBody,
+			error: localVarHttpResponse.Status,
+		}
+		
+		if localVarHttpResponse.StatusCode == 200 {
+			var v IpmiLoginData
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
+				if err != nil {
+					newErr.error = err.Error()
+					return localVarReturnValue, localVarHttpResponse, newErr
+				}
+				newErr.model = v
+				return localVarReturnValue, localVarHttpResponse, newErr
+		}
+		
+		return localVarReturnValue, localVarHttpResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHttpResponse, nil
+}
+
+/*
 DeviceApiService Returns IPMI thresholds data
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View
@@ -1271,9 +1301,7 @@ func (a *DeviceApiService) GetIpmiThresholdsIdResource(ctx context.Context, devi
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1299,7 +1327,7 @@ func (a *DeviceApiService) GetIpmiThresholdsIdResource(ctx context.Context, devi
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Returns if device have valid credentials for IPMI login
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to check IPMI credentials
@@ -1382,9 +1410,7 @@ func (a *DeviceApiService) GetIpmiValidLoginIdResource(ctx context.Context, devi
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1410,7 +1436,7 @@ func (a *DeviceApiService) GetIpmiValidLoginIdResource(ctx context.Context, devi
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Returns a list of all Network Interfaces bound to a Device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to view Network Interfaces.
@@ -1493,9 +1519,7 @@ func (a *DeviceApiService) GetNetworkInterfaceResource(ctx context.Context, devi
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1521,7 +1545,7 @@ func (a *DeviceApiService) GetNetworkInterfaceResource(ctx context.Context, devi
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Get device&#39;s current power status
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View / Update
@@ -1604,9 +1628,7 @@ func (a *DeviceApiService) GetPowerResource(ctx context.Context, deviceId int32,
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1632,8 +1654,9 @@ func (a *DeviceApiService) GetPowerResource(ctx context.Context, deviceId int32,
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
-DeviceApiService Include the custip (custom IP) on IPMI WhiteList
+/*
+DeviceApiService Add a public IP on IPMI whitelist
+Returns IPMI public IP
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of the Device to put IP in Whitelist
  * @param payload
@@ -1718,7 +1741,119 @@ func (a *DeviceApiService) PostDeviceIpmiWhitelistResource(ctx context.Context, 
 	return localVarHttpResponse, nil
 }
 
-/* 
+/*
+DeviceApiService Reload any SPS Device with any available OS
+ * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param deviceId
+ * @param payload
+ * @param optional nil or *DeviceApiPostDeviceReloadResourceOpts - Optional Parameters:
+     * @param "XFields" (optional.String) -  An optional fields mask
+
+@return ServiceOption
+*/
+
+type DeviceApiPostDeviceReloadResourceOpts struct { 
+	XFields optional.String
+}
+
+func (a *DeviceApiService) PostDeviceReloadResource(ctx context.Context, deviceId int32, payload DeviceReload, localVarOptionals *DeviceApiPostDeviceReloadResourceOpts) (ServiceOption, *http.Response, error) {
+	var (
+		localVarHttpMethod = strings.ToUpper("Post")
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+		localVarReturnValue ServiceOption
+	)
+
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/device/{deviceId}/reload"
+	localVarPath = strings.Replace(localVarPath, "{"+"deviceId"+"}", fmt.Sprintf("%v", deviceId), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHttpContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
+	if localVarHttpContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHttpContentType
+	}
+
+	// to determine the Accept header
+	localVarHttpHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
+	if localVarHttpHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
+	}
+	if localVarOptionals != nil && localVarOptionals.XFields.IsSet() {
+		localVarHeaderParams["X-Fields"] = parameterToString(localVarOptionals.XFields.Value(), "")
+	}
+	// body params
+	localVarPostBody = &payload
+	if ctx != nil {
+		// API Key Authentication
+		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
+			var key string
+			if auth.Prefix != "" {
+				key = auth.Prefix + " " + auth.Key
+			} else {
+				key = auth.Key
+			}
+			localVarHeaderParams["X-API-KEY"] = key
+			
+		}
+	}
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHttpResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHttpResponse == nil {
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
+	localVarHttpResponse.Body.Close()
+	if err != nil {
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode < 300 {
+		// If we succeed, return the data, otherwise pass on to decode error.
+		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode >= 300 {
+		newErr := GenericSwaggerError{
+			body: localVarBody,
+			error: localVarHttpResponse.Status,
+		}
+		
+		if localVarHttpResponse.StatusCode == 200 {
+			var v ServiceOption
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
+				if err != nil {
+					newErr.error = err.Error()
+					return localVarReturnValue, localVarHttpResponse, newErr
+				}
+				newErr.model = v
+				return localVarReturnValue, localVarHttpResponse, newErr
+		}
+		
+		return localVarReturnValue, localVarHttpResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHttpResponse, nil
+}
+
+/*
 DeviceApiService Apply action to device power
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View / Update
@@ -1803,9 +1938,7 @@ func (a *DeviceApiService) PostPowerResource(ctx context.Context, deviceId int32
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1831,7 +1964,7 @@ func (a *DeviceApiService) PostPowerResource(ctx context.Context, deviceId int32
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Update device tags order for current user
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -1915,9 +2048,7 @@ func (a *DeviceApiService) PutClientDeviceTagOrderResource(ctx context.Context, 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1943,7 +2074,7 @@ func (a *DeviceApiService) PutClientDeviceTagOrderResource(ctx context.Context, 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Updates Device MetaData for a Single Device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View / Update
@@ -2029,9 +2160,7 @@ func (a *DeviceApiService) PutDeviceIdResource(ctx context.Context, deviceId int
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -2057,7 +2186,7 @@ func (a *DeviceApiService) PutDeviceIdResource(ctx context.Context, deviceId int
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Update device tags
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View / Update
@@ -2143,9 +2272,7 @@ func (a *DeviceApiService) PutDeviceTagIdResource(ctx context.Context, deviceId 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -2171,7 +2298,7 @@ func (a *DeviceApiService) PutDeviceTagIdResource(ctx context.Context, deviceId 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Updates IPMI thresholds for device list
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -2255,9 +2382,7 @@ func (a *DeviceApiService) PutIpmiDevicesThresholdsIdResource(ctx context.Contex
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -2283,7 +2408,7 @@ func (a *DeviceApiService) PutIpmiDevicesThresholdsIdResource(ctx context.Contex
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeviceApiService Updates IPMI thresholds data
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View
@@ -2369,9 +2494,7 @@ func (a *DeviceApiService) PutIpmiThresholdsIdResource(ctx context.Context, devi
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -2396,3 +2519,4 @@ func (a *DeviceApiService) PutIpmiThresholdsIdResource(ctx context.Context, devi
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
+

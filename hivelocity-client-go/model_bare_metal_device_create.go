@@ -10,16 +10,11 @@
 package swagger
 
 type BareMetalDeviceCreate struct {
-	ProductName string `json:"productName,omitempty"`
-	PowerStatus string `json:"powerStatus,omitempty"`
+	Period string `json:"period,omitempty"`
 	VlanId int32 `json:"vlanId,omitempty"`
-	ServiceId int32 `json:"serviceId,omitempty"`
-	OrderId int32 `json:"orderId,omitempty"`
-	PrimaryIp string `json:"primaryIp,omitempty"`
-	ProductId int32 `json:"productId"`
-	Hostname string `json:"hostname"`
-	DeviceId int32 `json:"deviceId,omitempty"`
 	LocationName string `json:"locationName"`
-	Tags []string `json:"tags,omitempty"`
+	ProductId int32 `json:"productId"`
 	OsName string `json:"osName"`
+	Hostname string `json:"hostname"`
+	Script string `json:"script,omitempty"`
 }

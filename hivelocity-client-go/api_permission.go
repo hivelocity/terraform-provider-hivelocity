@@ -27,7 +27,7 @@ var (
 
 type PermissionApiService service
 
-/* 
+/*
 PermissionApiService Endpoint to get All Permissions
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 
@@ -108,7 +108,7 @@ func (a *PermissionApiService) GetPermissionAllResource(ctx context.Context) (*h
 	return localVarHttpResponse, nil
 }
 
-/* 
+/*
 PermissionApiService Endpoint to get Contact Permissions
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param contactId
@@ -191,7 +191,7 @@ func (a *PermissionApiService) GetPermissionContactResource(ctx context.Context,
 	return localVarHttpResponse, nil
 }
 
-/* 
+/*
 PermissionApiService Endpoint to get User Permissions
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 
@@ -272,7 +272,7 @@ func (a *PermissionApiService) GetPermissionUserResource(ctx context.Context) (*
 	return localVarHttpResponse, nil
 }
 
-/* 
+/*
 PermissionApiService Endpoint to assign a new Permission to a Contact
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -356,9 +356,7 @@ func (a *PermissionApiService) PostPermissionAssignContactResource(ctx context.C
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -383,3 +381,4 @@ func (a *PermissionApiService) PostPermissionAssignContactResource(ctx context.C
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
+

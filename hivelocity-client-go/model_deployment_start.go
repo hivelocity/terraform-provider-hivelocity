@@ -11,4 +11,6 @@ package swagger
 
 type DeploymentStart struct {
 	BillingInfo int32 `json:"billingInfo"`
+	PublicSshKeys []int32 `json:"publicSshKeys,omitempty"`
+	Script string `json:"script,omitempty"`
 }

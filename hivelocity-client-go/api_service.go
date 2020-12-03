@@ -27,7 +27,7 @@ var (
 
 type ServiceApiService service
 
-/* 
+/*
 ServiceApiService Return a dictionary with data from a specific account service
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param serviceId
@@ -110,9 +110,7 @@ func (a *ServiceApiService) GetServiceIdResource(ctx context.Context, serviceId 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -138,7 +136,7 @@ func (a *ServiceApiService) GetServiceIdResource(ctx context.Context, serviceId 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 ServiceApiService Return a list of all account services
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param status The current status of the service
@@ -221,9 +219,7 @@ func (a *ServiceApiService) GetServiceResource(ctx context.Context, status strin
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -248,3 +244,4 @@ func (a *ServiceApiService) GetServiceResource(ctx context.Context, status strin
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
+

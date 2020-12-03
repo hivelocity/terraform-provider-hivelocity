@@ -10,14 +10,14 @@
 package swagger
 
 type DeploymentCustomization struct {
-	// Operating System's Name or ID
-	OperatingSystem string `json:"operatingSystem"`
-	Hostnames []string `json:"hostnames"`
-	ProductId int32 `json:"productId"`
-	Quantity int32 `json:"quantity,omitempty"`
 	// must be one of ['monthly', 'quarterly', 'semi-annually', 'annually', 'biennial', 'triennial', 'hourly']
 	BillingPeriod string `json:"billingPeriod,omitempty"`
-	LocationCode string `json:"locationCode,omitempty"`
+	ProductId int32 `json:"productId"`
+	// Operating System's Name or ID
+	OperatingSystem string `json:"operatingSystem"`
 	AdditionalNotes []string `json:"additionalNotes,omitempty"`
 	Options []int32 `json:"options,omitempty"`
+	Hostnames []string `json:"hostnames"`
+	Quantity int32 `json:"quantity,omitempty"`
+	LocationCode string `json:"locationCode,omitempty"`
 }

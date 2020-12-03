@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**DeleteDeploymentIdResource**](DeploymentApi.md#DeleteDeploymentIdResource) | **Delete** /deploy/{deploymentId} | Delete the specified deployment
 [**GetDeploymentIdResource**](DeploymentApi.md#GetDeploymentIdResource) | **Get** /deploy/{deploymentId} | Return a dictionary with deployment information
 [**GetDeploymentResource**](DeploymentApi.md#GetDeploymentResource) | **Get** /deploy/ | Return a list with all client deployments
-[**PostDeploymentIdResource**](DeploymentApi.md#PostDeploymentIdResource) | **Post** /deploy/{deploymentId} | Input a billing info id to process and finish a deployment
+[**PostDeploymentIdResource**](DeploymentApi.md#PostDeploymentIdResource) | **Post** /deploy/{deploymentId} | Input a billing info id and public ssh keys ids to process and finish a deployment
 [**PostDeploymentResource**](DeploymentApi.md#PostDeploymentResource) | **Post** /deploy/ | Start a new deployment
 [**PutDeploymentIdResource**](DeploymentApi.md#PutDeploymentIdResource) | **Put** /deploy/{deploymentId} | Receive product, quantity and options to be added on the deployment
 
@@ -108,7 +108,7 @@ Name | Type | Description  | Notes
 
 # **PostDeploymentIdResource**
 > PostDeploymentIdResource(ctx, deploymentId, payload)
-Input a billing info id to process and finish a deployment
+Input a billing info id and public ssh keys ids to process and finish a deployment
 
 ### Required Parameters
 

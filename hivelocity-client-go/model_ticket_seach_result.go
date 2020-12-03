@@ -10,13 +10,13 @@
 package swagger
 
 type TicketSeachResult struct {
-	NextPage int32 `json:"nextPage,omitempty"`
 	HasPrev bool `json:"hasPrev,omitempty"`
-	HasNext bool `json:"hasNext,omitempty"`
-	Total int32 `json:"total,omitempty"`
 	PerPage int32 `json:"perPage,omitempty"`
-	Pages int32 `json:"pages,omitempty"`
 	Page int32 `json:"page,omitempty"`
-	Items *TicketPost `json:"items,omitempty"`
+	HasNext bool `json:"hasNext,omitempty"`
 	PrevPage int32 `json:"prevPage,omitempty"`
+	Pages int32 `json:"pages,omitempty"`
+	Total int32 `json:"total,omitempty"`
+	Items *TicketPost `json:"items,omitempty"`
+	NextPage int32 `json:"nextPage,omitempty"`
 }

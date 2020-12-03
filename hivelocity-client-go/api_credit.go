@@ -26,7 +26,7 @@ var (
 
 type CreditApiService service
 
-/* 
+/*
 CreditApiService Return a list with all Credits
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *CreditApiGetCreditResourceOpts - Optional Parameters:
@@ -107,9 +107,7 @@ func (a *CreditApiService) GetCreditResource(ctx context.Context, localVarOption
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -135,7 +133,7 @@ func (a *CreditApiService) GetCreditResource(ctx context.Context, localVarOption
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 CreditApiService Return the client&#39;s total active credit amount
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *CreditApiGetTotalActiveCreditResourceOpts - Optional Parameters:
@@ -216,9 +214,7 @@ func (a *CreditApiService) GetTotalActiveCreditResource(ctx context.Context, loc
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -244,7 +240,7 @@ func (a *CreditApiService) GetTotalActiveCreditResource(ctx context.Context, loc
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 CreditApiService Receive billing method id and amount and return the created Credit
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -328,9 +324,7 @@ func (a *CreditApiService) PostCreditResource(ctx context.Context, payload Creat
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -355,3 +349,4 @@ func (a *CreditApiService) PostCreditResource(ctx context.Context, payload Creat
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
+

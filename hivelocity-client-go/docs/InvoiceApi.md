@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**GetInvoiceIdResource**](InvoiceApi.md#GetInvoiceIdResource) | **Get** /invoice/{invoiceId} | Return serialized data on a single invoice
 [**GetInvoicePdfResource**](InvoiceApi.md#GetInvoicePdfResource) | **Get** /invoice/{invoiceId}/pdf-download | Return an Invoice PDF file in Base64 Encoded Format
 [**GetInvoiceResource**](InvoiceApi.md#GetInvoiceResource) | **Get** /invoice/ | Return serialized data on all invoices
+[**GetInvoiceSearchResource**](InvoiceApi.md#GetInvoiceSearchResource) | **Get** /invoice/search | Return results of invoice search
 
 
 # **GetInvoiceIdDetails**
@@ -138,6 +139,44 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**[]Invoice**](Invoice.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **GetInvoiceSearchResource**
+> InvoiceSeachResult GetInvoiceSearchResource(ctx, optional)
+Return results of invoice search
+
+### Required Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***InvoiceApiGetInvoiceSearchResourceOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a pointer to a InvoiceApiGetInvoiceSearchResourceOpts struct
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **endDate** | **optional.Int32**| The end date range | 
+ **startDate** | **optional.Int32**| The start date range | 
+ **perPage** | **optional.Int32**| Number of items per page. | [default to 10]
+ **page** | **optional.Int32**| The page number of search. | [default to 1]
+ **q** | **optional.String**| Content search. | 
+ **xFields** | **optional.String**| An optional fields mask | 
+
+### Return type
+
+[**InvoiceSeachResult**](InvoiceSeachResult.md)
 
 ### Authorization
 

@@ -10,9 +10,9 @@
 package swagger
 
 type OrderDump struct {
-	Info *interface{} `json:"info,omitempty"`
-	Total float32 `json:"total,omitempty"`
 	Status string `json:"status,omitempty"`
-	Owner string `json:"owner,omitempty"`
+	Total float32 `json:"total,omitempty"`
 	OrderId int32 `json:"orderId,omitempty"`
+	Info *interface{} `json:"info,omitempty"`
+	Owner string `json:"owner,omitempty"`
 }

@@ -10,27 +10,28 @@
 package swagger
 
 type ProductInfo struct {
-	ProductDisplayPrice float32 `json:"product_display_price,omitempty"`
+	ProductSemiAnnuallyPrice float32 `json:"product_semi_annually_price,omitempty"`
+	ProductQuarterlyPrice float32 `json:"product_quarterly_price,omitempty"`
+	Edge bool `json:"edge,omitempty"`
+	Core bool `json:"core,omitempty"`
+	ProductBandwidth string `json:"product_bandwidth,omitempty"`
 	ProductMonthlyPrice float32 `json:"product_monthly_price,omitempty"`
 	ProductDrive string `json:"product_drive,omitempty"`
+	Location string `json:"location,omitempty"`
+	ProductCpu string `json:"product_cpu,omitempty"`
+	ProductTriennialPrice float32 `json:"product_triennial_price,omitempty"`
+	ProductDisabledBillingPeriods []string `json:"product_disabled_billing_periods,omitempty"`
+	ProductHourlyPrice float32 `json:"product_hourly_price,omitempty"`
+	ProductAnnuallyPrice float32 `json:"product_annually_price,omitempty"`
+	ProductName string `json:"product_name,omitempty"`
+	ProductDisplayPrice float32 `json:"product_display_price,omitempty"`
 	ProductBiennialPrice float32 `json:"product_biennial_price,omitempty"`
 	MonthlyLocationPremium float32 `json:"monthly_location_premium,omitempty"`
-	HourlyLocationPremium float32 `json:"hourly_location_premium,omitempty"`
-	Edge bool `json:"edge,omitempty"`
-	ProductTriennialPrice float32 `json:"product_triennial_price,omitempty"`
-	ProductCpuCores string `json:"product_cpu_cores,omitempty"`
-	ProductCpu string `json:"product_cpu,omitempty"`
 	ProductOnSale bool `json:"product_on_sale,omitempty"`
-	ProductBandwidth string `json:"product_bandwidth,omitempty"`
-	ProductOriginalPrice float32 `json:"product_original_price,omitempty"`
-	ProductName string `json:"product_name,omitempty"`
-	ProductMemory string `json:"product_memory,omitempty"`
-	ProductQuarterlyPrice float32 `json:"product_quarterly_price,omitempty"`
-	Location string `json:"location,omitempty"`
-	ProductAnnuallyPrice float32 `json:"product_annually_price,omitempty"`
-	ProductId int32 `json:"product_id,omitempty"`
-	ProductHourlyPrice float32 `json:"product_hourly_price,omitempty"`
 	Stock string `json:"stock,omitempty"`
-	ProductSemiAnnuallyPrice float32 `json:"product_semi_annually_price,omitempty"`
-	Core bool `json:"core,omitempty"`
+	HourlyLocationPremium float32 `json:"hourly_location_premium,omitempty"`
+	ProductId int32 `json:"product_id,omitempty"`
+	ProductOriginalPrice float32 `json:"product_original_price,omitempty"`
+	ProductMemory string `json:"product_memory,omitempty"`
+	ProductCpuCores string `json:"product_cpu_cores,omitempty"`
 }
