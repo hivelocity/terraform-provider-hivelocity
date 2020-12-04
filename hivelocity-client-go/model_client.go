@@ -10,17 +10,17 @@
 package swagger
 
 type Client struct {
-	FullName string `json:"fullName,omitempty"`
+	Company string `json:"company,omitempty"`
 	Zip string `json:"zip,omitempty"`
+	Country string `json:"country,omitempty"`
 	Last string `json:"last,omitempty"`
 	Id float32 `json:"id,omitempty"`
-	IsClient bool `json:"isClient,omitempty"`
-	MetaData *interface{} `json:"metaData,omitempty"`
 	Login string `json:"login,omitempty"`
+	MetaData *interface{} `json:"metaData,omitempty"`
+	FullName string `json:"fullName,omitempty"`
 	First string `json:"first,omitempty"`
-	State string `json:"state,omitempty"`
-	Country string `json:"country,omitempty"`
 	Email string `json:"email,omitempty"`
 	City string `json:"city,omitempty"`
-	Company string `json:"company,omitempty"`
+	IsClient bool `json:"isClient,omitempty"`
+	State string `json:"state,omitempty"`
 }

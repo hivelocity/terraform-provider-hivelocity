@@ -9,7 +9,7 @@
 
 package swagger
 
-type TicketSeachResult struct {
+type InvoiceSeachResult struct {
 	NextPage int32 `json:"nextPage,omitempty"`
 	PrevPage int32 `json:"prevPage,omitempty"`
 	Pages int32 `json:"pages,omitempty"`
@@ -18,5 +18,5 @@ type TicketSeachResult struct {
 	Page int32 `json:"page,omitempty"`
 	Total int32 `json:"total,omitempty"`
 	PerPage int32 `json:"perPage,omitempty"`
-	Items *TicketPost `json:"items,omitempty"`
+	Items *Invoice `json:"items,omitempty"`
 }

@@ -27,7 +27,7 @@ var (
 
 type TicketApiService service
 
-/* 
+/*
 TicketApiService Returns details of a specific ticket
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ticketId ticket database ID
@@ -110,9 +110,7 @@ func (a *TicketApiService) GetTicketIdResource(ctx context.Context, ticketId int
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -138,7 +136,7 @@ func (a *TicketApiService) GetTicketIdResource(ctx context.Context, ticketId int
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 TicketApiService Returns a reply for a specific ticket
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ticketId ticket database ID
@@ -221,9 +219,7 @@ func (a *TicketApiService) GetTicketReplyResource(ctx context.Context, ticketId 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -249,7 +245,7 @@ func (a *TicketApiService) GetTicketReplyResource(ctx context.Context, ticketId 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 TicketApiService Returns a list with all Tickets
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *TicketApiGetTicketResourceOpts - Optional Parameters:
@@ -330,9 +326,7 @@ func (a *TicketApiService) GetTicketResource(ctx context.Context, localVarOption
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -358,7 +352,7 @@ func (a *TicketApiService) GetTicketResource(ctx context.Context, localVarOption
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 TicketApiService Return results of ticket search
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *TicketApiGetTicketSearchResourceOpts - Optional Parameters:
@@ -454,9 +448,7 @@ func (a *TicketApiService) GetTicketSearchResource(ctx context.Context, localVar
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -482,7 +474,7 @@ func (a *TicketApiService) GetTicketSearchResource(ctx context.Context, localVar
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 TicketApiService Creates reply for a specific Ticket
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ticketId ticket database ID
@@ -568,9 +560,7 @@ func (a *TicketApiService) PostTicketReplyResource(ctx context.Context, ticketId
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -596,7 +586,7 @@ func (a *TicketApiService) PostTicketReplyResource(ctx context.Context, ticketId
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 TicketApiService Creates a new ticket
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -680,9 +670,7 @@ func (a *TicketApiService) PostTicketResource(ctx context.Context, payload Ticke
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -708,7 +696,7 @@ func (a *TicketApiService) PostTicketResource(ctx context.Context, payload Ticke
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 TicketApiService Updates a specific ticket
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ticketId ticket database ID
@@ -794,9 +782,7 @@ func (a *TicketApiService) PutTicketIdResource(ctx context.Context, ticketId int
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -821,3 +807,4 @@ func (a *TicketApiService) PutTicketIdResource(ctx context.Context, ticketId int
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
+

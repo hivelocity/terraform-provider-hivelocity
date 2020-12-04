@@ -10,16 +10,16 @@
 package swagger
 
 type TicketCreateReply struct {
-	Body string `json:"body"`
-	Attachments []interface{} `json:"attachments,omitempty"`
-	Encrypted string `json:"encrypted,omitempty"`
-	Type_ float32 `json:"type,omitempty"`
 	Hidden float32 `json:"hidden,omitempty"`
-	Recipient string `json:"recipient,omitempty"`
-	ReplyTo string `json:"replyTo,omitempty"`
-	Headers string `json:"headers,omitempty"`
-	Subject string `json:"subject,omitempty"`
-	Date float32 `json:"date,omitempty"`
+	Encrypted string `json:"encrypted,omitempty"`
 	Cc string `json:"cc,omitempty"`
+	Body string `json:"body"`
+	Subject string `json:"subject,omitempty"`
+	Headers string `json:"headers,omitempty"`
 	ContactId float32 `json:"contactId,omitempty"`
+	Recipient string `json:"recipient,omitempty"`
+	Attachments []interface{} `json:"attachments,omitempty"`
+	Type_ float32 `json:"type,omitempty"`
+	Date float32 `json:"date,omitempty"`
+	ReplyTo string `json:"replyTo,omitempty"`
 }
