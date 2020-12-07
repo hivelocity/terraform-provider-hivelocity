@@ -11,6 +11,6 @@ package swagger
 
 type CancellationCreate struct {
 	DeviceId int32 `json:"deviceId"`
-	Reason string `json:"reason"`
 	ServiceId int32 `json:"serviceId"`
+	Reason string `json:"reason"`
 }

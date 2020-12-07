@@ -10,15 +10,15 @@
 package swagger
 
 type ProfileUpdate struct {
-	Country string `json:"country,omitempty"`
-	FullName string `json:"full_name,omitempty"`
-	First string `json:"first,omitempty"`
-	Phone string `json:"phone,omitempty"`
-	Company string `json:"company,omitempty"`
 	State string `json:"state,omitempty"`
-	Email string `json:"email,omitempty"`
-	Last string `json:"last,omitempty"`
+	Country string `json:"country,omitempty"`
 	Address string `json:"address,omitempty"`
 	City string `json:"city,omitempty"`
+	Phone string `json:"phone,omitempty"`
+	FullName string `json:"full_name,omitempty"`
+	First string `json:"first,omitempty"`
+	Last string `json:"last,omitempty"`
+	Email string `json:"email,omitempty"`
 	Zip string `json:"zip,omitempty"`
+	Company string `json:"company,omitempty"`
 }
