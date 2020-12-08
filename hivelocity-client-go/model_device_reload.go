@@ -9,8 +9,9 @@
 
 package swagger
 
-type DeploymentStart struct {
+type DeviceReload struct {
+	Body string `json:"body,omitempty"`
 	Script string `json:"script,omitempty"`
-	BillingInfo int32 `json:"billingInfo"`
-	PublicSshKeys []int32 `json:"publicSshKeys,omitempty"`
+	OperatingSystemId int32 `json:"operatingSystemId"`
+	ControlPanelId int32 `json:"controlPanelId,omitempty"`
 }

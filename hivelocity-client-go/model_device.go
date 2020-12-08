@@ -21,6 +21,7 @@ type Device struct {
 	MonitorsTotal int32 `json:"monitorsTotal,omitempty"`
 	Hostname string `json:"hostname,omitempty"`
 	IpmiEnabled bool `json:"ipmiEnabled,omitempty"`
+	DisplayedTags []interface{} `json:"displayedTags,omitempty"`
 	Tags []string `json:"tags,omitempty"`
 	Location *interface{} `json:"location,omitempty"`
 	PrimaryIp string `json:"primaryIp,omitempty"`

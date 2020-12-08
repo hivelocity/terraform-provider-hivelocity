@@ -10,17 +10,17 @@
 package swagger
 
 type TicketPost struct {
-	Hidden float32 `json:"hidden,omitempty"`
+	From *interface{} `json:"from,omitempty"`
+	ContactId float32 `json:"contactId,omitempty"`
+	Id float32 `json:"id,omitempty"`
+	Subject string `json:"subject,omitempty"`
+	Date float32 `json:"date,omitempty"`
+	ClientId float32 `json:"clientId,omitempty"`
 	UbersmithAttachedFiles *TicketAttach `json:"ubersmith_attached_files,omitempty"`
+	Hidden float32 `json:"hidden,omitempty"`
+	FromAdmin bool `json:"fromAdmin,omitempty"`
+	Attachments float32 `json:"attachments,omitempty"`
 	Body string `json:"body,omitempty"`
 	TicketId float32 `json:"ticketId,omitempty"`
-	Attachments float32 `json:"attachments,omitempty"`
-	Subject string `json:"subject,omitempty"`
-	From *interface{} `json:"from,omitempty"`
-	Id float32 `json:"id,omitempty"`
-	ContactId float32 `json:"contactId,omitempty"`
-	ClientId float32 `json:"clientId,omitempty"`
 	AdminId float32 `json:"adminId,omitempty"`
-	FromAdmin bool `json:"fromAdmin,omitempty"`
-	Date float32 `json:"date,omitempty"`
 }

@@ -14,6 +14,7 @@ Name | Type | Description | Notes
 **MonitorsTotal** | **int32** |  | [optional] [default to null]
 **Hostname** | **string** |  | [optional] [default to null]
 **IpmiEnabled** | **bool** |  | [optional] [default to null]
+**DisplayedTags** | [**[]interface{}**](interface{}.md) |  | [optional] [default to null]
 **Tags** | **[]string** |  | [optional] [default to null]
 **Location** | [***interface{}**](interface{}.md) |  | [optional] [default to null]
 **PrimaryIp** | **string** |  | [optional] [default to null]

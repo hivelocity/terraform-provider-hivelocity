@@ -34,6 +34,7 @@ func Provider() *schema.Provider {
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"hivelocity_bare_metal_device": resourceBareMetalDevice(),
+			"hivelocity_ssh_key":           resourceSSHKey(),
 		},
 		ConfigureContextFunc: configureProvider,
 	}
@@ -51,14 +52,14 @@ func init() {
 
 func configureProvider(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
 	apiKey := d.Get("api_key").(string)
-	apiUrl := d.Get("api_url").(string)
+	apiURL := d.Get("api_url").(string)
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
 	config := Config{
 		ApiKey: apiKey,
-		ApiUrl: apiUrl,
+		ApiUrl: apiURL,
 	}
 
 	client, err := config.Client()

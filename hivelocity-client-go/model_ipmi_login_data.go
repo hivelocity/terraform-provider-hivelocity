@@ -10,8 +10,8 @@
 package swagger
 
 type IpmiLoginData struct {
-	Password string `json:"password,omitempty"`
+	Host string `json:"host,omitempty"`
 	Drivertype string `json:"drivertype,omitempty"`
 	Username string `json:"username,omitempty"`
-	Host string `json:"host,omitempty"`
+	Password string `json:"password,omitempty"`
 }

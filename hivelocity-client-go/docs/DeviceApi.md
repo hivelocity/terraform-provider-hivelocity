@@ -20,6 +20,7 @@ Method | HTTP request | Description
 [**GetNetworkInterfaceResource**](DeviceApi.md#GetNetworkInterfaceResource) | **Get** /device/{deviceId}/interfaces | Returns a list of all Network Interfaces bound to a Device
 [**GetPowerResource**](DeviceApi.md#GetPowerResource) | **Get** /device/{deviceId}/power | Get device&#39;s current power status
 [**PostDeviceIpmiWhitelistResource**](DeviceApi.md#PostDeviceIpmiWhitelistResource) | **Post** /device/{deviceId}/ipmi/whitelist/ | Add a public IP on IPMI whitelist
+[**PostDeviceReloadResource**](DeviceApi.md#PostDeviceReloadResource) | **Post** /device/{deviceId}/reload | Reload any SPS Device with any available OS
 [**PostPowerResource**](DeviceApi.md#PostPowerResource) | **Post** /device/{deviceId}/power | Apply action to device power
 [**PutClientDeviceTagOrderResource**](DeviceApi.md#PutClientDeviceTagOrderResource) | **Put** /device/tags-order | Update device tags order for current user
 [**PutDeviceIdResource**](DeviceApi.md#PutDeviceIdResource) | **Put** /device/{deviceId} | Updates Device MetaData for a Single Device
@@ -562,6 +563,43 @@ Name | Type | Description  | Notes
 ### Return type
 
  (empty response body)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **PostDeviceReloadResource**
+> ServiceOption PostDeviceReloadResource(ctx, deviceId, payload, optional)
+Reload any SPS Device with any available OS
+
+### Required Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **deviceId** | **int32**|  | 
+  **payload** | [**DeviceReload**](DeviceReload.md)|  | 
+ **optional** | ***DeviceApiPostDeviceReloadResourceOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a pointer to a DeviceApiPostDeviceReloadResourceOpts struct
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **xFields** | **optional.String**| An optional fields mask | 
+
+### Return type
+
+[**ServiceOption**](ServiceOption.md)
 
 ### Authorization
 

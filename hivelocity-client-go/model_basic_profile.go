@@ -10,17 +10,17 @@
 package swagger
 
 type BasicProfile struct {
-	IsClient bool `json:"is_client,omitempty"`
-	Company *interface{} `json:"company,omitempty"`
-	Country *interface{} `json:"country,omitempty"`
-	Zip *interface{} `json:"zip,omitempty"`
-	Last string `json:"last,omitempty"`
-	Id int32 `json:"id,omitempty"`
-	Login string `json:"login,omitempty"`
-	First string `json:"first,omitempty"`
-	FullName *interface{} `json:"full_name,omitempty"`
-	Email string `json:"email,omitempty"`
-	City *interface{} `json:"city,omitempty"`
-	MetaData *interface{} `json:"meta_data,omitempty"`
 	State *interface{} `json:"state,omitempty"`
+	Country *interface{} `json:"country,omitempty"`
+	Id int32 `json:"id,omitempty"`
+	City *interface{} `json:"city,omitempty"`
+	IsClient bool `json:"is_client,omitempty"`
+	Login string `json:"login,omitempty"`
+	FullName *interface{} `json:"full_name,omitempty"`
+	First string `json:"first,omitempty"`
+	Last string `json:"last,omitempty"`
+	Email string `json:"email,omitempty"`
+	Zip *interface{} `json:"zip,omitempty"`
+	Company *interface{} `json:"company,omitempty"`
+	MetaData *interface{} `json:"meta_data,omitempty"`
 }

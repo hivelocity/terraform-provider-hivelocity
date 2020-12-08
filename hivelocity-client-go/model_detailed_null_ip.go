@@ -9,8 +9,7 @@
 
 package swagger
 
-type CancellationCreate struct {
-	DeviceId int32 `json:"deviceId"`
-	ServiceId int32 `json:"serviceId"`
-	Reason string `json:"reason"`
+type DetailedNullIp struct {
+	Ip string `json:"ip"`
+	Comments string `json:"comments,omitempty"`
 }
