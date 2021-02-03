@@ -90,12 +90,17 @@ resource "hivelocity_bare_metal_device" "tampa_server" {
     location_name = "${data.hivelocity_product.tampa_product.location}"
     hostname = "hivelocity.terraform.test"
     tags = ["hello", "world"]
+    script = "#cloud-config\npackage_update: true\npackages:\n - vim"
 }
 ```
 
 The above provider will deploy and provision the first found in stock (`limited` or `available`) device with `16GB` of memory in the `TPA1`.
 It will be provisioned with `CentOS7.x` as the OS and received the tags `hello` and `world`.  The hostname will be set to
-`hivelocitiy.terraform.test`.
+`hivelocitiy.terraform.test`. Will use a cloud-init user-data script to be executed on the device first boot.
+
+Cloud-init script start with #cloud-init, must be a valid YAML script.
+Post-install script start with #!/bin/bash.
+Cloud-init or Post-install script just can be used with OS Ubuntu and Centos.
 
 Note: all these values can be changed from the portal, which could make terraform states get out of sync.  We are working on 
 a solution to help users avoid this issue.

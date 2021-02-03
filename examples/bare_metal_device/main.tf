@@ -13,6 +13,7 @@ resource "hivelocity_bare_metal_device" "demo" {
   location_name = "DAL1"
   hostname = "hivelocity.terraform.test"
   tags = ["hello", "world"]
+  script = "#cloud-config\npackage_update: true\npackages:\n - vim"
 }
 
 output "demo_device" {

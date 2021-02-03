@@ -34,4 +34,5 @@ resource "hivelocity_bare_metal_device" "tampa_server" {
     location_name = "${data.hivelocity_product.tampa_product.location}"
     hostname = "hivelocity.terraform.test"
     tags = ["hello", "world"]
+    script = "#cloud-config\npackage_update: true\npackages:\n - vim"
 }

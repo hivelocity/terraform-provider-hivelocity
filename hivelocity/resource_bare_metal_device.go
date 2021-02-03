@@ -87,6 +87,11 @@ func resourceBareMetalDevice() *schema.Resource {
 					Type: schema.TypeString,
 				},
 			},
+			"script": &schema.Schema{
+				Type:     schema.TypeString,
+				Computed: true,
+				Optional: true,
+			},
 		},
 	}
 }
@@ -108,6 +113,7 @@ func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, 
 		OsName:       d.Get("os_name").(string),
 		VlanId:       int32(d.Get("vlan_id").(int)),
 		LocationName: d.Get("location_name").(string),
+		Script:       d.Get("script").(string),
 	}
 
 	bareMetalDevice, _, err := hv.client.BareMetalDevicesApi.PostBareMetalDeviceResource(hv.auth, payload, nil)
