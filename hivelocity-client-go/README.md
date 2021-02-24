@@ -50,7 +50,7 @@ Class | Method | HTTP request | Description
 *DeploymentApi* | [**DeleteDeploymentIdResource**](docs/DeploymentApi.md#deletedeploymentidresource) | **Delete** /deploy/{deploymentId} | Delete the specified deployment
 *DeploymentApi* | [**GetDeploymentIdResource**](docs/DeploymentApi.md#getdeploymentidresource) | **Get** /deploy/{deploymentId} | Return a dictionary with deployment information
 *DeploymentApi* | [**GetDeploymentResource**](docs/DeploymentApi.md#getdeploymentresource) | **Get** /deploy/ | Return a list with all client deployments
-*DeploymentApi* | [**PostDeploymentIdResource**](docs/DeploymentApi.md#postdeploymentidresource) | **Post** /deploy/{deploymentId} | Input a billing info id and public ssh keys ids to process and finish a deployment
+*DeploymentApi* | [**PostDeploymentIdResource**](docs/DeploymentApi.md#postdeploymentidresource) | **Post** /deploy/{deploymentId} | Input a billing info id and script to process and finish a deployment
 *DeploymentApi* | [**PostDeploymentResource**](docs/DeploymentApi.md#postdeploymentresource) | **Post** /deploy/ | Start a new deployment
 *DeploymentApi* | [**PutDeploymentIdResource**](docs/DeploymentApi.md#putdeploymentidresource) | **Put** /deploy/{deploymentId} | Receive product, quantity and options to be added on the deployment
 *DeviceApi* | [**GetAllDeviceTagOrderResource**](docs/DeviceApi.md#getalldevicetagorderresource) | **Get** /device/tags-order/all | Get all device tags order

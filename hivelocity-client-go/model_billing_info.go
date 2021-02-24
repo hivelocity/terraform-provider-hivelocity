@@ -10,25 +10,25 @@
 package swagger
 
 type BillingInfo struct {
-	Address string `json:"address,omitempty"`
-	AchAccount string `json:"achAccount,omitempty"`
-	AchAba string `json:"achAba,omitempty"`
 	State string `json:"state,omitempty"`
-	Country string `json:"country,omitempty"`
-	AchBank string `json:"achBank,omitempty"`
-	Id int32 `json:"id,omitempty"`
-	AchType string `json:"achType,omitempty"`
-	City string `json:"city,omitempty"`
-	Email string `json:"email,omitempty"`
-	Zip string `json:"zip,omitempty"`
-	Last string `json:"last,omitempty"`
-	CcExpire string `json:"ccExpire,omitempty"`
+	ClientId int32 `json:"clientId,omitempty"`
 	CcType string `json:"ccType,omitempty"`
-	CcNum string `json:"ccNum,omitempty"`
+	First string `json:"first,omitempty"`
+	Id int32 `json:"id,omitempty"`
+	Zip string `json:"zip,omitempty"`
+	Address string `json:"address,omitempty"`
+	Last string `json:"last,omitempty"`
+	Email string `json:"email,omitempty"`
+	AchAba string `json:"achAba,omitempty"`
 	PaymentType string `json:"paymentType,omitempty"`
+	AchBank string `json:"achBank,omitempty"`
+	Company string `json:"company,omitempty"`
+	AchAccount string `json:"achAccount,omitempty"`
 	Status int32 `json:"status,omitempty"`
 	Phone string `json:"phone,omitempty"`
-	ClientId int32 `json:"clientId,omitempty"`
-	First string `json:"first,omitempty"`
-	Company string `json:"company,omitempty"`
+	AchType string `json:"achType,omitempty"`
+	City string `json:"city,omitempty"`
+	CcExpire string `json:"ccExpire,omitempty"`
+	Country string `json:"country,omitempty"`
+	CcNum string `json:"ccNum,omitempty"`
 }

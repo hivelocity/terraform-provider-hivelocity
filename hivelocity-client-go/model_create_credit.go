@@ -10,6 +10,6 @@
 package swagger
 
 type CreateCredit struct {
-	Amount float32 `json:"amount,omitempty"`
 	BillingInfoId int32 `json:"billingInfoId,omitempty"`
+	Amount float32 `json:"amount,omitempty"`
 }

@@ -73,7 +73,7 @@ data "hivelocity_product" "tampa_product" {
   }
 
   filter {
-    name   = "location"
+    name   = "data_center"
     values = ["TPA1"]
   }
 
@@ -87,10 +87,10 @@ data "hivelocity_product" "tampa_product" {
 resource "hivelocity_bare_metal_device" "tampa_server" {
     product_id = "${data.hivelocity_product.tampa_product.product_id}"
     os_name = "CentOS 7.x"
-    location_name = "${data.hivelocity_product.tampa_product.location}"
+    location_name = "${data.hivelocity_product.tampa_product.data_center}"
     hostname = "hivelocity.terraform.test"
     tags = ["hello", "world"]
-    script = "#cloud-config\npackage_update: true\npackages:\n - vim"
+    script = file("${path.module}/cloud_init_example.yaml")
 }
 ```
 

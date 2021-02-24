@@ -15,7 +15,7 @@ type ContactDump struct {
 	Phone string `json:"phone,omitempty"`
 	ClientId int32 `json:"clientId,omitempty"`
 	IsClient bool `json:"isClient,omitempty"`
-	FullName string `json:"fullName"`
 	Active int32 `json:"active"`
 	Email string `json:"email"`
+	FullName string `json:"fullName"`
 }

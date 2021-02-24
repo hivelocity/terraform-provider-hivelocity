@@ -9,7 +9,7 @@ terraform {
 
 data "hivelocity_product" "tampa" {
   filter {
-    name = "location"
+    name = "data_center"
     values = ["TPA1"]
   }
 }

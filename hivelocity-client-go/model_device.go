@@ -17,8 +17,10 @@ type Device struct {
 	PowerStatus string `json:"powerStatus,omitempty"`
 	HasCancellation bool `json:"hasCancellation,omitempty"`
 	IsManaged bool `json:"isManaged,omitempty"`
+	IsReload bool `json:"isReload,omitempty"`
 	MonitorsUp int32 `json:"monitorsUp,omitempty"`
 	MonitorsTotal int32 `json:"monitorsTotal,omitempty"`
+	ManagedAlertsTotal int32 `json:"managedAlertsTotal,omitempty"`
 	Hostname string `json:"hostname,omitempty"`
 	IpmiEnabled bool `json:"ipmiEnabled,omitempty"`
 	DisplayedTags []interface{} `json:"displayedTags,omitempty"`
@@ -27,7 +29,9 @@ type Device struct {
 	PrimaryIp string `json:"primaryIp,omitempty"`
 	IpmiAddress string `json:"ipmiAddress,omitempty"`
 	ServiceMonitors []string `json:"serviceMonitors,omitempty"`
+	BillingInfo *interface{} `json:"billingInfo,omitempty"`
 	ServicePlan int32 `json:"servicePlan,omitempty"`
+	LastInvoiceId int32 `json:"lastInvoiceId,omitempty"`
 	SelfProvisioning bool `json:"selfProvisioning,omitempty"`
 	Metadata *interface{} `json:"metadata,omitempty"`
 }
