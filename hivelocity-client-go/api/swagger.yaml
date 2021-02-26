@@ -120,7 +120,7 @@ paths:
         description: "End Time of Custom Time Period (Unix Epoch Time)"
         required: false
         type: "integer"
-        default: 1614204521
+        default: 1614287626
         x-exportParamName: "End"
         x-optionalDataType: "Int32"
       - name: "X-Fields"
@@ -189,7 +189,7 @@ paths:
         description: "End Time of Custom Time Period (Unix Epoch Time)"
         required: false
         type: "integer"
-        default: 1614204521
+        default: 1614287626
         x-exportParamName: "End"
         x-optionalDataType: "Int32"
       - name: "X-Fields"
@@ -265,7 +265,7 @@ paths:
         description: "End Time of Custom Time Period (Unix Epoch Time)"
         required: false
         type: "integer"
-        default: 1614204521
+        default: 1614287626
         x-exportParamName: "End"
         x-optionalDataType: "Int32"
       - name: "X-Fields"
@@ -334,7 +334,7 @@ paths:
         description: "End Time of Custom Time Period (Unix Epoch Time)"
         required: false
         type: "integer"
-        default: 1614204521
+        default: 1614287626
         x-exportParamName: "End"
         x-optionalDataType: "Int32"
       - name: "X-Fields"
@@ -2958,80 +2958,83 @@ definitions:
     - "osName"
     - "productId"
     properties:
-      publicSshKeyId:
-        type: "integer"
-      vlanId:
+      period:
+        type: "string"
+        example: "hourly"
+      osName:
+        type: "string"
+      locationName:
+        type: "string"
+      hostname:
+        type: "string"
+      productId:
         type: "integer"
       script:
         type: "string"
-      productId:
+      vlanId:
         type: "integer"
-      hostname:
-        type: "string"
-      locationName:
-        type: "string"
-      osName:
-        type: "string"
-      period:
-        type: "string"
-        example: "hourly"
+      publicSshKeyId:
+        type: "integer"
     example:
-      hostname: "hostname"
       period: "hourly"
+      hostname: "hostname"
       locationName: "locationName"
-      productId: 1
+      productId: 0
       vlanId: 6
       osName: "osName"
       script: "script"
-      publicSshKeyId: 0
+      publicSshKeyId: 1
   BareMetalDevice:
     type: "object"
     properties:
-      tags:
-        type: "array"
-        items:
-          type: "string"
-      serviceId:
-        type: "integer"
+      primaryIp:
+        type: "string"
       period:
         type: "string"
         example: "hourly"
-      vlanId:
-        type: "integer"
-      productId:
-        type: "integer"
-      hostname:
-        type: "string"
-      orderId:
-        type: "integer"
-      primaryIp:
-        type: "string"
-      locationName:
-        type: "string"
       deviceId:
         type: "integer"
       osName:
         type: "string"
+      locationName:
+        type: "string"
+      hostname:
+        type: "string"
       productName:
         type: "string"
+      productId:
+        type: "integer"
+      serviceId:
+        type: "integer"
       powerStatus:
         type: "string"
+      vlanId:
+        type: "integer"
+      publicSshKeyId:
+        type: "integer"
+      orderId:
+        type: "integer"
+      tags:
+        type: "array"
+        items:
+          type: "string"
     example:
       period: "hourly"
       locationName: "locationName"
-      productId: 1
-      vlanId: 6
-      orderId: 5
+      productId: 6
+      vlanId: 5
+      orderId: 2
       osName: "osName"
-      deviceId: 5
+      deviceId: 0
       productName: "productName"
+      publicSshKeyId: 5
       tags:
       - "tags"
       - "tags"
       hostname: "hostname"
       powerStatus: "powerStatus"
       primaryIp: "primaryIp"
-      serviceId: 0
+      serviceId: 1
   BareMetalDeviceUpdate:
     type: "object"
     properties:
@@ -3049,57 +3052,57 @@ definitions:
   BillingInfo:
     type: "object"
     properties:
-      state:
-        type: "string"
-      clientId:
-        type: "integer"
-      ccType:
-        type: "string"
-      first:
-        type: "string"
       id:
         type: "integer"
-      zip:
-        type: "string"
-      address:
-        type: "string"
-      last:
+      achAccount:
         type: "string"
       email:
         type: "string"
-      achAba:
+      state:
         type: "string"
-      paymentType:
+      ccNum:
+        type: "string"
+      last:
+        type: "string"
+      phone:
+        type: "string"
+      address:
         type: "string"
       achBank:
         type: "string"
-      company:
+      paymentType:
         type: "string"
-      achAccount:
+      ccExpire:
         type: "string"
+      clientId:
+        type: "integer"
       status:
         type: "integer"
-      phone:
-        type: "string"
       achType:
         type: "string"
       city:
         type: "string"
-      ccExpire:
+      first:
         type: "string"
       country:
         type: "string"
-      ccNum:
+      company:
+        type: "string"
+      zip:
+        type: "string"
+      achAba:
+        type: "string"
+      ccType:
         type: "string"
     example:
       zip: "zip"
       country: "country"
-      clientId: 0
       address: "address"
+      clientId: 6
       last: "last"
       city: "city"
-      achBank: "achBank"
       ccNum: "ccNum"
+      achBank: "achBank"
       achType: "achType"
       paymentType: "paymentType"
       ccType: "ccType"
@@ -3108,10 +3111,10 @@ definitions:
       phone: "phone"
       achAccount: "achAccount"
       company: "company"
+      id: 0
       state: "state"
-      id: 6
-      first: "first"
       email: "email"
+      first: "first"
       status: 1
   CancellationCreate:
     type: "object"
@@ -3133,45 +3136,45 @@ definitions:
   Cancellation:
     type: "object"
     properties:
-      id:
-        type: "integer"
-      monthlyPayment:
-        type: "integer"
-      deletedAt:
-        type: "string"
-        format: "date-time"
-      clientId:
-        type: "integer"
       activeMonths:
         type: "integer"
       deviceId:
+        type: "integer"
+      serviceId:
+        type: "integer"
+      requestDate:
+        type: "string"
+        format: "date-time"
+      monthlyPayment:
+        type: "integer"
+      id:
         type: "integer"
       planId:
         type: "integer"
       cancelled:
         type: "boolean"
-      requestDate:
+      deletedAt:
         type: "string"
         format: "date-time"
-      serviceId:
-        type: "integer"
-      name:
-        type: "string"
       startDate:
         type: "string"
         format: "date-time"
+      clientId:
+        type: "integer"
+      name:
+        type: "string"
     example:
       deletedAt: "2000-01-23T04:56:07.000+00:00"
-      clientId: 1
-      monthlyPayment: 6
-      activeMonths: 5
+      clientId: 7
+      monthlyPayment: 5
+      activeMonths: 0
       requestDate: "2000-01-23T04:56:07.000+00:00"
       name: "name"
       cancelled: true
       planId: 2
-      id: 0
-      serviceId: 7
-      deviceId: 5
+      id: 5
+      serviceId: 1
+      deviceId: 6
       startDate: "2000-01-23T04:56:07.000+00:00"
   ContactCreate:
     type: "object"
@@ -3180,25 +3183,25 @@ definitions:
     - "email"
     - "fullName"
     properties:
+      fullName:
+        type: "string"
       description:
         type: "string"
       phone:
         type: "string"
-      active:
-        type: "integer"
-      email:
-        type: "string"
       password:
         type: "string"
-        default: "1a87262cc0670adc8803da95bdfa58eb"
-      fullName:
+        default: "123bdfbe3ab242ed3ae25ac44bd4c563"
+      email:
         type: "string"
+      active:
+        type: "integer"
     example:
-      password: "1a87262cc0670adc8803da95bdfa58eb"
+      password: "123bdfbe3ab242ed3ae25ac44bd4c563"
       phone: "phone"
+      fullName: "fullName"
       description: "description"
       active: 0
-      fullName: "fullName"
       email: "email"
   Contact-dump:
     type: "object"
@@ -3207,49 +3210,49 @@ definitions:
     - "email"
     - "fullName"
     properties:
-      contactId:
-        type: "integer"
+      fullName:
+        type: "string"
       description:
         type: "string"
       phone:
         type: "string"
-      clientId:
-        type: "integer"
       isClient:
         type: "boolean"
-      active:
+      contactId:
         type: "integer"
       email:
         type: "string"
-      fullName:
-        type: "string"
+      clientId:
+        type: "integer"
+      active:
+        type: "integer"
     example:
       clientId: 6
-      contactId: 0
       phone: "phone"
+      contactId: 0
+      fullName: "fullName"
       description: "description"
       active: 1
-      fullName: "fullName"
       isClient: true
       email: "email"
   ContactUpdate:
     type: "object"
     properties:
+      fullName:
+        type: "string"
       description:
         type: "string"
       phone:
         type: "string"
-      active:
-        type: "integer"
       email:
         type: "string"
-      fullName:
-        type: "string"
+      active:
+        type: "integer"
     example:
       phone: "phone"
+      fullName: "fullName"
       description: "description"
       active: 0
-      fullName: "fullName"
       email: "email"
   Password:
     type: "object"
@@ -3257,13 +3260,22 @@ definitions:
     - "newPassword"
     - "password"
     properties:
-      password:
-        type: "string"
       newPassword:
+        type: "string"
+      password:
         type: "string"
     example:
       password: "password"
       newPassword: "newPassword"
+  PasswordRequest:
+    type: "object"
+    required:
+    - "email"
+    properties:
+      email:
+        type: "string"
+    example:
+      email: "email"
   PasswordResponse:
     type: "object"
     required:
@@ -3277,15 +3289,6 @@ definitions:
     example:
       password: "password"
       token: "token"
-  PasswordRequest:
-    type: "object"
-    required:
-    - "email"
-    properties:
-      email:
-        type: "string"
-    example:
-      email: "email"
   CreateCredit:
     type: "object"
     properties:
@@ -3546,50 +3549,50 @@ definitions:
         manufacturerId: "manufacturerId"
         ipmbEventGenerator: "ipmbEventGenerator"
         deviceId: "deviceId"
-        ipmiVersion: "ipmiVersion"
         chassisDevice: "chassisDevice"
+        ipmiVersion: "ipmiVersion"
         selDevice: "selDevice"
         ipmbEventReceiver: "ipmbEventReceiver"
-        auxFirmwareRevInfo: "auxFirmwareRevInfo"
         bridge: "bridge"
+        auxFirmwareRevInfo: "auxFirmwareRevInfo"
         sensorDevice: "sensorDevice"
         firmwareRevision: "firmwareRevision"
   IPMIInfo:
     type: "object"
     properties:
-      sdrRepositoryDevice:
+      bridge:
+        type: "string"
+      chassisDevice:
         type: "string"
       ipmbEventGenerator:
         type: "string"
-      auxFirmwareRevInfo:
+      deviceRevision:
         type: "string"
-      deviceAvailable:
+      deviceId:
         type: "string"
-      ipmbEventReceiver:
+      sdrRepositoryDevice:
         type: "string"
       sensorDevice:
         type: "string"
-      ipmiVersion:
+      auxFirmwareRevInfo:
         type: "string"
-      selDevice:
-        type: "string"
-      deviceId:
+      ipmbEventReceiver:
         type: "string"
       fruInventoryDevice:
         type: "string"
       productId:
         type: "string"
-      firmwareRevision:
+      manufacturerId:
+        type: "string"
+      ipmiVersion:
         type: "string"
       deviceSDRs:
         type: "string"
-      deviceRevision:
+      firmwareRevision:
         type: "string"
-      bridge:
+      selDevice:
         type: "string"
-      manufacturerId:
-        type: "string"
-      chassisDevice:
+      deviceAvailable:
         type: "string"
     example:
       fruInventoryDevice: "fruInventoryDevice"
@@ -3601,24 +3604,24 @@ definitions:
       manufacturerId: "manufacturerId"
       ipmbEventGenerator: "ipmbEventGenerator"
       deviceId: "deviceId"
-      ipmiVersion: "ipmiVersion"
       chassisDevice: "chassisDevice"
+      ipmiVersion: "ipmiVersion"
       selDevice: "selDevice"
       ipmbEventReceiver: "ipmbEventReceiver"
-      auxFirmwareRevInfo: "auxFirmwareRevInfo"
       bridge: "bridge"
+      auxFirmwareRevInfo: "auxFirmwareRevInfo"
       sensorDevice: "sensorDevice"
       firmwareRevision: "firmwareRevision"
   IPMISensor:
     type: "object"
     properties:
+      units:
+        type: "string"
       sensorId:
         type: "string"
       reading:
         type: "number"
       group:
-        type: "string"
-      units:
         type: "string"
       name:
         type: "string"
@@ -3634,18 +3637,18 @@ definitions:
   IPMILoginData:
     type: "object"
     properties:
-      password:
+      drivertype:
         type: "string"
-      username:
+      password:
         type: "string"
       host:
         type: "string"
-      drivertype:
+      username:
         type: "string"
     example:
       password: "password"
-      host: "host"
       drivertype: "drivertype"
+      host: "host"
       username: "username"
   IPMIValidLogin:
     type: "object"
@@ -3668,17 +3671,17 @@ definitions:
   DeviceInitialCreds:
     type: "object"
     properties:
-      lockerUrl:
+      user:
         type: "string"
       password:
         type: "string"
       port:
         type: "integer"
-      user:
+      lockerUrl:
         type: "string"
     example:
-      lockerUrl: "lockerUrl"
       password: "password"
+      lockerUrl: "lockerUrl"
       port: 0
       user: "user"
   DeviceIPMIWhitelistIP:
@@ -3703,14 +3706,14 @@ definitions:
     required:
     - "operatingSystemId"
     properties:
-      controlPanelId:
-        type: "integer"
-      script:
-        type: "string"
-      operatingSystemId:
-        type: "integer"
       body:
         type: "string"
+      script:
+        type: "string"
+      controlPanelId:
+        type: "integer"
+      operatingSystemId:
+        type: "integer"
       publicSshKeyIds:
         type: "array"
         items:
@@ -3754,98 +3757,98 @@ definitions:
   Stock:
     type: "object"
     properties:
-      product_cpu_cores:
-        type: "string"
-      product_original_price:
+      product_biennial_price:
         type: "number"
-      product_bandwidth:
+      stock:
+        type: "string"
+      semi_annually_location_premium:
+        type: "number"
+      product_triennial_price:
+        type: "number"
+      product_on_sale:
+        type: "boolean"
+      product_id:
+        type: "integer"
+      product_display_price:
+        type: "number"
+      biennial_location_premium:
+        type: "number"
+      product_semi_annually_price:
+        type: "number"
+      product_cpu:
+        type: "string"
+      product_memory:
         type: "string"
       product_drive:
         type: "string"
       annually_location_premium:
         type: "number"
+      product_monthly_price:
+        type: "number"
+      hourly_location_premium:
+        type: "number"
+      product_quarterly_price:
+        type: "number"
+      product_bandwidth:
+        type: "string"
+      triennial_location_premium:
+        type: "number"
       product_disabled_billing_periods:
         type: "array"
         items:
           type: "string"
-      product_triennial_price:
-        type: "number"
-      product_semi_annually_price:
-        type: "number"
       quarterly_location_premium:
         type: "number"
-      product_id:
-        type: "integer"
-      product_memory:
-        type: "string"
-      edge:
-        type: "boolean"
-      product_display_price:
-        type: "number"
-      biennial_location_premium:
-        type: "number"
-      product_quarterly_price:
-        type: "number"
-      triennial_location_premium:
-        type: "number"
-      semi_annually_location_premium:
+      product_annually_price:
         type: "number"
       product_name:
         type: "string"
-      product_monthly_price:
-        type: "number"
-      core:
-        type: "boolean"
-      product_cpu:
-        type: "string"
-      product_annually_price:
-        type: "number"
-      product_hourly_price:
-        type: "number"
-      product_on_sale:
-        type: "boolean"
-      hourly_location_premium:
-        type: "number"
       data_center:
         type: "string"
-      stock:
+      product_original_price:
+        type: "number"
+      product_cpu_cores:
         type: "string"
-      product_biennial_price:
+      product_hourly_price:
         type: "number"
       monthly_location_premium:
         type: "number"
+      core:
+        type: "boolean"
+      edge:
+        type: "boolean"
     example:
       product_cpu: "product_cpu"
-      biennial_location_premium: 9.301444243932575517419536481611430644989013671875
+      biennial_location_premium: 2.3021358869347654518833223846741020679473876953125
       product_memory: "product_memory"
+      product_monthly_price: 3.61607674925191080461672754609026014804840087890625
       edge: true
-      product_monthly_price: 7.3862819483858839220147274318151175975799560546875
-      product_hourly_price: 1.024645700144157789424070870154537260532379150390625
-      quarterly_location_premium: 5.63737665663332876420099637471139430999755859375
-      product_id: 2
-      semi_annually_location_premium: 4.1456080298839363962315474054776132106781005859375
+      product_hourly_price: 6.8468526983526398765889098285697400569915771484375
+      quarterly_location_premium: 1.231513536777255612975068288506008684635162353515625
+      product_id: 5
+      semi_annually_location_premium: 6.02745618307040320615897144307382404804229736328125
       stock: "stock"
-      hourly_location_premium: 1.489415909854170383397331534069962799549102783203125
+      hourly_location_premium: 2.027123023002321833274663731572218239307403564453125
       data_center: "data_center"
+      product_annually_price: 1.024645700144157789424070870154537260532379150390625
       product_name: "product_name"
-      product_annually_price: 1.231513536777255612975068288506008684635162353515625
-      triennial_location_premium: 2.027123023002321833274663731572218239307403564453125
+      triennial_location_premium: 7.3862819483858839220147274318151175975799560546875
+      product_triennial_price: 1.46581298050294517310021547018550336360931396484375
       product_disabled_billing_periods:
       - "product_disabled_billing_periods"
       - "product_disabled_billing_periods"
-      product_triennial_price: 1.46581298050294517310021547018550336360931396484375
       core: true
       product_drive: "product_drive"
       product_cpu_cores: "product_cpu_cores"
-      product_quarterly_price: 3.61607674925191080461672754609026014804840087890625
+      product_quarterly_price: 4.1456080298839363962315474054776132106781005859375
       product_bandwidth: "product_bandwidth"
-      annually_location_premium: 6.02745618307040320615897144307382404804229736328125
+      annually_location_premium: 9.301444243932575517419536481611430644989013671875
       product_on_sale: true
-      product_display_price: 7.061401241503109105224211816675961017608642578125
-      product_biennial_price: 6.8468526983526398765889098285697400569915771484375
+      product_biennial_price: 0.80082819046101150206595775671303272247314453125
+      product_display_price: 5.63737665663332876420099637471139430999755859375
       monthly_location_premium: 7.4577447736837658709418974467553198337554931640625
-      product_original_price: 0.80082819046101150206595775671303272247314453125
-      product_semi_annually_price: 5.962133916683182377482808078639209270477294921875
+      product_original_price: 1.489415909854170383397331534069962799549102783203125
+      product_semi_annually_price: 7.061401241503109105224211816675961017608642578125
   Invoice:
     type: "object"
     properties:
@@ -3946,11 +3949,11 @@ definitions:
       - "{}"
       - "{}"
       serviceItems:
-        unitPrice: 1.46581298050294517310021547018550336360931396484375
-        quantity: 6
+        unitPrice: 6.02745618307040320615897144307382404804229736328125
+        quantity: 5
         dateRange: "{}"
         description: "description"
-        serviceId: 5
+        serviceId: 1
       invoiceDate: "2000-01-23T04:56:07.000+00:00"
       clientAddress: "clientAddress"
       priorBalance: 7.061401241503109105224211816675961017608642578125
@@ -3961,53 +3964,53 @@ definitions:
   InvoiceDetailsServiceItems:
     type: "object"
     properties:
-      description:
-        type: "string"
-      quantity:
-        type: "integer"
       unitPrice:
         type: "number"
+      description:
+        type: "string"
+      serviceId:
+        type: "integer"
+      quantity:
+        type: "integer"
       dateRange:
         type: "object"
         properties: {}
-      serviceId:
-        type: "integer"
     example:
-      unitPrice: 1.46581298050294517310021547018550336360931396484375
-      quantity: 6
+      unitPrice: 6.02745618307040320615897144307382404804229736328125
+      quantity: 5
       dateRange: "{}"
       description: "description"
-      serviceId: 5
+      serviceId: 1
   InvoiceSeachResult:
     type: "object"
     properties:
-      hasNext:
-        type: "boolean"
+      perPage:
+        type: "integer"
       hasPrev:
         type: "boolean"
-      total:
+      prevPage:
+        type: "integer"
+      page:
+        type: "integer"
+      hasNext:
+        type: "boolean"
+      pages:
         type: "integer"
       items:
         $ref: "#/definitions/Invoice"
-      page:
-        type: "integer"
-      prevPage:
-        type: "integer"
       nextPage:
         type: "integer"
-      pages:
-        type: "integer"
-      perPage:
+      total:
         type: "integer"
     example:
-      total: 0
+      total: 2
+      perPage: 0
       pages: 5
-      perPage: 2
       hasPrev: true
       nextPage: 5
+      prevPage: 6
       hasNext: true
-      prevPage: 1
-      page: 6
+      page: 1
       items:
         amount: 6.02745618307040320615897144307382404804229736328125
         clientId: 5
@@ -4023,29 +4026,29 @@ definitions:
     required:
     - "ip"
     properties:
-      ip:
-        type: "string"
       comments:
         type: "string"
         example: "Null routed via API"
+      ip:
+        type: "string"
   Order-dump:
     type: "object"
     properties:
       owner:
         type: "string"
-      total:
-        type: "number"
       orderId:
         type: "integer"
       info:
         type: "object"
         properties: {}
+      total:
+        type: "number"
       status:
         type: "string"
     example:
       owner: "owner"
-      total: 0.80082819046101150206595775671303272247314453125
-      orderId: 6
+      total: 6.02745618307040320615897144307382404804229736328125
+      orderId: 0
       info: "{}"
       status: "status"
   Permission:
@@ -4054,12 +4057,12 @@ definitions:
     - "permissions"
     - "userId"
     properties:
+      userId:
+        type: "integer"
       permissions:
         type: "array"
         items:
           type: "string"
-      userId:
-        type: "integer"
     example:
       permissions:
       - "permissions"
@@ -4075,167 +4078,167 @@ definitions:
   ProductInfo:
     type: "object"
     properties:
-      product_cpu_cores:
-        type: "string"
-      product_original_price:
+      product_biennial_price:
         type: "number"
-      product_bandwidth:
+      stock:
+        type: "string"
+      semi_annually_location_premium:
+        type: "number"
+      product_triennial_price:
+        type: "number"
+      product_on_sale:
+        type: "boolean"
+      product_id:
+        type: "integer"
+      product_display_price:
+        type: "number"
+      biennial_location_premium:
+        type: "number"
+      product_semi_annually_price:
+        type: "number"
+      product_cpu:
+        type: "string"
+      product_memory:
         type: "string"
       product_drive:
         type: "string"
       annually_location_premium:
         type: "number"
+      product_monthly_price:
+        type: "number"
+      hourly_location_premium:
+        type: "number"
+      product_quarterly_price:
+        type: "number"
+      product_bandwidth:
+        type: "string"
+      triennial_location_premium:
+        type: "number"
       product_disabled_billing_periods:
         type: "array"
         items:
           type: "string"
-      product_triennial_price:
-        type: "number"
-      product_semi_annually_price:
-        type: "number"
       quarterly_location_premium:
         type: "number"
-      product_id:
-        type: "integer"
-      product_memory:
-        type: "string"
-      edge:
-        type: "boolean"
-      product_display_price:
-        type: "number"
-      biennial_location_premium:
-        type: "number"
-      product_quarterly_price:
-        type: "number"
-      triennial_location_premium:
-        type: "number"
-      semi_annually_location_premium:
+      product_annually_price:
         type: "number"
       product_name:
         type: "string"
-      product_monthly_price:
-        type: "number"
-      core:
-        type: "boolean"
-      product_cpu:
-        type: "string"
-      product_annually_price:
-        type: "number"
-      product_hourly_price:
-        type: "number"
-      product_on_sale:
-        type: "boolean"
-      hourly_location_premium:
-        type: "number"
       data_center:
         type: "string"
-      stock:
+      product_original_price:
+        type: "number"
+      product_cpu_cores:
         type: "string"
-      product_biennial_price:
+      product_hourly_price:
         type: "number"
       monthly_location_premium:
         type: "number"
+      core:
+        type: "boolean"
+      edge:
+        type: "boolean"
     example:
       product_cpu: "product_cpu"
-      biennial_location_premium: 9.301444243932575517419536481611430644989013671875
+      biennial_location_premium: 2.3021358869347654518833223846741020679473876953125
       product_memory: "product_memory"
+      product_monthly_price: 3.61607674925191080461672754609026014804840087890625
       edge: true
-      product_monthly_price: 7.3862819483858839220147274318151175975799560546875
-      product_hourly_price: 1.024645700144157789424070870154537260532379150390625
-      quarterly_location_premium: 5.63737665663332876420099637471139430999755859375
-      product_id: 2
-      semi_annually_location_premium: 4.1456080298839363962315474054776132106781005859375
+      product_hourly_price: 6.8468526983526398765889098285697400569915771484375
+      quarterly_location_premium: 1.231513536777255612975068288506008684635162353515625
+      product_id: 5
+      semi_annually_location_premium: 6.02745618307040320615897144307382404804229736328125
       stock: "stock"
-      hourly_location_premium: 1.489415909854170383397331534069962799549102783203125
+      hourly_location_premium: 2.027123023002321833274663731572218239307403564453125
       data_center: "data_center"
+      product_annually_price: 1.024645700144157789424070870154537260532379150390625
       product_name: "product_name"
-      product_annually_price: 1.231513536777255612975068288506008684635162353515625
-      triennial_location_premium: 2.027123023002321833274663731572218239307403564453125
+      triennial_location_premium: 7.3862819483858839220147274318151175975799560546875
+      product_triennial_price: 1.46581298050294517310021547018550336360931396484375
       product_disabled_billing_periods:
       - "product_disabled_billing_periods"
       - "product_disabled_billing_periods"
-      product_triennial_price: 1.46581298050294517310021547018550336360931396484375
       core: true
       product_drive: "product_drive"
       product_cpu_cores: "product_cpu_cores"
-      product_quarterly_price: 3.61607674925191080461672754609026014804840087890625
+      product_quarterly_price: 4.1456080298839363962315474054776132106781005859375
       product_bandwidth: "product_bandwidth"
-      annually_location_premium: 6.02745618307040320615897144307382404804229736328125
+      annually_location_premium: 9.301444243932575517419536481611430644989013671875
       product_on_sale: true
-      product_display_price: 7.061401241503109105224211816675961017608642578125
-      product_biennial_price: 6.8468526983526398765889098285697400569915771484375
+      product_biennial_price: 0.80082819046101150206595775671303272247314453125
+      product_display_price: 5.63737665663332876420099637471139430999755859375
       monthly_location_premium: 7.4577447736837658709418974467553198337554931640625
-      product_original_price: 0.80082819046101150206595775671303272247314453125
-      product_semi_annually_price: 5.962133916683182377482808078639209270477294921875
+      product_original_price: 1.489415909854170383397331534069962799549102783203125
+      product_semi_annually_price: 7.061401241503109105224211816675961017608642578125
   ProductMatch:
     type: "object"
     properties:
-      lshwOutput:
-        type: "object"
-        properties: {}
       spsOnly:
         type: "boolean"
         example: true
+      lshwOutput:
+        type: "object"
+        properties: {}
     example:
       spsOnly: true
       lshwOutput: "{}"
   ProductMatchResult:
     type: "object"
     properties:
-      matches:
-        $ref: "#/definitions/Product"
       possibleMatches:
+        $ref: "#/definitions/Product"
+      matches:
         $ref: "#/definitions/Product"
     example:
       possibleMatches:
         isSps: true
         new: 7
-        sale: 1
+        sale: 5
         memory: "memory"
         originalPrice: 6.02745618307040320615897144307382404804229736328125
         name: "name"
         cpu: "cpu"
-        discount: 5.63737665663332876420099637471139430999755859375
+        discount: 2.3021358869347654518833223846741020679473876953125
         planId: 5
-        id: 0
+        id: 1
+        stock: 0
         drive: "drive"
-        stock: 2
       matches:
         isSps: true
         new: 7
-        sale: 1
+        sale: 5
         memory: "memory"
         originalPrice: 6.02745618307040320615897144307382404804229736328125
         name: "name"
         cpu: "cpu"
-        discount: 5.63737665663332876420099637471139430999755859375
+        discount: 2.3021358869347654518833223846741020679473876953125
         planId: 5
-        id: 0
+        id: 1
+        stock: 0
         drive: "drive"
-        stock: 2
   Product:
     type: "object"
     properties:
       isSps:
         type: "boolean"
-      memory:
-        type: "string"
+      stock:
+        type: "integer"
+      originalPrice:
+        type: "number"
       cpu:
         type: "string"
       id:
         type: "integer"
-      drive:
-        type: "string"
-      originalPrice:
-        type: "number"
-      sale:
-        type: "integer"
       planId:
         type: "integer"
+      sale:
+        type: "integer"
+      memory:
+        type: "string"
+      drive:
+        type: "string"
       discount:
         type: "number"
-      stock:
-        type: "integer"
       name:
         type: "string"
       new:
@@ -4243,16 +4246,16 @@ definitions:
     example:
       isSps: true
       new: 7
-      sale: 1
+      sale: 5
       memory: "memory"
       originalPrice: 6.02745618307040320615897144307382404804229736328125
       name: "name"
       cpu: "cpu"
-      discount: 5.63737665663332876420099637471139430999755859375
+      discount: 2.3021358869347654518833223846741020679473876953125
       planId: 5
-      id: 0
+      id: 1
+      stock: 0
       drive: "drive"
-      stock: 2
   Options:
     type: "object"
     additionalProperties:
@@ -4262,27 +4265,27 @@ definitions:
   Option:
     type: "object"
     properties:
-      monthlyPrice:
-        type: "number"
-      tags:
+      expressions:
         type: "array"
         items:
           type: "string"
       id:
         type: "integer"
-      expressions:
+      monthlyPrice:
+        type: "number"
+      name:
+        type: "string"
+      currency:
+        type: "string"
+      tags:
         type: "array"
         items:
           type: "string"
-      currency:
-        type: "string"
-      name:
-        type: "string"
     example:
       name: "name"
       currency: "currency"
-      id: 6
-      monthlyPrice: 0.80082819046101150206595775671303272247314453125
+      id: 0
+      monthlyPrice: 6.02745618307040320615897144307382404804229736328125
       expressions:
       - "expressions"
       - "expressions"
@@ -4292,27 +4295,27 @@ definitions:
   ProfileUpdate:
     type: "object"
     properties:
+      company:
+        type: "string"
+      city:
+        type: "string"
+      zip:
+        type: "string"
       first:
         type: "string"
       phone:
         type: "string"
-      city:
-        type: "string"
-      state:
-        type: "string"
-      country:
-        type: "string"
-      zip:
-        type: "string"
       address:
-        type: "string"
-      last:
-        type: "string"
-      email:
         type: "string"
       full_name:
         type: "string"
-      company:
+      country:
+        type: "string"
+      email:
+        type: "string"
+      state:
+        type: "string"
+      last:
         type: "string"
     example:
       zip: "zip"
@@ -4320,8 +4323,8 @@ definitions:
       address: "address"
       full_name: "full_name"
       last: "last"
-      phone: "phone"
       city: "city"
+      phone: "phone"
       company: "company"
       state: "state"
       first: "first"
@@ -4329,50 +4332,50 @@ definitions:
   Profile:
     type: "object"
     properties:
-      first:
-        type: "string"
-      phone:
-        type: "string"
+      company:
+        type: "object"
+        properties: {}
       city:
-        type: "object"
-        properties: {}
-      id:
-        type: "integer"
-      country:
-        type: "object"
-        properties: {}
-      state:
         type: "object"
         properties: {}
       zip:
         type: "object"
         properties: {}
-      is_client:
-        type: "boolean"
+      created:
+        type: "object"
+        properties: {}
+      first:
+        type: "string"
       meta_data:
         type: "object"
         properties: {}
-      last:
+      phone:
         type: "string"
+      id:
+        type: "integer"
       address:
         type: "object"
         properties: {}
-      email:
-        type: "string"
       full_name:
         type: "object"
         properties: {}
       fax:
         type: "object"
         properties: {}
-      company:
+      country:
         type: "object"
         properties: {}
+      email:
+        type: "string"
       login:
         type: "string"
-      created:
+      state:
         type: "object"
         properties: {}
+      last:
+        type: "string"
+      is_client:
+        type: "boolean"
     example:
       zip: "{}"
       country: "{}"
@@ -4394,39 +4397,39 @@ definitions:
   BasicProfile:
     type: "object"
     properties:
-      first:
-        type: "string"
+      company:
+        type: "object"
+        properties: {}
       city:
-        type: "object"
-        properties: {}
-      id:
-        type: "integer"
-      country:
-        type: "object"
-        properties: {}
-      state:
         type: "object"
         properties: {}
       zip:
         type: "object"
         properties: {}
-      is_client:
-        type: "boolean"
+      first:
+        type: "string"
       meta_data:
+        type: "object"
+        properties: {}
+      id:
+        type: "integer"
+      full_name:
+        type: "object"
+        properties: {}
+      country:
+        type: "object"
+        properties: {}
+      email:
+        type: "string"
+      login:
+        type: "string"
+      state:
         type: "object"
         properties: {}
       last:
         type: "string"
-      email:
-        type: "string"
-      full_name:
-        type: "object"
-        properties: {}
-      company:
-        type: "object"
-        properties: {}
-      login:
-        type: "string"
+      is_client:
+        type: "boolean"
     example:
       zip: "{}"
       country: "{}"
@@ -4444,32 +4447,32 @@ definitions:
   Deployment:
     type: "object"
     properties:
-      orderNumber:
-        type: "string"
-      deploymentId:
-        type: "integer"
+      empty:
+        type: "boolean"
       deploymentConfiguration:
         type: "array"
         items:
           type: "object"
           properties: {}
-      empty:
+      startedProvisioning:
         type: "boolean"
+      orderNumber:
+        type: "string"
       deploymentName:
         type: "string"
       price:
         type: "number"
-      startedProvisioning:
-        type: "boolean"
+      deploymentId:
+        type: "integer"
     example:
-      orderNumber: "orderNumber"
       deploymentConfiguration:
       - "{}"
       - "{}"
-      price: 6.02745618307040320615897144307382404804229736328125
-      deploymentId: 0
-      deploymentName: "deploymentName"
+      orderNumber: "orderNumber"
+      price: 0.80082819046101150206595775671303272247314453125
+      deploymentId: 6
       startedProvisioning: true
+      deploymentName: "deploymentName"
       empty: true
   DeploymentCustomization:
     type: "object"
@@ -4481,39 +4484,39 @@ definitions:
       locationCode:
         type: "string"
         default: ""
-      publicSshKeyId:
-        type: "integer"
-      quantity:
-        type: "integer"
       options:
         type: "array"
         items:
           type: "integer"
+      quantity:
+        type: "integer"
+      productId:
+        type: "integer"
+      operatingSystem:
+        type: "string"
+        description: "Operating System's Name or ID"
+      publicSshKeyId:
+        type: "integer"
+      additionalNotes:
+        type: "array"
+        items:
+          type: "string"
       billingPeriod:
         type: "string"
         description: "must be one of ['monthly', 'quarterly', 'semi-annually', 'annually',\
           \ 'biennial', 'triennial', 'hourly']"
         default: "monthly"
-      additionalNotes:
-        type: "array"
-        items:
-          type: "string"
-      productId:
-        type: "integer"
       hostnames:
         type: "array"
         items:
           type: "string"
-      operatingSystem:
-        type: "string"
-        description: "Operating System's Name or ID"
     example:
       quantity: 6
-      productId: 5
+      productId: 1
       billingPeriod: "monthly"
       options:
-      - 1
-      - 1
+      - 0
+      - 0
       hostnames:
       - "hostnames"
       - "hostnames"
@@ -4522,16 +4525,16 @@ definitions:
       - "additionalNotes"
       - "additionalNotes"
       operatingSystem: "operatingSystem"
-      publicSshKeyId: 0
+      publicSshKeyId: 5
   DeploymentStart:
     type: "object"
     required:
     - "billingInfo"
     properties:
-      billingInfo:
-        type: "integer"
       script:
         type: "string"
+      billingInfo:
+        type: "integer"
     example:
       billingInfo: 0
       script: "script"
@@ -4651,9 +4654,9 @@ definitions:
     - "name"
     - "publicKey"
     properties:
-      name:
-        type: "string"
       publicKey:
+        type: "string"
+      name:
         type: "string"
     example:
       name: "name"
@@ -4661,11 +4664,11 @@ definitions:
   SshKeyResponse:
     type: "object"
     properties:
-      name:
+      publicKey:
         type: "string"
       sshKeyId:
         type: "integer"
-      publicKey:
+      name:
         type: "string"
     example:
       name: "name"
@@ -4674,9 +4677,9 @@ definitions:
   SshKeyUpdate:
     type: "object"
     properties:
-      name:
-        type: "string"
       publicKey:
+        type: "string"
+      name:
         type: "string"
     example:
       name: "name"
@@ -4689,16 +4692,16 @@ definitions:
     properties:
       priority:
         type: "number"
-      source:
-        type: "number"
+      body:
+        type: "string"
       subject:
         type: "string"
       queue:
         type: "string"
+      source:
+        type: "number"
       assignment:
         type: "number"
-      body:
-        type: "string"
       status:
         type: "string"
         example: "open"
@@ -4723,7 +4726,7 @@ definitions:
         type: "number"
       opened:
         type: "number"
-        example: 1.614204522E9
+        example: 1.614287626E9
       serviceId:
         type: "number"
       client:
@@ -4757,7 +4760,7 @@ definitions:
       clientId: 1.489415909854170383397331534069962799549102783203125
       contactId: 6.8468526983526398765889098285697400569915771484375
       subject: "subject"
-      opened: 1.614204522E9
+      opened: 1.614287626E9
       priority: "priority"
       body: "body"
       posts: 5.63737665663332876420099637471139430999755859375
@@ -4767,27 +4770,27 @@ definitions:
       internalTicket: 1.173074250955943309548956676735542714595794677734375
       replies:
         date: 1.024645700144157789424070870154537260532379150390625
-        attachments: 2.027123023002321833274663731572218239307403564453125
         clientId: 7.3862819483858839220147274318151175975799560546875
-        hidden: 2.3021358869347654518833223846741020679473876953125
+        attachments: 1.231513536777255612975068288506008684635162353515625
         fromAdmin: true
-        contactId: 7.061401241503109105224211816675961017608642578125
+        hidden: 2.027123023002321833274663731572218239307403564453125
+        contactId: 3.61607674925191080461672754609026014804840087890625
         subject: "subject"
         body: "body"
         ubersmith_attached_files:
           name: "name"
-          id: 4.1456080298839363962315474054776132106781005859375
-        adminId: 9.301444243932575517419536481611430644989013671875
+          id: 2.3021358869347654518833223846741020679473876953125
+        adminId: 4.1456080298839363962315474054776132106781005859375
         from: "{}"
-        id: 3.61607674925191080461672754609026014804840087890625
-        ticketId: 1.231513536777255612975068288506008684635162353515625
+        id: 9.301444243932575517419536481611430644989013671875
+        ticketId: 7.061401241503109105224211816675961017608642578125
       contact:
         clientId: 6
-        contactId: 0
         phone: "phone"
+        contactId: 0
+        fullName: "fullName"
         description: "description"
         active: 1
-        fullName: "fullName"
         isClient: true
         email: "email"
       client:
@@ -4812,32 +4815,32 @@ definitions:
   Client:
     type: "object"
     properties:
-      first:
-        type: "string"
-      metaData:
-        type: "object"
-        properties: {}
-      id:
-        type: "number"
-      city:
-        type: "string"
-      state:
-        type: "string"
-      zip:
-        type: "string"
-      country:
-        type: "string"
-      last:
-        type: "string"
-      isClient:
-        type: "boolean"
-      email:
-        type: "string"
       fullName:
         type: "string"
       company:
         type: "string"
+      city:
+        type: "string"
+      zip:
+        type: "string"
+      first:
+        type: "string"
+      id:
+        type: "number"
+      metaData:
+        type: "object"
+        properties: {}
+      isClient:
+        type: "boolean"
+      country:
+        type: "string"
+      email:
+        type: "string"
       login:
+        type: "string"
+      state:
+        type: "string"
+      last:
         type: "string"
     example:
       zip: "zip"
@@ -4856,49 +4859,49 @@ definitions:
   TicketPost:
     type: "object"
     properties:
-      hidden:
-        type: "number"
-      contactId:
-        type: "number"
-      adminId:
-        type: "number"
+      ubersmith_attached_files:
+        $ref: "#/definitions/TicketAttach"
+      fromAdmin:
+        type: "boolean"
       from:
         type: "object"
         properties: {}
+      body:
+        type: "string"
+      ticketId:
+        type: "number"
+      id:
+        type: "number"
       subject:
         type: "string"
-      id:
+      contactId:
+        type: "number"
+      hidden:
+        type: "number"
+      adminId:
+        type: "number"
+      clientId:
         type: "number"
       attachments:
         type: "number"
-      ubersmith_attached_files:
-        $ref: "#/definitions/TicketAttach"
-      clientId:
-        type: "number"
-      ticketId:
-        type: "number"
-      fromAdmin:
-        type: "boolean"
-      body:
-        type: "string"
       date:
         type: "number"
     example:
       date: 1.024645700144157789424070870154537260532379150390625
-      attachments: 2.027123023002321833274663731572218239307403564453125
       clientId: 7.3862819483858839220147274318151175975799560546875
-      hidden: 2.3021358869347654518833223846741020679473876953125
+      attachments: 1.231513536777255612975068288506008684635162353515625
       fromAdmin: true
-      contactId: 7.061401241503109105224211816675961017608642578125
+      hidden: 2.027123023002321833274663731572218239307403564453125
+      contactId: 3.61607674925191080461672754609026014804840087890625
       subject: "subject"
       body: "body"
       ubersmith_attached_files:
         name: "name"
-        id: 4.1456080298839363962315474054776132106781005859375
-      adminId: 9.301444243932575517419536481611430644989013671875
+        id: 2.3021358869347654518833223846741020679473876953125
+      adminId: 4.1456080298839363962315474054776132106781005859375
       from: "{}"
-      id: 3.61607674925191080461672754609026014804840087890625
-      ticketId: 1.231513536777255612975068288506008684635162353515625
+      id: 9.301444243932575517419536481611430644989013671875
+      ticketId: 7.061401241503109105224211816675961017608642578125
   TicketAttach:
     type: "object"
     properties:
@@ -4908,53 +4911,53 @@ definitions:
         type: "number"
     example:
       name: "name"
-      id: 4.1456080298839363962315474054776132106781005859375
+      id: 2.3021358869347654518833223846741020679473876953125
   TicketSeachResult:
     type: "object"
     properties:
-      hasNext:
-        type: "boolean"
+      perPage:
+        type: "integer"
       hasPrev:
         type: "boolean"
-      total:
+      prevPage:
+        type: "integer"
+      page:
+        type: "integer"
+      hasNext:
+        type: "boolean"
+      pages:
         type: "integer"
       items:
         $ref: "#/definitions/TicketPost"
-      page:
-        type: "integer"
-      prevPage:
-        type: "integer"
       nextPage:
         type: "integer"
-      pages:
-        type: "integer"
-      perPage:
+      total:
         type: "integer"
     example:
-      total: 0
+      total: 2
+      perPage: 0
       pages: 5
-      perPage: 2
       hasPrev: true
       nextPage: 5
+      prevPage: 6
       hasNext: true
-      prevPage: 1
-      page: 6
+      page: 1
       items:
         date: 1.024645700144157789424070870154537260532379150390625
-        attachments: 2.027123023002321833274663731572218239307403564453125
         clientId: 7.3862819483858839220147274318151175975799560546875
-        hidden: 2.3021358869347654518833223846741020679473876953125
+        attachments: 1.231513536777255612975068288506008684635162353515625
         fromAdmin: true
-        contactId: 7.061401241503109105224211816675961017608642578125
+        hidden: 2.027123023002321833274663731572218239307403564453125
+        contactId: 3.61607674925191080461672754609026014804840087890625
         subject: "subject"
         body: "body"
         ubersmith_attached_files:
           name: "name"
-          id: 4.1456080298839363962315474054776132106781005859375
-        adminId: 9.301444243932575517419536481611430644989013671875
+          id: 2.3021358869347654518833223846741020679473876953125
+        adminId: 4.1456080298839363962315474054776132106781005859375
         from: "{}"
-        id: 3.61607674925191080461672754609026014804840087890625
-        ticketId: 1.231513536777255612975068288506008684635162353515625
+        id: 9.301444243932575517419536481611430644989013671875
+        ticketId: 7.061401241503109105224211816675961017608642578125
   TicketPut:
     type: "object"
     properties:
@@ -4967,11 +4970,27 @@ definitions:
     required:
     - "body"
     properties:
-      hidden:
+      date:
+        type: "number"
+      cc:
+        type: "string"
+      body:
+        type: "string"
+      subject:
+        type: "string"
+      replyTo:
+        type: "string"
+      type:
         type: "number"
       contactId:
         type: "number"
-      subject:
+      encrypted:
+        type: "string"
+      hidden:
+        type: "number"
+      headers:
+        type: "string"
+      recipient:
         type: "string"
       attachments:
         type: "array"
@@ -4981,37 +5000,21 @@ definitions:
         items:
           type: "object"
           properties: {}
-      type:
-        type: "number"
-      headers:
-        type: "string"
-      encrypted:
-        type: "string"
-      replyTo:
-        type: "string"
-      recipient:
-        type: "string"
-      body:
-        type: "string"
-      cc:
-        type: "string"
-      date:
-        type: "number"
     example:
+      date: 0.80082819046101150206595775671303272247314453125
       cc: "cc"
-      date: 5.962133916683182377482808078639209270477294921875
       headers: "headers"
       attachments:
       - name: ""
         file: ""
-      hidden: 0.80082819046101150206595775671303272247314453125
       encrypted: "encrypted"
-      contactId: 6.02745618307040320615897144307382404804229736328125
+      hidden: 5.962133916683182377482808078639209270477294921875
+      contactId: 1.46581298050294517310021547018550336360931396484375
       subject: "subject"
       replyTo: "replyTo"
       recipient: "recipient"
-      type: 1.46581298050294517310021547018550336360931396484375
       body: "body"
+      type: 6.02745618307040320615897144307382404804229736328125
   PublicApiToken-load:
     type: "object"
     properties:
@@ -5022,9 +5025,9 @@ definitions:
     required:
     - "token"
     properties:
-      token:
-        type: "string"
       name:
+        type: "string"
+      token:
         type: "string"
     example:
       name: "name"

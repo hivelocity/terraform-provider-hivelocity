@@ -21,7 +21,7 @@ func resourceSSHKey() *schema.Resource {
 		UpdateContext: resourceSSHKeyUpdate,
 		DeleteContext: resourceSSHKeyDelete,
 		Schema: map[string]*schema.Schema{
-			"key_id": &schema.Schema{
+			"ssh_key_id": &schema.Schema{
 				Type:     schema.TypeInt,
 				Computed: true,
 				Optional: true,
@@ -74,7 +74,7 @@ func resourceSSHKeyRead(ctx context.Context, d *schema.ResourceData, m interface
 		return diag.FromErr(err)
 	}
 
-	d.Set("key_id", SSHKeyResponse.SshKeyId)
+	d.Set("ssh_key_id", SSHKeyResponse.SshKeyId)
 	d.Set("name", SSHKeyResponse.Name)
 	d.Set("public_key", SSHKeyResponse.PublicKey)
 

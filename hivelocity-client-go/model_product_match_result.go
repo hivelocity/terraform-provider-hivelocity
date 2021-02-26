@@ -10,6 +10,6 @@
 package swagger
 
 type ProductMatchResult struct {
-	Matches *Product `json:"matches,omitempty"`
 	PossibleMatches *Product `json:"possibleMatches,omitempty"`
+	Matches *Product `json:"matches,omitempty"`
 }

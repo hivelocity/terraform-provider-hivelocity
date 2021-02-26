@@ -92,6 +92,11 @@ func resourceBareMetalDevice() *schema.Resource {
 				Computed: true,
 				Optional: true,
 			},
+			"public_ssh_key_id": &schema.Schema{
+				Type:     schema.TypeInt,
+				Optional: true,
+				Default:  nil,
+			},
 		},
 	}
 }
@@ -108,12 +113,13 @@ func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, 
 	}
 
 	payload := swagger.BareMetalDeviceCreate{
-		ProductId:    int32(d.Get("product_id").(int)),
-		Hostname:     d.Get("hostname").(string),
-		OsName:       d.Get("os_name").(string),
-		VlanId:       int32(d.Get("vlan_id").(int)),
-		LocationName: d.Get("location_name").(string),
-		Script:       d.Get("script").(string),
+		ProductId:      int32(d.Get("product_id").(int)),
+		Hostname:       d.Get("hostname").(string),
+		OsName:         d.Get("os_name").(string),
+		VlanId:         int32(d.Get("vlan_id").(int)),
+		LocationName:   d.Get("location_name").(string),
+		Script:         d.Get("script").(string),
+		PublicSshKeyId: int32(d.Get("public_ssh_key_id").(int)),
 	}
 
 	bareMetalDevice, _, err := hv.client.BareMetalDevicesApi.PostBareMetalDeviceResource(hv.auth, payload, nil)
@@ -164,6 +170,7 @@ func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m 
 		return diag.FromErr(err)
 	}
 
+	d.Set("device_id", deviceResponse.DeviceId)
 	d.Set("hostname", deviceResponse.Hostname)
 	d.Set("location_name", deviceResponse.LocationName)
 	d.Set("order_id", deviceResponse.OrderId)
@@ -174,7 +181,8 @@ func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m 
 	d.Set("product_name", deviceResponse.ProductName)
 	d.Set("service_id", deviceResponse.ServiceId)
 	d.Set("tags", deviceResponse.Tags)
-	d.Set("vlanId", deviceResponse.VlanId)
+	d.Set("vlan_d", deviceResponse.VlanId)
+	d.Set("public_ssh_key_id", deviceResponse.PublicSshKeyId)
 
 	return diags
 }

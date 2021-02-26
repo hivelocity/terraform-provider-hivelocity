@@ -31,6 +31,7 @@ func Provider() *schema.Provider {
 			"hivelocity_device":               dataSourceDevice(),
 			"hivelocity_product":              dataSourceProduct(),
 			"hivelocity_device_initial_creds": dataSourceDeviceInitialCreds(),
+			"hivelocity_ssh_key":              dataSourceSshKey(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"hivelocity_bare_metal_device": resourceBareMetalDevice(),
