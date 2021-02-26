@@ -4,8 +4,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **DeviceId** | **int32** |  | [default to null]
-**ServiceId** | **int32** |  | [default to null]
 **Reason** | **string** |  | [default to null]
+**ServiceId** | **int32** |  | [default to null]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

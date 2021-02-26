@@ -327,7 +327,7 @@ func (a *DeploymentApiService) GetDeploymentResource(ctx context.Context, localV
 }
 
 /*
-DeploymentApiService Input a billing info id and public ssh keys ids to process and finish a deployment
+DeploymentApiService Input a billing info id and script to process and finish a deployment
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deploymentId Id of the deployment to interact with
  * @param payload

@@ -13,11 +13,11 @@ data "hivelocity_product" "tampa_product" {
 
   filter {
     name   = "product_memory"
-    values = ["16GB"]
+    values = ["64GB"]
   }
 
   filter {
-    name   = "location"
+    name   = "data_center"
     values = ["TPA1"]
   }
 
@@ -29,9 +29,10 @@ data "hivelocity_product" "tampa_product" {
 
 // Provision your device with CentOS 7.
 resource "hivelocity_bare_metal_device" "tampa_server" {
-    product_id = "${data.hivelocity_product.tampa_product.product_id}"
-    os_name = "CentOS 7.x"
-    location_name = "${data.hivelocity_product.tampa_product.location}"
-    hostname = "hivelocity.terraform.test"
-    tags = ["hello", "world"]
+    product_id    = "${data.hivelocity_product.tampa_product.product_id}"
+    os_name       = "CentOS 7.x"
+    location_name = "${data.hivelocity_product.tampa_product.data_center}"
+    hostname      = "hivelocity.terraform.test"
+    tags          = ["hello", "world"]
+    script        = file("${path.module}/cloud_init_example.yaml")
 }

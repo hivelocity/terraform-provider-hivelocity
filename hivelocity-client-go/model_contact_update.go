@@ -13,6 +13,6 @@ type ContactUpdate struct {
 	Description string `json:"description,omitempty"`
 	Phone string `json:"phone,omitempty"`
 	Active int32 `json:"active,omitempty"`
-	FullName string `json:"fullName,omitempty"`
 	Email string `json:"email,omitempty"`
+	FullName string `json:"fullName,omitempty"`
 }

@@ -15,15 +15,15 @@ import (
 
 type Cancellation struct {
 	Id int32 `json:"id,omitempty"`
-	StartDate time.Time `json:"startDate,omitempty"`
 	MonthlyPayment int32 `json:"monthlyPayment,omitempty"`
-	ClientId int32 `json:"clientId,omitempty"`
-	Cancelled bool `json:"cancelled,omitempty"`
-	ActiveMonths int32 `json:"activeMonths,omitempty"`
 	DeletedAt time.Time `json:"deletedAt,omitempty"`
+	ClientId int32 `json:"clientId,omitempty"`
+	ActiveMonths int32 `json:"activeMonths,omitempty"`
+	DeviceId int32 `json:"deviceId,omitempty"`
+	PlanId int32 `json:"planId,omitempty"`
+	Cancelled bool `json:"cancelled,omitempty"`
+	RequestDate time.Time `json:"requestDate,omitempty"`
 	ServiceId int32 `json:"serviceId,omitempty"`
 	Name string `json:"name,omitempty"`
-	DeviceId int32 `json:"deviceId,omitempty"`
-	RequestDate time.Time `json:"requestDate,omitempty"`
-	PlanId int32 `json:"planId,omitempty"`
+	StartDate time.Time `json:"startDate,omitempty"`
 }

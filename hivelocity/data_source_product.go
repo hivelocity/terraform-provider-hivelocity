@@ -16,7 +16,7 @@ func dataSourceProduct() *schema.Resource {
 			"first":                          dataSourceFilterFirstSchema(),
 			"product_id":                     {Type: schema.TypeInt, Computed: true},
 			"product_name":                   {Type: schema.TypeString, Computed: true},
-			"location":                       {Type: schema.TypeString, Computed: true},
+			"data_center":                    {Type: schema.TypeString, Computed: true},
 			"core":                           {Type: schema.TypeBool, Computed: true},
 			"edge":                           {Type: schema.TypeBool, Computed: true},
 			"stock":                          {Type: schema.TypeString, Computed: true},
