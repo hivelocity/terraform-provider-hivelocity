@@ -10,9 +10,9 @@
 package swagger
 
 type DeviceReload struct {
-	ControlPanelId int32 `json:"controlPanelId,omitempty"`
-	Script string `json:"script,omitempty"`
-	OperatingSystemId int32 `json:"operatingSystemId"`
 	Body string `json:"body,omitempty"`
+	Script string `json:"script,omitempty"`
+	ControlPanelId int32 `json:"controlPanelId,omitempty"`
+	OperatingSystemId int32 `json:"operatingSystemId"`
 	PublicSshKeyIds []int32 `json:"publicSshKeyIds,omitempty"`
 }

@@ -10,13 +10,13 @@
 package swagger
 
 type InvoiceSeachResult struct {
-	HasNext bool `json:"hasNext,omitempty"`
-	HasPrev bool `json:"hasPrev,omitempty"`
-	Total int32 `json:"total,omitempty"`
-	Items *Invoice `json:"items,omitempty"`
-	Page int32 `json:"page,omitempty"`
-	PrevPage int32 `json:"prevPage,omitempty"`
-	NextPage int32 `json:"nextPage,omitempty"`
-	Pages int32 `json:"pages,omitempty"`
 	PerPage int32 `json:"perPage,omitempty"`
+	HasPrev bool `json:"hasPrev,omitempty"`
+	PrevPage int32 `json:"prevPage,omitempty"`
+	Page int32 `json:"page,omitempty"`
+	HasNext bool `json:"hasNext,omitempty"`
+	Pages int32 `json:"pages,omitempty"`
+	Items *Invoice `json:"items,omitempty"`
+	NextPage int32 `json:"nextPage,omitempty"`
+	Total int32 `json:"total,omitempty"`
 }

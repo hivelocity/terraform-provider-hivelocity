@@ -81,6 +81,11 @@ func dataSourceBareMetalDevice() *schema.Resource {
 					Type: schema.TypeString,
 				},
 			},
+			"public_ssh_key_id": &schema.Schema{
+				Type:     schema.TypeInt,
+				Optional: true,
+				Default:  nil,
+			},
 		},
 	}
 }

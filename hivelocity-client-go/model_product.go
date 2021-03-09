@@ -11,15 +11,15 @@ package swagger
 
 type Product struct {
 	IsSps bool `json:"isSps,omitempty"`
-	Memory string `json:"memory,omitempty"`
+	Stock int32 `json:"stock,omitempty"`
+	OriginalPrice float32 `json:"originalPrice,omitempty"`
 	Cpu string `json:"cpu,omitempty"`
 	Id int32 `json:"id,omitempty"`
-	Drive string `json:"drive,omitempty"`
-	OriginalPrice float32 `json:"originalPrice,omitempty"`
-	Sale int32 `json:"sale,omitempty"`
 	PlanId int32 `json:"planId,omitempty"`
+	Sale int32 `json:"sale,omitempty"`
+	Memory string `json:"memory,omitempty"`
+	Drive string `json:"drive,omitempty"`
 	Discount float32 `json:"discount,omitempty"`
-	Stock int32 `json:"stock,omitempty"`
 	Name string `json:"name,omitempty"`
 	New int32 `json:"new,omitempty"`
 }
