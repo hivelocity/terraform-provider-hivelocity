@@ -142,6 +142,21 @@ The filter will check if `66.165.245.226` or `66.165.245.225` is in the `ip_addr
 You can pass strings, integers, or booleans to the `values` array on the filter. The type must match the returned type of the
 data source schema.
 
+How to test Cloud-Init script locally
+---------------------------
+
+Please see https://api-docs.hivelocity.net/cloud-init-test
+
+How to build the plugin to another platform
+---------------------------
+An example to build for Windows with an amd64 architecture, execute the command below into the Hivelocity Provider path.
+
+```bash
+GOOS=windows GOARCH=amd64 go build -o terraform-provider-hivelocity.exe main.go
+```
+
+[Here](https://github.com/golang/go/wiki/MinimumRequirements) you can get a list of Go supported platforms.
+
 Developing the provider
 ---------------------------
 
