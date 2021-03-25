@@ -183,6 +183,7 @@ func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m 
 	d.Set("tags", deviceResponse.Tags)
 	d.Set("vlan_d", deviceResponse.VlanId)
 	d.Set("public_ssh_key_id", deviceResponse.PublicSshKeyId)
+	d.Set("script", deviceResponse.Script)
 
 	return diags
 }

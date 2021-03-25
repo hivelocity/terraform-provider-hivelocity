@@ -10,6 +10,6 @@
 package swagger
 
 type DetailedNullIp struct {
-	Comments string `json:"comments,omitempty"`
 	Ip string `json:"ip"`
+	Comments string `json:"comments,omitempty"`
 }

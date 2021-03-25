@@ -10,6 +10,6 @@
 package swagger
 
 type DeviceEvent struct {
-	Action string `json:"action,omitempty"`
 	Time int32 `json:"time,omitempty"`
+	Action string `json:"action,omitempty"`
 }

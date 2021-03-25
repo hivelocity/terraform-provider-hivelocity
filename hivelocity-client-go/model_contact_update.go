@@ -10,9 +10,9 @@
 package swagger
 
 type ContactUpdate struct {
-	FullName string `json:"fullName,omitempty"`
-	Description string `json:"description,omitempty"`
-	Phone string `json:"phone,omitempty"`
 	Email string `json:"email,omitempty"`
 	Active int32 `json:"active,omitempty"`
+	Phone string `json:"phone,omitempty"`
+	Description string `json:"description,omitempty"`
+	FullName string `json:"fullName,omitempty"`
 }

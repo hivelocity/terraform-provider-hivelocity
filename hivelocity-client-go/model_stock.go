@@ -10,33 +10,34 @@
 package swagger
 
 type Stock struct {
-	ProductBiennialPrice float32 `json:"product_biennial_price,omitempty"`
-	Stock string `json:"stock,omitempty"`
-	SemiAnnuallyLocationPremium float32 `json:"semi_annually_location_premium,omitempty"`
-	ProductTriennialPrice float32 `json:"product_triennial_price,omitempty"`
-	ProductOnSale bool `json:"product_on_sale,omitempty"`
-	ProductId int32 `json:"product_id,omitempty"`
 	ProductDisplayPrice float32 `json:"product_display_price,omitempty"`
-	BiennialLocationPremium float32 `json:"biennial_location_premium,omitempty"`
-	ProductSemiAnnuallyPrice float32 `json:"product_semi_annually_price,omitempty"`
-	ProductCpu string `json:"product_cpu,omitempty"`
-	ProductMemory string `json:"product_memory,omitempty"`
-	ProductDrive string `json:"product_drive,omitempty"`
 	AnnuallyLocationPremium float32 `json:"annually_location_premium,omitempty"`
+	ProductBiennialPrice float32 `json:"product_biennial_price,omitempty"`
+	TriennialLocationPremium float32 `json:"triennial_location_premium,omitempty"`
+	ProductMemory string `json:"product_memory,omitempty"`
+	BiennialLocationPremium float32 `json:"biennial_location_premium,omitempty"`
+	Core bool `json:"core,omitempty"`
+	ProductQuarterlyPrice float32 `json:"product_quarterly_price,omitempty"`
+	DataCenter string `json:"data_center,omitempty"`
+	ProductOnSale bool `json:"product_on_sale,omitempty"`
+	Stock string `json:"stock,omitempty"`
+	ProductHourlyPrice float32 `json:"product_hourly_price,omitempty"`
+	QuarterlyLocationPremium float32 `json:"quarterly_location_premium,omitempty"`
+	ProductDrive string `json:"product_drive,omitempty"`
+	ProductCpuCores string `json:"product_cpu_cores,omitempty"`
+	ProductBandwidth string `json:"product_bandwidth,omitempty"`
+	MonthlyLocationPremium float32 `json:"monthly_location_premium,omitempty"`
+	ProductTriennialPrice float32 `json:"product_triennial_price,omitempty"`
+	ProductDisabledBillingPeriods []string `json:"product_disabled_billing_periods,omitempty"`
 	ProductMonthlyPrice float32 `json:"product_monthly_price,omitempty"`
 	HourlyLocationPremium float32 `json:"hourly_location_premium,omitempty"`
-	ProductQuarterlyPrice float32 `json:"product_quarterly_price,omitempty"`
-	ProductBandwidth string `json:"product_bandwidth,omitempty"`
-	TriennialLocationPremium float32 `json:"triennial_location_premium,omitempty"`
-	ProductDisabledBillingPeriods []string `json:"product_disabled_billing_periods,omitempty"`
-	QuarterlyLocationPremium float32 `json:"quarterly_location_premium,omitempty"`
-	ProductAnnuallyPrice float32 `json:"product_annually_price,omitempty"`
-	ProductName string `json:"product_name,omitempty"`
-	DataCenter string `json:"data_center,omitempty"`
-	ProductOriginalPrice float32 `json:"product_original_price,omitempty"`
-	ProductCpuCores string `json:"product_cpu_cores,omitempty"`
-	ProductHourlyPrice float32 `json:"product_hourly_price,omitempty"`
-	MonthlyLocationPremium float32 `json:"monthly_location_premium,omitempty"`
-	Core bool `json:"core,omitempty"`
+	ProductSemiAnnuallyPrice float32 `json:"product_semi_annually_price,omitempty"`
+	SemiAnnuallyLocationPremium float32 `json:"semi_annually_location_premium,omitempty"`
 	Edge bool `json:"edge,omitempty"`
+	ProductOriginalPrice float32 `json:"product_original_price,omitempty"`
+	ProductCpu string `json:"product_cpu,omitempty"`
+	ProductName string `json:"product_name,omitempty"`
+	ProductGpu string `json:"product_gpu,omitempty"`
+	ProductAnnuallyPrice float32 `json:"product_annually_price,omitempty"`
+	ProductId int32 `json:"product_id,omitempty"`
 }
