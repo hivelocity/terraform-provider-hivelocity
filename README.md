@@ -83,6 +83,15 @@ data "hivelocity_product" "tampa_product" {
   }
 }
 
+data "hivelocity_ssh_key" "ssh_keys" {
+  first = true
+  
+  filter {
+    name   = "name"
+    values = ["This is my Terraform SSH Key"]
+  }
+}
+
 // Provision the product with CentOS 7.
 resource "hivelocity_bare_metal_device" "tampa_server" {
     product_id = "${data.hivelocity_product.tampa_product.product_id}"
@@ -91,6 +100,7 @@ resource "hivelocity_bare_metal_device" "tampa_server" {
     hostname = "hivelocity.terraform.test"
     tags = ["hello", "world"]
     script = file("${path.module}/cloud_init_example.yaml")
+    public_ssh_key_id = "${data.hivelocity_ssh_key.ssh_keys.ssh_key_id}"
 }
 ```
 

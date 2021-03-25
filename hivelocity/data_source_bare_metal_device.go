@@ -86,6 +86,11 @@ func dataSourceBareMetalDevice() *schema.Resource {
 				Optional: true,
 				Default:  nil,
 			},
+			"script": &schema.Schema{
+				Type:     schema.TypeString,
+				Computed: true,
+				Optional: true,
+			},
 		},
 	}
 }

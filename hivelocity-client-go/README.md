@@ -58,6 +58,7 @@ Class | Method | HTTP request | Description
 *DeviceApi* | [**GetClientDeviceTagResource**](docs/DeviceApi.md#getclientdevicetagresource) | **Get** /device/tags | Get all device tags for current client
 *DeviceApi* | [**GetDeviceIdEventResource**](docs/DeviceApi.md#getdeviceideventresource) | **Get** /device/{deviceId}/events | Returns all Events found for a single device
 *DeviceApi* | [**GetDeviceIdResource**](docs/DeviceApi.md#getdeviceidresource) | **Get** /device/{deviceId} | Returns detailed information for a Single Device
+*DeviceApi* | [**GetDeviceIpminatRuleResource**](docs/DeviceApi.md#getdeviceipminatruleresource) | **Get** /device/{deviceId}/ipmi/nat | Clear NAT rules based on the device client id
 *DeviceApi* | [**GetDeviceResource**](docs/DeviceApi.md#getdeviceresource) | **Get** /device/ | Returns Active Devices and basic MetaData
 *DeviceApi* | [**GetDeviceTagIdResource**](docs/DeviceApi.md#getdevicetagidresource) | **Get** /device/{deviceId}/tags | Get device tags
 *DeviceApi* | [**GetInitialCredsIdResource**](docs/DeviceApi.md#getinitialcredsidresource) | **Get** /device/{deviceId}/initial-creds | Returns initial password for the device

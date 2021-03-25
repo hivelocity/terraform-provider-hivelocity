@@ -10,6 +10,6 @@
 package swagger
 
 type DeploymentStart struct {
-	Script string `json:"script,omitempty"`
 	BillingInfo int32 `json:"billingInfo"`
+	Script string `json:"script,omitempty"`
 }

@@ -12,11 +12,6 @@ data "hivelocity_product" "tampa_product" {
   first = true
   
   filter {
-    name   = "product_memory"
-    values = ["16GB"]
-  }
-
-  filter {
     name   = "data_center"
     values = ["TPA1"]
   }
@@ -32,7 +27,7 @@ data "hivelocity_ssh_key" "ssh_keys" {
   
   filter {
     name   = "name"
-    values = ["This is my Terraform SSH Key"]
+    values = ["rafik-mypc"]
   }
 }
 

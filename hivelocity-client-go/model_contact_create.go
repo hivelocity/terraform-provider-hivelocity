@@ -10,10 +10,10 @@
 package swagger
 
 type ContactCreate struct {
-	FullName string `json:"fullName"`
-	Description string `json:"description,omitempty"`
-	Phone string `json:"phone,omitempty"`
-	Password string `json:"password,omitempty"`
 	Email string `json:"email"`
 	Active int32 `json:"active"`
+	Password string `json:"password,omitempty"`
+	Phone string `json:"phone,omitempty"`
+	Description string `json:"description,omitempty"`
+	FullName string `json:"fullName"`
 }
