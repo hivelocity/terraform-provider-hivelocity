@@ -10,6 +10,6 @@
 package swagger
 
 type InvoicePdf struct {
-	InvoiceId int32 `json:"invoiceId,omitempty"`
 	PdfData string `json:"pdfData,omitempty"`
+	InvoiceId int32 `json:"invoiceId,omitempty"`
 }

@@ -27,7 +27,7 @@ var (
 
 type SshKeyApiService service
 
-/*
+/* 
 SshKeyApiService Removes public ssh key
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param sshKeyId
@@ -110,7 +110,7 @@ func (a *SshKeyApiService) DeleteSshKeyIdResource(ctx context.Context, sshKeyId 
 	return localVarHttpResponse, nil
 }
 
-/*
+/* 
 SshKeyApiService Get public ssh key
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param sshKeyId
@@ -193,7 +193,9 @@ func (a *SshKeyApiService) GetSshKeyIdResource(ctx context.Context, sshKeyId int
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -219,7 +221,7 @@ func (a *SshKeyApiService) GetSshKeyIdResource(ctx context.Context, sshKeyId int
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 SshKeyApiService Gets all public ssh key
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *SshKeyApiGetSshKeyResourceOpts - Optional Parameters:
@@ -300,7 +302,9 @@ func (a *SshKeyApiService) GetSshKeyResource(ctx context.Context, localVarOption
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -326,7 +330,7 @@ func (a *SshKeyApiService) GetSshKeyResource(ctx context.Context, localVarOption
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 SshKeyApiService Adds public ssh key
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -410,7 +414,9 @@ func (a *SshKeyApiService) PostSshKeyResource(ctx context.Context, payload SshKe
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -436,7 +442,7 @@ func (a *SshKeyApiService) PostSshKeyResource(ctx context.Context, payload SshKe
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 SshKeyApiService Updates public ssh key
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param sshKeyId
@@ -522,7 +528,9 @@ func (a *SshKeyApiService) PutSshKeyIdResource(ctx context.Context, sshKeyId int
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -547,4 +555,3 @@ func (a *SshKeyApiService) PutSshKeyIdResource(ctx context.Context, sshKeyId int
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
-

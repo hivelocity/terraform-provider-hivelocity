@@ -24,7 +24,7 @@ To rebuild the client and add it to your project repo:
 1. Install https://github.com/swagger-api/swagger-codegen
 2. run the following from the folder `terraform-provider-hivelocity`:
 
-`java -jar ~/Downloads/swagger-codegen-cli-2.4.15.jar generate -i http://localhost:5065/api/v2/swagger.json -l go -o ./hivelocity-client-go"`
+`java -jar ~/Downloads/swagger-codegen-cli-2.4.15.jar generate -i http://localhost:5065/api/v2/swagger.json -l go -o ./hivelocity-client-go`
 
 ## Rebuilding the project
 
@@ -49,7 +49,7 @@ All data sources should be added to the `examples/data_sources/main.tf` file for
 
 Once you have updated the example, you can test your new data source from the root of the repo:
 
-`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity && cd examples/data_sources && terraform init && terraform apply --auto-approve"`
+`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity && cd examples/data_sources && terraform init && terraform apply --auto-approve`
 
 # Resources
 
@@ -59,11 +59,11 @@ Once you have updated the example, you can test your new data source from the ro
 
 To Create/Update:
 
-`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_device && terraform init && terraform apply --auto-approve"`
+`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_device && terraform init && terraform apply --auto-approve`
 
 To Delete:
 
-`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_device && terraform init && terraform delete --auto-approve"`
+`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_device && terraform init && terraform delete --auto-approve`
 
 
 Testing provider code

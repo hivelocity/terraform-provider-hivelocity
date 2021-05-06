@@ -75,6 +75,8 @@ type APIClient struct {
 
 	ProfileApi *ProfileApiService
 
+	SPSApi *SPSApiService
+
 	ServiceApi *ServiceApiService
 
 	SshKeyApi *SshKeyApiService
@@ -117,6 +119,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.PermissionApi = (*PermissionApiService)(&c.common)
 	c.ProductApi = (*ProductApiService)(&c.common)
 	c.ProfileApi = (*ProfileApiService)(&c.common)
+	c.SPSApi = (*SPSApiService)(&c.common)
 	c.ServiceApi = (*ServiceApiService)(&c.common)
 	c.SshKeyApi = (*SshKeyApiService)(&c.common)
 	c.TicketApi = (*TicketApiService)(&c.common)

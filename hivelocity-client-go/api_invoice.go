@@ -27,7 +27,7 @@ var (
 
 type InvoiceApiService service
 
-/*
+/* 
 InvoiceApiService Return detailed information for an invoice
 Same data as the PDF file but serialized
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -111,7 +111,9 @@ func (a *InvoiceApiService) GetInvoiceIdDetails(ctx context.Context, invoiceId i
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -137,7 +139,7 @@ func (a *InvoiceApiService) GetInvoiceIdDetails(ctx context.Context, invoiceId i
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 InvoiceApiService Return serialized data on a single invoice
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param invoiceId Invoice database ID
@@ -220,7 +222,9 @@ func (a *InvoiceApiService) GetInvoiceIdResource(ctx context.Context, invoiceId 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -246,7 +250,7 @@ func (a *InvoiceApiService) GetInvoiceIdResource(ctx context.Context, invoiceId 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 InvoiceApiService Return an Invoice PDF file in Base64 Encoded Format
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param invoiceId Invoice database ID
@@ -329,7 +333,9 @@ func (a *InvoiceApiService) GetInvoicePdfResource(ctx context.Context, invoiceId
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -355,7 +361,7 @@ func (a *InvoiceApiService) GetInvoicePdfResource(ctx context.Context, invoiceId
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 InvoiceApiService Return serialized data on all invoices
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *InvoiceApiGetInvoiceResourceOpts - Optional Parameters:
@@ -436,7 +442,9 @@ func (a *InvoiceApiService) GetInvoiceResource(ctx context.Context, localVarOpti
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -462,7 +470,7 @@ func (a *InvoiceApiService) GetInvoiceResource(ctx context.Context, localVarOpti
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 InvoiceApiService Return results of invoice search
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *InvoiceApiGetInvoiceSearchResourceOpts - Optional Parameters:
@@ -568,7 +576,9 @@ func (a *InvoiceApiService) GetInvoiceSearchResource(ctx context.Context, localV
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -593,4 +603,3 @@ func (a *InvoiceApiService) GetInvoiceSearchResource(ctx context.Context, localV
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
-

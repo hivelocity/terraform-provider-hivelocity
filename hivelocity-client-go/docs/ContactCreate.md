@@ -4,9 +4,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Email** | **string** |  | [default to null]
+**Phone** | **string** |  | [optional] [default to null]
 **Active** | **int32** |  | [default to null]
 **Password** | **string** |  | [optional] [default to null]
-**Phone** | **string** |  | [optional] [default to null]
 **Description** | **string** |  | [optional] [default to null]
 **FullName** | **string** |  | [default to null]
 

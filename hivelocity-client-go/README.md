@@ -96,10 +96,12 @@ Class | Method | HTTP request | Description
 *ProductApi* | [**GetProductListResource**](docs/ProductApi.md#getproductlistresource) | **Get** /product/list | Return structured sps stock data in a list
 *ProductApi* | [**GetProductOperatingSystemsResource**](docs/ProductApi.md#getproductoperatingsystemsresource) | **Get** /product/{productId}/operating-systems | Return List of operating systems found for a Product
 *ProductApi* | [**GetProductOptionResource**](docs/ProductApi.md#getproductoptionresource) | **Get** /product/{productId}/options | Return List of Options found for a Product
+*ProductApi* | [**GetProductsAndOptionsResource**](docs/ProductApi.md#getproductsandoptionsresource) | **Get** /product/options | Return a mapping of Products and Options with pricing per-period
 *ProductApi* | [**PostProductMatchResource**](docs/ProductApi.md#postproductmatchresource) | **Post** /product/match | Return a list of Products matching the provided lshw output of a server
 *ProfileApi* | [**GetBasicProfileResource**](docs/ProfileApi.md#getbasicprofileresource) | **Get** /profile/basic | Get Basic Profile of current user or a contact with id
 *ProfileApi* | [**GetProfileResource**](docs/ProfileApi.md#getprofileresource) | **Get** /profile/ | Get Profile of current user or a contact with id
 *ProfileApi* | [**PutProfileResource**](docs/ProfileApi.md#putprofileresource) | **Put** /profile/ | Update Profile of current user or a contact with id
+*SPSApi* | [**PostSpsDeviceValidationCheck**](docs/SPSApi.md#postspsdevicevalidationcheck) | **Post** /sps/device-validation-check | 
 *ServiceApi* | [**GetServiceIdResource**](docs/ServiceApi.md#getserviceidresource) | **Get** /service/{serviceId} | Return a dictionary with data from a specific account service
 *ServiceApi* | [**GetServiceResource**](docs/ServiceApi.md#getserviceresource) | **Get** /service/ | Return a list of all account services
 *SshKeyApi* | [**DeleteSshKeyIdResource**](docs/SshKeyApi.md#deletesshkeyidresource) | **Delete** /ssh_key/{sshKeyId} | Removes public ssh key
@@ -184,12 +186,14 @@ Class | Method | HTTP request | Description
  - [ProductInfo](docs/ProductInfo.md)
  - [ProductMatch](docs/ProductMatch.md)
  - [ProductMatchResult](docs/ProductMatchResult.md)
+ - [ProductOption](docs/ProductOption.md)
  - [Profile](docs/Profile.md)
  - [ProfileUpdate](docs/ProfileUpdate.md)
  - [PublicApiTokenDump](docs/PublicApiTokenDump.md)
  - [PublicApiTokenLoad](docs/PublicApiTokenLoad.md)
  - [ServiceDump](docs/ServiceDump.md)
  - [ServiceOption](docs/ServiceOption.md)
+ - [SpsDeviceValidation](docs/SpsDeviceValidation.md)
  - [SshKey](docs/SshKey.md)
  - [SshKeyResponse](docs/SshKeyResponse.md)
  - [SshKeyUpdate](docs/SshKeyUpdate.md)

@@ -10,6 +10,6 @@
 package swagger
 
 type PublicApiTokenDump struct {
-	Name string `json:"name,omitempty"`
 	Token string `json:"token"`
+	Name string `json:"name,omitempty"`
 }

@@ -26,7 +26,7 @@ var (
 
 type NetworkApiService service
 
-/*
+/* 
 NetworkApiService Null route an IP
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ip
@@ -109,7 +109,7 @@ func (a *NetworkApiService) GetNullRouteResource(ctx context.Context, ip string)
 	return localVarHttpResponse, nil
 }
 
-/*
+/* 
 NetworkApiService Remove null route from an IP
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ip
@@ -192,7 +192,7 @@ func (a *NetworkApiService) GetRemoveNullRouteResource(ctx context.Context, ip s
 	return localVarHttpResponse, nil
 }
 
-/*
+/* 
 NetworkApiService Null route an IP (with custom comments)
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -275,4 +275,3 @@ func (a *NetworkApiService) PostDetailedNullRouteResource(ctx context.Context, p
 
 	return localVarHttpResponse, nil
 }
-

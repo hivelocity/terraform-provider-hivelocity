@@ -92,6 +92,11 @@ func resourceBareMetalDevice() *schema.Resource {
 				Computed: true,
 				Optional: true,
 			},
+			"period": &schema.Schema{
+				Type:     schema.TypeString,
+				Computed: true,
+				Optional: true,
+			},
 			"public_ssh_key_id": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
@@ -119,6 +124,7 @@ func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, 
 		VlanId:         int32(d.Get("vlan_id").(int)),
 		LocationName:   d.Get("location_name").(string),
 		Script:         d.Get("script").(string),
+		Period:         d.Get("period").(string),
 		PublicSshKeyId: int32(d.Get("public_ssh_key_id").(int)),
 	}
 

@@ -10,21 +10,21 @@
 package swagger
 
 type Profile struct {
-	Last string `json:"last,omitempty"`
-	Company *interface{} `json:"company,omitempty"`
-	Fax *interface{} `json:"fax,omitempty"`
-	First string `json:"first,omitempty"`
-	Login string `json:"login,omitempty"`
-	Zip *interface{} `json:"zip,omitempty"`
-	MetaData *interface{} `json:"meta_data,omitempty"`
-	Email string `json:"email,omitempty"`
-	Phone string `json:"phone,omitempty"`
-	IsClient bool `json:"is_client,omitempty"`
-	Address *interface{} `json:"address,omitempty"`
 	Created *interface{} `json:"created,omitempty"`
+	First string `json:"first,omitempty"`
+	Email string `json:"email,omitempty"`
 	Id int32 `json:"id,omitempty"`
-	Country *interface{} `json:"country,omitempty"`
-	State *interface{} `json:"state,omitempty"`
-	FullName *interface{} `json:"full_name,omitempty"`
 	City *interface{} `json:"city,omitempty"`
+	FullName *interface{} `json:"full_name,omitempty"`
+	Company *interface{} `json:"company,omitempty"`
+	Login string `json:"login,omitempty"`
+	Address *interface{} `json:"address,omitempty"`
+	Fax *interface{} `json:"fax,omitempty"`
+	Phone string `json:"phone,omitempty"`
+	MetaData *interface{} `json:"meta_data,omitempty"`
+	Zip *interface{} `json:"zip,omitempty"`
+	State *interface{} `json:"state,omitempty"`
+	Country *interface{} `json:"country,omitempty"`
+	Last string `json:"last,omitempty"`
+	IsClient bool `json:"is_client,omitempty"`
 }

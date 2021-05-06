@@ -27,7 +27,7 @@ var (
 
 type DeviceApiService service
 
-/*
+/* 
 DeviceApiService Get all device tags order
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *DeviceApiGetAllDeviceTagOrderResourceOpts - Optional Parameters:
@@ -108,7 +108,9 @@ func (a *DeviceApiService) GetAllDeviceTagOrderResource(ctx context.Context, loc
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -134,7 +136,7 @@ func (a *DeviceApiService) GetAllDeviceTagOrderResource(ctx context.Context, loc
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Get device tags order for current user
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *DeviceApiGetClientDeviceTagOrderResourceOpts - Optional Parameters:
@@ -215,7 +217,9 @@ func (a *DeviceApiService) GetClientDeviceTagOrderResource(ctx context.Context, 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -241,7 +245,7 @@ func (a *DeviceApiService) GetClientDeviceTagOrderResource(ctx context.Context, 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Get all device tags for current client
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *DeviceApiGetClientDeviceTagResourceOpts - Optional Parameters:
@@ -322,7 +326,9 @@ func (a *DeviceApiService) GetClientDeviceTagResource(ctx context.Context, local
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -348,7 +354,7 @@ func (a *DeviceApiService) GetClientDeviceTagResource(ctx context.Context, local
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Returns all Events found for a single device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId
@@ -431,7 +437,9 @@ func (a *DeviceApiService) GetDeviceIdEventResource(ctx context.Context, deviceI
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -457,7 +465,7 @@ func (a *DeviceApiService) GetDeviceIdEventResource(ctx context.Context, deviceI
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Returns detailed information for a Single Device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View / Update
@@ -540,7 +548,9 @@ func (a *DeviceApiService) GetDeviceIdResource(ctx context.Context, deviceId int
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -566,7 +576,7 @@ func (a *DeviceApiService) GetDeviceIdResource(ctx context.Context, deviceId int
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Clear NAT rules based on the device client id
 Returns success or error
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -650,7 +660,7 @@ func (a *DeviceApiService) GetDeviceIpminatRuleResource(ctx context.Context, dev
 	return localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Returns Active Devices and basic MetaData
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *DeviceApiGetDeviceResourceOpts - Optional Parameters:
@@ -731,7 +741,9 @@ func (a *DeviceApiService) GetDeviceResource(ctx context.Context, localVarOption
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -757,7 +769,7 @@ func (a *DeviceApiService) GetDeviceResource(ctx context.Context, localVarOption
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Get device tags
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View / Update
@@ -840,7 +852,9 @@ func (a *DeviceApiService) GetDeviceTagIdResource(ctx context.Context, deviceId 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -866,7 +880,7 @@ func (a *DeviceApiService) GetDeviceTagIdResource(ctx context.Context, deviceId 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Returns initial password for the device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to retrieve initial authentication credentials for
@@ -949,7 +963,9 @@ func (a *DeviceApiService) GetInitialCredsIdResource(ctx context.Context, device
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -975,7 +991,7 @@ func (a *DeviceApiService) GetInitialCredsIdResource(ctx context.Context, device
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Returns initial password for the device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to retrieve initial password
@@ -1058,7 +1074,9 @@ func (a *DeviceApiService) GetInitialPasswordIdResource(ctx context.Context, dev
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1084,7 +1102,7 @@ func (a *DeviceApiService) GetInitialPasswordIdResource(ctx context.Context, dev
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Returns IPMI info data
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to retrieve IPMI info.
@@ -1167,7 +1185,9 @@ func (a *DeviceApiService) GetIpmiInfoIdResource(ctx context.Context, deviceId i
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1193,7 +1213,7 @@ func (a *DeviceApiService) GetIpmiInfoIdResource(ctx context.Context, deviceId i
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Returns IPMI login credentials
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to retrieve IPMI Login data.
@@ -1276,7 +1296,9 @@ func (a *DeviceApiService) GetIpmiInfoLoginDataResource(ctx context.Context, dev
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1302,7 +1324,7 @@ func (a *DeviceApiService) GetIpmiInfoLoginDataResource(ctx context.Context, dev
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Returns IPMI thresholds data
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View
@@ -1385,7 +1407,9 @@ func (a *DeviceApiService) GetIpmiThresholdsIdResource(ctx context.Context, devi
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1411,7 +1435,7 @@ func (a *DeviceApiService) GetIpmiThresholdsIdResource(ctx context.Context, devi
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Returns if device have valid credentials for IPMI login
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to check IPMI credentials
@@ -1494,7 +1518,9 @@ func (a *DeviceApiService) GetIpmiValidLoginIdResource(ctx context.Context, devi
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1520,7 +1546,7 @@ func (a *DeviceApiService) GetIpmiValidLoginIdResource(ctx context.Context, devi
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Returns a list of all Network Interfaces bound to a Device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to view Network Interfaces.
@@ -1603,7 +1629,9 @@ func (a *DeviceApiService) GetNetworkInterfaceResource(ctx context.Context, devi
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1629,7 +1657,7 @@ func (a *DeviceApiService) GetNetworkInterfaceResource(ctx context.Context, devi
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Get device&#39;s current power status
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View / Update
@@ -1712,7 +1740,9 @@ func (a *DeviceApiService) GetPowerResource(ctx context.Context, deviceId int32,
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1738,7 +1768,7 @@ func (a *DeviceApiService) GetPowerResource(ctx context.Context, deviceId int32,
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Add a public IP on IPMI whitelist
 Returns IPMI public IP
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -1825,7 +1855,7 @@ func (a *DeviceApiService) PostDeviceIpmiWhitelistResource(ctx context.Context, 
 	return localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Reload any SPS Device with any available OS
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId
@@ -1911,7 +1941,9 @@ func (a *DeviceApiService) PostDeviceReloadResource(ctx context.Context, deviceI
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1937,7 +1969,7 @@ func (a *DeviceApiService) PostDeviceReloadResource(ctx context.Context, deviceI
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Apply action to device power
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View / Update
@@ -2022,7 +2054,9 @@ func (a *DeviceApiService) PostPowerResource(ctx context.Context, deviceId int32
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -2048,7 +2082,7 @@ func (a *DeviceApiService) PostPowerResource(ctx context.Context, deviceId int32
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Update device tags order for current user
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -2132,7 +2166,9 @@ func (a *DeviceApiService) PutClientDeviceTagOrderResource(ctx context.Context, 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -2158,7 +2194,7 @@ func (a *DeviceApiService) PutClientDeviceTagOrderResource(ctx context.Context, 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Updates Device MetaData for a Single Device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View / Update
@@ -2244,7 +2280,9 @@ func (a *DeviceApiService) PutDeviceIdResource(ctx context.Context, deviceId int
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -2270,7 +2308,7 @@ func (a *DeviceApiService) PutDeviceIdResource(ctx context.Context, deviceId int
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Update device tags
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View / Update
@@ -2356,7 +2394,9 @@ func (a *DeviceApiService) PutDeviceTagIdResource(ctx context.Context, deviceId 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -2382,7 +2422,7 @@ func (a *DeviceApiService) PutDeviceTagIdResource(ctx context.Context, deviceId 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Updates IPMI thresholds for device list
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -2466,7 +2506,9 @@ func (a *DeviceApiService) PutIpmiDevicesThresholdsIdResource(ctx context.Contex
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -2492,7 +2534,7 @@ func (a *DeviceApiService) PutIpmiDevicesThresholdsIdResource(ctx context.Contex
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DeviceApiService Updates IPMI thresholds data
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View
@@ -2578,7 +2620,9 @@ func (a *DeviceApiService) PutIpmiThresholdsIdResource(ctx context.Context, devi
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -2603,4 +2647,3 @@ func (a *DeviceApiService) PutIpmiThresholdsIdResource(ctx context.Context, devi
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
-
