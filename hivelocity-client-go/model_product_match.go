@@ -10,6 +10,6 @@
 package swagger
 
 type ProductMatch struct {
-	SpsOnly bool `json:"spsOnly,omitempty"`
 	LshwOutput *interface{} `json:"lshwOutput,omitempty"`
+	SpsOnly bool `json:"spsOnly,omitempty"`
 }

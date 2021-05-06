@@ -27,7 +27,7 @@ var (
 
 type TokenApiService service
 
-/*
+/* 
 TokenApiService Deletes the Public API Token
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param token Public API Token
@@ -110,7 +110,7 @@ func (a *TokenApiService) DeleteTokenIdResource(ctx context.Context, token strin
 	return localVarHttpResponse, nil
 }
 
-/*
+/* 
 TokenApiService Returns Public API Token
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param token Public API Token
@@ -193,7 +193,9 @@ func (a *TokenApiService) GetTokenIdResource(ctx context.Context, token string, 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -219,7 +221,7 @@ func (a *TokenApiService) GetTokenIdResource(ctx context.Context, token string, 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 TokenApiService Returns a list of Public API Tokens for the current user
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *TokenApiGetTokenResourceOpts - Optional Parameters:
@@ -300,7 +302,9 @@ func (a *TokenApiService) GetTokenResource(ctx context.Context, localVarOptional
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -326,7 +330,7 @@ func (a *TokenApiService) GetTokenResource(ctx context.Context, localVarOptional
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 TokenApiService Create a new Public API Token for the current user
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -410,7 +414,9 @@ func (a *TokenApiService) PostTokenResource(ctx context.Context, payload PublicA
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -436,7 +442,7 @@ func (a *TokenApiService) PostTokenResource(ctx context.Context, payload PublicA
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 TokenApiService Updates the Public API Token
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param token Public API Token
@@ -522,7 +528,9 @@ func (a *TokenApiService) PutTokenIdResource(ctx context.Context, token string, 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -547,4 +555,3 @@ func (a *TokenApiService) PutTokenIdResource(ctx context.Context, token string, 
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
-

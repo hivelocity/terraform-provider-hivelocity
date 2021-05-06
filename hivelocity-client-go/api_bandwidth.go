@@ -27,7 +27,7 @@ var (
 
 type BandwidthApiService service
 
-/*
+/* 
 BandwidthApiService Returns RRDTool Graph based bandwidth in PNG format
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View
@@ -124,7 +124,9 @@ func (a *BandwidthApiService) PostDeviceIdBandwidthImageResource(ctx context.Con
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -150,7 +152,7 @@ func (a *BandwidthApiService) PostDeviceIdBandwidthImageResource(ctx context.Con
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 BandwidthApiService Returns RRDTool Xport based bandwidth data in JSON format
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId ID of Device to View
@@ -254,7 +256,9 @@ func (a *BandwidthApiService) PostDeviceIdBandwidthResource(ctx context.Context,
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -280,7 +284,7 @@ func (a *BandwidthApiService) PostDeviceIdBandwidthResource(ctx context.Context,
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 BandwidthApiService Returns RRDTool Graph based bandwidth in PNG format
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param serviceId ID of Service to View
@@ -377,7 +381,9 @@ func (a *BandwidthApiService) PostServiceIdBandwidthImageResource(ctx context.Co
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -403,7 +409,7 @@ func (a *BandwidthApiService) PostServiceIdBandwidthImageResource(ctx context.Co
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 BandwidthApiService Returns RRDTool Xport based bandwidth data in JSON format
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param serviceId ID of Service to View
@@ -502,7 +508,9 @@ func (a *BandwidthApiService) PostServiceIdBandwidthResource(ctx context.Context
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -527,4 +535,3 @@ func (a *BandwidthApiService) PostServiceIdBandwidthResource(ctx context.Context
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
-

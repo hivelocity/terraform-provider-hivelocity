@@ -10,11 +10,11 @@
 package swagger
 
 type TicketCreate struct {
-	Body string `json:"body,omitempty"`
-	Priority float32 `json:"priority,omitempty"`
+	Subject string `json:"subject"`
+	Queue string `json:"queue"`
 	Assignment float32 `json:"assignment,omitempty"`
 	Source float32 `json:"source,omitempty"`
-	Queue string `json:"queue"`
+	Priority float32 `json:"priority,omitempty"`
+	Body string `json:"body,omitempty"`
 	Status string `json:"status,omitempty"`
-	Subject string `json:"subject"`
 }

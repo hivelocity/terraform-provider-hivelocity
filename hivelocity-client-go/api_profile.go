@@ -26,7 +26,7 @@ var (
 
 type ProfileApiService service
 
-/*
+/* 
 ProfileApiService Get Basic Profile of current user or a contact with id
 The id is optional and if it is necessary must be sent as URL param.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -113,7 +113,9 @@ func (a *ProfileApiService) GetBasicProfileResource(ctx context.Context, localVa
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -139,7 +141,7 @@ func (a *ProfileApiService) GetBasicProfileResource(ctx context.Context, localVa
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 ProfileApiService Get Profile of current user or a contact with id
 The id is optional and if it is necessary must be sent as URL param.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -226,7 +228,9 @@ func (a *ProfileApiService) GetProfileResource(ctx context.Context, localVarOpti
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -252,7 +256,7 @@ func (a *ProfileApiService) GetProfileResource(ctx context.Context, localVarOpti
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 ProfileApiService Update Profile of current user or a contact with id
 The id is optional and if it is necessary must be sent as URL param.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -342,7 +346,9 @@ func (a *ProfileApiService) PutProfileResource(ctx context.Context, payload Prof
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -367,4 +373,3 @@ func (a *ProfileApiService) PutProfileResource(ctx context.Context, payload Prof
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
-

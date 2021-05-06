@@ -91,6 +91,11 @@ func dataSourceBareMetalDevice() *schema.Resource {
 				Computed: true,
 				Optional: true,
 			},
+			"period": &schema.Schema{
+				Type:     schema.TypeString,
+				Computed: true,
+				Optional: true,
+			},
 		},
 	}
 }
