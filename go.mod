@@ -16,8 +16,7 @@ require (
 	github.com/hashicorp/go-multierror v1.1.0 // indirect
 	github.com/hashicorp/go-uuid v1.0.2 // indirect
 	github.com/hashicorp/hcl/v2 v2.7.0 // indirect
-	github.com/hashicorp/terraform-exec v0.11.0 // indirect
-	github.com/hashicorp/terraform-json v0.6.0 // indirect
+	github.com/hashicorp/terraform-plugin-docs v0.4.0 // indirect
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.0.4
 	github.com/hashicorp/terraform-plugin-test/v2 v2.1.2 // indirect
 	github.com/hashicorp/yamux v0.0.0-20200609203250-aecfd211c9ce // indirect
@@ -28,7 +27,6 @@ require (
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
 	github.com/mitchellh/mapstructure v1.3.3 // indirect
 	github.com/oklog/run v1.1.0 // indirect
-	github.com/zclconf/go-cty v1.6.1 // indirect
 	go.opencensus.io v0.22.5 // indirect
 	golang.org/x/crypto v0.0.0-20201012173705-84dcc777aaee // indirect
 	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb // indirect
