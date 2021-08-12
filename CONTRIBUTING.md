@@ -26,6 +26,14 @@ To rebuild the client and add it to your project repo:
 
 `java -jar ~/Downloads/swagger-codegen-cli-2.4.15.jar generate -i http://localhost:5065/api/v2/swagger.json -l go -o ./hivelocity-client-go`
 
+## Generating the documentation for the registry
+
+The documentation for the Hashicorp registry is composed of the README.md file, along with the files present in the examples and docs folder.
+
+If there were changes in the provider, the documentation will have to be updated. This can be accomplished using the following:
+
+`go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs`
+
 ## Rebuilding the project
 
 First, make sure that this folder structure exists: `
