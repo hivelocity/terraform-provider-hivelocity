@@ -36,20 +36,13 @@ If there were changes in the provider, the documentation will have to be updated
 
 ## Rebuilding the project
 
-First, make sure that this folder structure exists: `
+Whenever you update the project run the following cmd to add the changes to your Terraform plugins:
 
-`~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/`
+`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity`
 
 Watch out for the naming convention (OS and distribution).
 
-Also, while developing, you may want to change the `source = "hivelocity.net/prod/hivelocity"` line to `source = "hivelocity.net/dev/hivelocity"` in the `./examples/data_sources/main.tf` file. Please don't commit this change.
-
-Then, whenever you update the project run the following cmd to add the changes to your Terraform plugins:
-
-`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity`
-
 It is recommend you set the environment variable `export TF_LOG=DEBUG` so that you can see and debug API calls while developing new functionality.
-
 
 ## Data Sources
 
@@ -57,9 +50,9 @@ All data sources should be added to the `examples/data_sources/main.tf` file for
 
 Once you have updated the example, you can test your new data source from the root of the repo:
 
-`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity && cd examples/data_sources && terraform init && terraform apply --auto-approve`
+`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity && cd examples/data_sources && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform apply --auto-approve`
 
-# Resources
+## Resources
 
 All resources should have their own folder with a `main.tf` file added to `examples` for development.  
 
@@ -67,12 +60,11 @@ Once you have updated the example, you can test your new data source from the ro
 
 To Create/Update:
 
-`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_device && terraform init && terraform apply --auto-approve`
+`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_device && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform apply --auto-approve`
 
 To Delete:
 
-`go build -o terraform-provider-hivelocity && mv terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/dev/hivelocity/0.1/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_device && terraform init && terraform delete --auto-approve`
-
+`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_device && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform delete --auto-approve`
 
 Testing provider code
 ---------------------------
@@ -91,7 +83,6 @@ Then find the relevant test function in `*_test.go` and run
 
 You can debug your API requests byl setting your environment variable `TF_LOG=DEBUG`
 
-
 Testing the provider with Terraform
 ---------------------------------------
 
@@ -100,4 +91,3 @@ Once you've built the plugin binary (see [Developing the provider](#developing-t
 ```sh
 $ terraform init -plugin-dir $GOPATH/bin
 ```
-
