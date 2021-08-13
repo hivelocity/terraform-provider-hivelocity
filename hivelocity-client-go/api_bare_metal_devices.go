@@ -27,7 +27,7 @@ var (
 
 type BareMetalDevicesApiService service
 
-/* 
+/*
 BareMetalDevicesApiService Cancel the specified bare metal device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId
@@ -120,7 +120,7 @@ func (a *BareMetalDevicesApiService) DeleteBareMetalDeviceIdResource(ctx context
 	return localVarHttpResponse, nil
 }
 
-/* 
+/*
 BareMetalDevicesApiService Return bare metal device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId
@@ -208,9 +208,7 @@ func (a *BareMetalDevicesApiService) GetBareMetalDeviceIdResource(ctx context.Co
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -236,7 +234,7 @@ func (a *BareMetalDevicesApiService) GetBareMetalDeviceIdResource(ctx context.Co
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 BareMetalDevicesApiService Return a list with all servers as bare metal
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *BareMetalDevicesApiGetBareMetalDeviceResourceOpts - Optional Parameters:
@@ -317,9 +315,7 @@ func (a *BareMetalDevicesApiService) GetBareMetalDeviceResource(ctx context.Cont
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -345,7 +341,7 @@ func (a *BareMetalDevicesApiService) GetBareMetalDeviceResource(ctx context.Cont
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 BareMetalDevicesApiService Deploy a new bare metal server
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -429,9 +425,7 @@ func (a *BareMetalDevicesApiService) PostBareMetalDeviceResource(ctx context.Con
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -457,7 +451,7 @@ func (a *BareMetalDevicesApiService) PostBareMetalDeviceResource(ctx context.Con
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 BareMetalDevicesApiService Update a bare metal device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId
@@ -548,9 +542,7 @@ func (a *BareMetalDevicesApiService) PutBareMetalDeviceIdResource(ctx context.Co
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -575,3 +567,4 @@ func (a *BareMetalDevicesApiService) PutBareMetalDeviceIdResource(ctx context.Co
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
+

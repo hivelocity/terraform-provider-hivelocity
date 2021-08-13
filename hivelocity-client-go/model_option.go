@@ -10,10 +10,10 @@
 package swagger
 
 type Option struct {
+	MonthlyPrice float32 `json:"monthlyPrice,omitempty"`
 	Expressions []string `json:"expressions,omitempty"`
 	Id int32 `json:"id,omitempty"`
 	Tags []string `json:"tags,omitempty"`
-	MonthlyPrice float32 `json:"monthlyPrice,omitempty"`
 	Currency string `json:"currency,omitempty"`
 	Name string `json:"name,omitempty"`
 }

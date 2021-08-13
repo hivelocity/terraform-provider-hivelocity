@@ -77,6 +77,26 @@ Class | Method | HTTP request | Description
 *DeviceApi* | [**PutDeviceTagIdResource**](docs/DeviceApi.md#putdevicetagidresource) | **Put** /device/{deviceId}/tags | Update device tags
 *DeviceApi* | [**PutIpmiDevicesThresholdsIdResource**](docs/DeviceApi.md#putipmidevicesthresholdsidresource) | **Put** /device/ipmi/thresholds | Updates IPMI thresholds for device list
 *DeviceApi* | [**PutIpmiThresholdsIdResource**](docs/DeviceApi.md#putipmithresholdsidresource) | **Put** /device/{deviceId}/ipmi/thresholds | Updates IPMI thresholds data
+*DomainsApi* | [**DeleteARecordIdResource**](docs/DomainsApi.md#deletearecordidresource) | **Delete** /domains/{domainID}/a-record/{recordId} | Delete a single A Record value for given zone
+*DomainsApi* | [**DeleteAaaaRecordIdResource**](docs/DomainsApi.md#deleteaaaarecordidresource) | **Delete** /domains/{domainID}/aaaa-record/{recordId} | Delete an AAAA Record for given zone
+*DomainsApi* | [**DeleteDomainIdResource**](docs/DomainsApi.md#deletedomainidresource) | **Delete** /domains/{domainId} | Delete domain for given id
+*DomainsApi* | [**DeleteMxRecordIdResource**](docs/DomainsApi.md#deletemxrecordidresource) | **Delete** /domains/{domainID}/mx-record/{recordId} | Delete an MX Record for given zone
+*DomainsApi* | [**GetARecordIdResource**](docs/DomainsApi.md#getarecordidresource) | **Get** /domains/{domainID}/a-record/{recordId} | Return Single A Records found for given id
+*DomainsApi* | [**GetARecordResource**](docs/DomainsApi.md#getarecordresource) | **Get** /domains/{domainID}/a-record | Return all A Records found for given zone
+*DomainsApi* | [**GetAaaaRecordIdResource**](docs/DomainsApi.md#getaaaarecordidresource) | **Get** /domains/{domainID}/aaaa-record/{recordId} | Return Single AAAA Records found for given id
+*DomainsApi* | [**GetAaaaRecordResource**](docs/DomainsApi.md#getaaaarecordresource) | **Get** /domains/{domainID}/aaaa-record | Return all AAAA Records found for given zone
+*DomainsApi* | [**GetDomainIdResource**](docs/DomainsApi.md#getdomainidresource) | **Get** /domains/{domainId} | Return a domain for given id
+*DomainsApi* | [**GetDomainResource**](docs/DomainsApi.md#getdomainresource) | **Get** /domains/ | Return the domains of a client
+*DomainsApi* | [**GetMxRecordIdResource**](docs/DomainsApi.md#getmxrecordidresource) | **Get** /domains/{domainID}/mx-record/{recordId} | Return Single MX Records found for given id
+*DomainsApi* | [**GetMxRecordResource**](docs/DomainsApi.md#getmxrecordresource) | **Get** /domains/{domainID}/mx-record | Return all MX Records found for given zone
+*DomainsApi* | [**PostARecordResource**](docs/DomainsApi.md#postarecordresource) | **Post** /domains/{domainID}/a-record | Create a new A Record for given zone
+*DomainsApi* | [**PostAaaaRecordResource**](docs/DomainsApi.md#postaaaarecordresource) | **Post** /domains/{domainID}/aaaa-record | Create a new AAAA Record for given zone
+*DomainsApi* | [**PostDomainResource**](docs/DomainsApi.md#postdomainresource) | **Post** /domains/ | Create a new domain
+*DomainsApi* | [**PostMxRecordResource**](docs/DomainsApi.md#postmxrecordresource) | **Post** /domains/{domainID}/mx-record | Create a new MX Record for given zone
+*DomainsApi* | [**PutARecordIdResource**](docs/DomainsApi.md#putarecordidresource) | **Put** /domains/{domainID}/a-record/{recordId} | Update an A Record for given zone
+*DomainsApi* | [**PutAaaaRecordIdResource**](docs/DomainsApi.md#putaaaarecordidresource) | **Put** /domains/{domainID}/aaaa-record/{recordId} | Update an AAAA Record for given id
+*DomainsApi* | [**PutMxRecordIdResource**](docs/DomainsApi.md#putmxrecordidresource) | **Put** /domains/{domainID}/mx-record/{recordId} | Update an MX Record for given zone
+*InventoryApi* | [**GetLocationResource**](docs/InventoryApi.md#getlocationresource) | **Get** /inventory/locations | Return sps facilities and locations
 *InventoryApi* | [**GetStockByProductResource**](docs/InventoryApi.md#getstockbyproductresource) | **Get** /inventory/product/{productId} | Return a structured sps stock data, grouped by city or facility code for a single product
 *InventoryApi* | [**GetStockResource**](docs/InventoryApi.md#getstockresource) | **Get** /inventory/product | Return structured sps stock data, grouped by city or facility code for all products
 *InvoiceApi* | [**GetInvoiceIdDetails**](docs/InvoiceApi.md#getinvoiceiddetails) | **Get** /invoice/{invoiceId}/details | Return detailed information for an invoice
@@ -84,6 +104,8 @@ Class | Method | HTTP request | Description
 *InvoiceApi* | [**GetInvoicePdfResource**](docs/InvoiceApi.md#getinvoicepdfresource) | **Get** /invoice/{invoiceId}/pdf-download | Return an Invoice PDF file in Base64 Encoded Format
 *InvoiceApi* | [**GetInvoiceResource**](docs/InvoiceApi.md#getinvoiceresource) | **Get** /invoice/ | Return serialized data on all invoices
 *InvoiceApi* | [**GetInvoiceSearchResource**](docs/InvoiceApi.md#getinvoicesearchresource) | **Get** /invoice/search | Return results of invoice search
+*NetworkApi* | [**GetNetworkTaskClientResource**](docs/NetworkApi.md#getnetworktaskclientresource) | **Get** /network/status/ | Returns the Last Status for a long running Network Task, such as modifying a VLAN
+*NetworkApi* | [**GetNetworkTaskDeviceResource**](docs/NetworkApi.md#getnetworktaskdeviceresource) | **Get** /network/status/{deviceId} | Returns the Last Status for a long running Network Task, such as modifying a VLAN
 *NetworkApi* | [**GetNullRouteResource**](docs/NetworkApi.md#getnullrouteresource) | **Get** /network/null/{ip} | Null route an IP
 *NetworkApi* | [**GetRemoveNullRouteResource**](docs/NetworkApi.md#getremovenullrouteresource) | **Get** /network/unnull/{ip} | Remove null route from an IP
 *NetworkApi* | [**PostDetailedNullRouteResource**](docs/NetworkApi.md#postdetailednullrouteresource) | **Post** /network/null | Null route an IP (with custom comments)
@@ -101,7 +123,6 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**GetBasicProfileResource**](docs/ProfileApi.md#getbasicprofileresource) | **Get** /profile/basic | Get Basic Profile of current user or a contact with id
 *ProfileApi* | [**GetProfileResource**](docs/ProfileApi.md#getprofileresource) | **Get** /profile/ | Get Profile of current user or a contact with id
 *ProfileApi* | [**PutProfileResource**](docs/ProfileApi.md#putprofileresource) | **Put** /profile/ | Update Profile of current user or a contact with id
-*SPSApi* | [**PostSpsDeviceValidationCheck**](docs/SPSApi.md#postspsdevicevalidationcheck) | **Post** /sps/device-validation-check | 
 *ServiceApi* | [**GetServiceIdResource**](docs/ServiceApi.md#getserviceidresource) | **Get** /service/{serviceId} | Return a dictionary with data from a specific account service
 *ServiceApi* | [**GetServiceResource**](docs/ServiceApi.md#getserviceresource) | **Get** /service/ | Return a list of all account services
 *SshKeyApi* | [**DeleteSshKeyIdResource**](docs/SshKeyApi.md#deletesshkeyidresource) | **Delete** /ssh_key/{sshKeyId} | Removes public ssh key
@@ -121,6 +142,11 @@ Class | Method | HTTP request | Description
 *TokenApi* | [**GetTokenResource**](docs/TokenApi.md#gettokenresource) | **Get** /token/ | Returns a list of Public API Tokens for the current user
 *TokenApi* | [**PostTokenResource**](docs/TokenApi.md#posttokenresource) | **Post** /token/ | Create a new Public API Token for the current user
 *TokenApi* | [**PutTokenIdResource**](docs/TokenApi.md#puttokenidresource) | **Put** /token/{token} | Updates the Public API Token
+*VLANApi* | [**DeleteVlanIdResource**](docs/VLANApi.md#deletevlanidresource) | **Delete** /vlan/{vlanId} | Remove an existing Private VLAN
+*VLANApi* | [**GetVlanIdResource**](docs/VLANApi.md#getvlanidresource) | **Get** /vlan/{vlanId} | Fetch information from an existing Private VLAN
+*VLANApi* | [**GetVlanResource**](docs/VLANApi.md#getvlanresource) | **Get** /vlan/ | Return a list with all Private VLANs
+*VLANApi* | [**PostVlanResource**](docs/VLANApi.md#postvlanresource) | **Post** /vlan/ | Create a new Private VLAN
+*VLANApi* | [**PutVlanIdResource**](docs/VLANApi.md#putvlanidresource) | **Put** /vlan/{vlanId} | Update an existing Private VLAN, including adding and/or removing devices from it
 *WebhookApi* | [**DeleteWebhookIdResource**](docs/WebhookApi.md#deletewebhookidresource) | **Delete** /webhooks/{webhookId} | Deletes a single webhook
 *WebhookApi* | [**GetWebhookEventResource**](docs/WebhookApi.md#getwebhookeventresource) | **Get** /webhooks/events | Returns all available Webhook Events
 *WebhookApi* | [**GetWebhookIdResource**](docs/WebhookApi.md#getwebhookidresource) | **Get** /webhooks/{webhookId} | Returns detailed information for a Single Webhook
@@ -132,6 +158,12 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [ARecordCreate](docs/ARecordCreate.md)
+ - [ARecordReturn](docs/ARecordReturn.md)
+ - [ARecordUpdate](docs/ARecordUpdate.md)
+ - [AaaaRecordCreate](docs/AaaaRecordCreate.md)
+ - [AaaaRecordReturn](docs/AaaaRecordReturn.md)
+ - [AaaaRecordUpdate](docs/AaaaRecordUpdate.md)
  - [Bandwidth](docs/Bandwidth.md)
  - [BandwidthImage](docs/BandwidthImage.md)
  - [BareMetalDevice](docs/BareMetalDevice.md)
@@ -141,6 +173,7 @@ Class | Method | HTTP request | Description
  - [BillingInfo](docs/BillingInfo.md)
  - [Cancellation](docs/Cancellation.md)
  - [CancellationCreate](docs/CancellationCreate.md)
+ - [CityStateCountry](docs/CityStateCountry.md)
  - [Client](docs/Client.md)
  - [ContactCreate](docs/ContactCreate.md)
  - [ContactDump](docs/ContactDump.md)
@@ -164,6 +197,9 @@ Class | Method | HTTP request | Description
  - [DeviceTag](docs/DeviceTag.md)
  - [DeviceUpdate](docs/DeviceUpdate.md)
  - [DevicesIpmiThresholds](docs/DevicesIpmiThresholds.md)
+ - [DomainCreate](docs/DomainCreate.md)
+ - [DomainReturn](docs/DomainReturn.md)
+ - [Hardware](docs/Hardware.md)
  - [Inventory](docs/Inventory.md)
  - [Invoice](docs/Invoice.md)
  - [InvoiceDetails](docs/InvoiceDetails.md)
@@ -174,6 +210,10 @@ Class | Method | HTTP request | Description
  - [IpmiLoginData](docs/IpmiLoginData.md)
  - [IpmiSensor](docs/IpmiSensor.md)
  - [IpmiValidLogin](docs/IpmiValidLogin.md)
+ - [Location](docs/Location.md)
+ - [MxRecordReturn](docs/MxRecordReturn.md)
+ - [MxValue](docs/MxValue.md)
+ - [NetworkTask](docs/NetworkTask.md)
  - [Option](docs/Option.md)
  - [Options](docs/Options.md)
  - [OrderDump](docs/OrderDump.md)
@@ -182,18 +222,20 @@ Class | Method | HTTP request | Description
  - [PasswordResponse](docs/PasswordResponse.md)
  - [Permission](docs/Permission.md)
  - [PermissionReturn](docs/PermissionReturn.md)
- - [Product](docs/Product.md)
  - [ProductInfo](docs/ProductInfo.md)
  - [ProductMatch](docs/ProductMatch.md)
- - [ProductMatchResult](docs/ProductMatchResult.md)
  - [ProductOption](docs/ProductOption.md)
  - [Profile](docs/Profile.md)
  - [ProfileUpdate](docs/ProfileUpdate.md)
  - [PublicApiTokenDump](docs/PublicApiTokenDump.md)
  - [PublicApiTokenLoad](docs/PublicApiTokenLoad.md)
+ - [RecordValue](docs/RecordValue.md)
  - [ServiceDump](docs/ServiceDump.md)
  - [ServiceOption](docs/ServiceOption.md)
- - [SpsDeviceValidation](docs/SpsDeviceValidation.md)
+ - [SingleARecordReturn](docs/SingleARecordReturn.md)
+ - [SingleMxRecordCreate](docs/SingleMxRecordCreate.md)
+ - [SingleMxRecordReturn](docs/SingleMxRecordReturn.md)
+ - [SingleMxRecordUpdate](docs/SingleMxRecordUpdate.md)
  - [SshKey](docs/SshKey.md)
  - [SshKeyResponse](docs/SshKeyResponse.md)
  - [SshKeyUpdate](docs/SshKeyUpdate.md)
@@ -207,6 +249,8 @@ Class | Method | HTTP request | Description
  - [TicketSeachResult](docs/TicketSeachResult.md)
  - [TotalActiveCredit](docs/TotalActiveCredit.md)
  - [UpdateDevicesIpmiThresholds](docs/UpdateDevicesIpmiThresholds.md)
+ - [Vlan](docs/Vlan.md)
+ - [VlanCreate](docs/VlanCreate.md)
  - [Webhook](docs/Webhook.md)
  - [WebhookCreate](docs/WebhookCreate.md)
  - [WebhookEvent](docs/WebhookEvent.md)

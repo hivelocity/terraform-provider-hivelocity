@@ -25,13 +25,13 @@ type Device struct {
 	IpmiEnabled bool `json:"ipmiEnabled,omitempty"`
 	DisplayedTags []interface{} `json:"displayedTags,omitempty"`
 	Tags []string `json:"tags,omitempty"`
-	Location *interface{} `json:"location,omitempty"`
+	Location interface{} `json:"location,omitempty"`
 	PrimaryIp string `json:"primaryIp,omitempty"`
 	IpmiAddress string `json:"ipmiAddress,omitempty"`
 	ServiceMonitors []string `json:"serviceMonitors,omitempty"`
-	BillingInfo *interface{} `json:"billingInfo,omitempty"`
+	BillingInfo interface{} `json:"billingInfo,omitempty"`
 	ServicePlan int32 `json:"servicePlan,omitempty"`
 	LastInvoiceId int32 `json:"lastInvoiceId,omitempty"`
 	SelfProvisioning bool `json:"selfProvisioning,omitempty"`
-	Metadata *interface{} `json:"metadata,omitempty"`
+	Metadata interface{} `json:"metadata,omitempty"`
 }

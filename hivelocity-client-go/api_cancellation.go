@@ -27,7 +27,7 @@ var (
 
 type CancellationApiService service
 
-/* 
+/*
 CancellationApiService Return the Cancellation found for a Device
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deviceId
@@ -110,9 +110,7 @@ func (a *CancellationApiService) GetCancellationDeviceResource(ctx context.Conte
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -138,7 +136,7 @@ func (a *CancellationApiService) GetCancellationDeviceResource(ctx context.Conte
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 CancellationApiService Return any cancellation by ID
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param cancellationId
@@ -221,9 +219,7 @@ func (a *CancellationApiService) GetCancellationIdResource(ctx context.Context, 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -249,7 +245,7 @@ func (a *CancellationApiService) GetCancellationIdResource(ctx context.Context, 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 CancellationApiService Return the services cancellations of a client
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *CancellationApiGetCancellationResourceOpts - Optional Parameters:
@@ -330,9 +326,7 @@ func (a *CancellationApiService) GetCancellationResource(ctx context.Context, lo
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -358,7 +352,7 @@ func (a *CancellationApiService) GetCancellationResource(ctx context.Context, lo
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 CancellationApiService Return the Cancellation found for a Service
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param serviceId
@@ -441,9 +435,7 @@ func (a *CancellationApiService) GetCancellationServiceResource(ctx context.Cont
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -469,7 +461,7 @@ func (a *CancellationApiService) GetCancellationServiceResource(ctx context.Cont
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 CancellationApiService Creates Cancellation for a device/service
 reason options are:     &#39;My current service is being upgraded&#39;,     &#39;Hardware/software/network or power issues&#39;,     &#39;I think I have found a better deal&#39;,     &#39;I have experienced tech support problems&#39;,     &#39;I am consolidating my Hivelocity accounts&#39;,     &#39;I am a reseller and my customer cancelled&#39;,     &#39;I am moving to a different technology solution: Public Cloud&#39;,     &#39;I am moving to a different technology solution: Managed Hosting Company&#39;,     &#39;A product difference (Example: AWS)&#39;,     &#39;&#39;
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -554,9 +546,7 @@ func (a *CancellationApiService) PostCancellationResource(ctx context.Context, p
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -581,3 +571,4 @@ func (a *CancellationApiService) PostCancellationResource(ctx context.Context, p
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
+

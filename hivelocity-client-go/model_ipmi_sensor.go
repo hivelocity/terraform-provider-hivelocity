@@ -10,10 +10,10 @@
 package swagger
 
 type IpmiSensor struct {
-	Units string `json:"units,omitempty"`
-	Name string `json:"name,omitempty"`
 	Reading float32 `json:"reading,omitempty"`
+	SensorId string `json:"sensorId,omitempty"`
+	Units string `json:"units,omitempty"`
 	Status bool `json:"status,omitempty"`
 	Group string `json:"group,omitempty"`
-	SensorId string `json:"sensorId,omitempty"`
+	Name string `json:"name,omitempty"`
 }

@@ -27,7 +27,7 @@ var (
 
 type ProductApiService service
 
-/* 
+/*
 ProductApiService Return structured sps stock data in a list
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *ProductApiGetProductListResourceOpts - Optional Parameters:
@@ -108,9 +108,7 @@ func (a *ProductApiService) GetProductListResource(ctx context.Context, localVar
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -136,7 +134,7 @@ func (a *ProductApiService) GetProductListResource(ctx context.Context, localVar
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 ProductApiService Return List of operating systems found for a Product
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param productId ID of the Product
@@ -219,9 +217,7 @@ func (a *ProductApiService) GetProductOperatingSystemsResource(ctx context.Conte
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -247,7 +243,7 @@ func (a *ProductApiService) GetProductOperatingSystemsResource(ctx context.Conte
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 ProductApiService Return List of Options found for a Product
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param productId ID of the Product
@@ -330,9 +326,7 @@ func (a *ProductApiService) GetProductOptionResource(ctx context.Context, produc
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -358,7 +352,7 @@ func (a *ProductApiService) GetProductOptionResource(ctx context.Context, produc
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 ProductApiService Return a mapping of Products and Options with pricing per-period
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *ProductApiGetProductsAndOptionsResourceOpts - Optional Parameters:
@@ -439,9 +433,7 @@ func (a *ProductApiService) GetProductsAndOptionsResource(ctx context.Context, l
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -467,27 +459,20 @@ func (a *ProductApiService) GetProductsAndOptionsResource(ctx context.Context, l
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 ProductApiService Return a list of Products matching the provided lshw output of a server
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
- * @param optional nil or *ProductApiPostProductMatchResourceOpts - Optional Parameters:
-     * @param "XFields" (optional.String) -  An optional fields mask
 
-@return ProductMatchResult
+
 */
-
-type ProductApiPostProductMatchResourceOpts struct { 
-	XFields optional.String
-}
-
-func (a *ProductApiService) PostProductMatchResource(ctx context.Context, payload ProductMatch, localVarOptionals *ProductApiPostProductMatchResourceOpts) (ProductMatchResult, *http.Response, error) {
+func (a *ProductApiService) PostProductMatchResource(ctx context.Context, payload ProductMatch) (*http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Post")
 		localVarPostBody   interface{}
 		localVarFileName   string
 		localVarFileBytes  []byte
-		localVarReturnValue ProductMatchResult
+		
 	)
 
 	// create path and map variables
@@ -514,9 +499,6 @@ func (a *ProductApiService) PostProductMatchResource(ctx context.Context, payloa
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XFields.IsSet() {
-		localVarHeaderParams["X-Fields"] = parameterToString(localVarOptionals.XFields.Value(), "")
-	}
 	// body params
 	localVarPostBody = &payload
 	if ctx != nil {
@@ -534,27 +516,20 @@ func (a *ProductApiService) PostProductMatchResource(ctx context.Context, payloa
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
-		return localVarReturnValue, nil, err
+		return nil, err
 	}
 
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
-		return localVarReturnValue, localVarHttpResponse, err
+		return localVarHttpResponse, err
 	}
 
 	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
 	localVarHttpResponse.Body.Close()
 	if err != nil {
-		return localVarReturnValue, localVarHttpResponse, err
+		return localVarHttpResponse, err
 	}
 
-	if localVarHttpResponse.StatusCode < 300 {
-		// If we succeed, return the data, otherwise pass on to decode error.
-		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
-	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
 		newErr := GenericSwaggerError{
@@ -562,19 +537,9 @@ func (a *ProductApiService) PostProductMatchResource(ctx context.Context, payloa
 			error: localVarHttpResponse.Status,
 		}
 		
-		if localVarHttpResponse.StatusCode == 200 {
-			var v ProductMatchResult
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-				if err != nil {
-					newErr.error = err.Error()
-					return localVarReturnValue, localVarHttpResponse, newErr
-				}
-				newErr.model = v
-				return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		
-		return localVarReturnValue, localVarHttpResponse, newErr
+		return localVarHttpResponse, newErr
 	}
 
-	return localVarReturnValue, localVarHttpResponse, nil
+	return localVarHttpResponse, nil
 }
+

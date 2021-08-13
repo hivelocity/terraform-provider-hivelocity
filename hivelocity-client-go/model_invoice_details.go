@@ -21,7 +21,7 @@ type InvoiceDetails struct {
 	InvoiceDate time.Time `json:"invoiceDate,omitempty"`
 	InvoiceDue time.Time `json:"invoiceDue,omitempty"`
 	InvoiceNumber string `json:"invoiceNumber,omitempty"`
-	ServiceItems *InvoiceDetailsServiceItems `json:"serviceItems,omitempty"`
+	ServiceItems []InvoiceDetailsServiceItems `json:"serviceItems,omitempty"`
 	TaxesValue float32 `json:"taxesValue,omitempty"`
 	TotalDue float32 `json:"totalDue,omitempty"`
 	PaymentHistory []interface{} `json:"paymentHistory,omitempty"`

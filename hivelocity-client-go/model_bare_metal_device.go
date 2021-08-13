@@ -10,19 +10,19 @@
 package swagger
 
 type BareMetalDevice struct {
+	PowerStatus string `json:"powerStatus,omitempty"`
+	Period string `json:"period,omitempty"`
+	ProductName string `json:"productName,omitempty"`
+	PrimaryIp string `json:"primaryIp,omitempty"`
+	Script string `json:"script,omitempty"`
+	OrderId int32 `json:"orderId,omitempty"`
+	ServiceId int32 `json:"serviceId,omitempty"`
+	LocationName string `json:"locationName,omitempty"`
+	Tags []string `json:"tags,omitempty"`
+	PublicSshKeyId int32 `json:"publicSshKeyId,omitempty"`
+	ProductId int32 `json:"productId,omitempty"`
+	OsName string `json:"osName,omitempty"`
+	VlanId int32 `json:"vlanId,omitempty"`
 	Hostname string `json:"hostname,omitempty"`
 	DeviceId int32 `json:"deviceId,omitempty"`
-	PublicSshKeyId int32 `json:"publicSshKeyId,omitempty"`
-	VlanId int32 `json:"vlanId,omitempty"`
-	Tags []string `json:"tags,omitempty"`
-	ServiceId int32 `json:"serviceId,omitempty"`
-	PowerStatus string `json:"powerStatus,omitempty"`
-	ProductName string `json:"productName,omitempty"`
-	Script string `json:"script,omitempty"`
-	ProductId int32 `json:"productId,omitempty"`
-	Period string `json:"period,omitempty"`
-	PrimaryIp string `json:"primaryIp,omitempty"`
-	OsName string `json:"osName,omitempty"`
-	LocationName string `json:"locationName,omitempty"`
-	OrderId int32 `json:"orderId,omitempty"`
 }

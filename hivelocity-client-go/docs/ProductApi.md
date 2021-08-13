@@ -148,7 +148,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **PostProductMatchResource**
-> ProductMatchResult PostProductMatchResource(ctx, payload, optional)
+> PostProductMatchResource(ctx, payload)
 Return a list of Products matching the provided lshw output of a server
 
 ### Required Parameters
@@ -157,19 +157,10 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **payload** | [**ProductMatch**](ProductMatch.md)|  | 
- **optional** | ***ProductApiPostProductMatchResourceOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-Optional parameters are passed through a pointer to a ProductApiPostProductMatchResourceOpts struct
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **xFields** | **optional.String**| An optional fields mask | 
 
 ### Return type
 
-[**ProductMatchResult**](ProductMatchResult.md)
+ (empty response body)
 
 ### Authorization
 

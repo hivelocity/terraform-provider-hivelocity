@@ -10,6 +10,9 @@
 package swagger
 
 type ProductMatch struct {
-	LshwOutput *interface{} `json:"lshwOutput,omitempty"`
-	SpsOnly bool `json:"spsOnly,omitempty"`
+	HwInfo *Hardware `json:"hwInfo,omitempty"`
+	DeviceId int32 `json:"deviceId,omitempty"`
+	LocationCode string `json:"locationCode,omitempty"`
+	MarketClients []string `json:"marketClients,omitempty"`
+	LshwOutput interface{} `json:"lshwOutput,omitempty"`
 }

@@ -10,6 +10,6 @@
 package swagger
 
 type TicketAttach struct {
-	Name string `json:"name,omitempty"`
 	Id float32 `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
 }

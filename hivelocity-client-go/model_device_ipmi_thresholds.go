@@ -10,5 +10,5 @@
 package swagger
 
 type DeviceIpmiThresholds struct {
-	Thresholds *interface{} `json:"thresholds"`
+	Thresholds interface{} `json:"thresholds"`
 }

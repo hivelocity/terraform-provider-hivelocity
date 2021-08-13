@@ -61,6 +61,8 @@ type APIClient struct {
 
 	DeviceApi *DeviceApiService
 
+	DomainsApi *DomainsApiService
+
 	InventoryApi *InventoryApiService
 
 	InvoiceApi *InvoiceApiService
@@ -75,8 +77,6 @@ type APIClient struct {
 
 	ProfileApi *ProfileApiService
 
-	SPSApi *SPSApiService
-
 	ServiceApi *ServiceApiService
 
 	SshKeyApi *SshKeyApiService
@@ -84,6 +84,8 @@ type APIClient struct {
 	TicketApi *TicketApiService
 
 	TokenApi *TokenApiService
+
+	VLANApi *VLANApiService
 
 	WebhookApi *WebhookApiService
 }
@@ -112,6 +114,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.CreditApi = (*CreditApiService)(&c.common)
 	c.DeploymentApi = (*DeploymentApiService)(&c.common)
 	c.DeviceApi = (*DeviceApiService)(&c.common)
+	c.DomainsApi = (*DomainsApiService)(&c.common)
 	c.InventoryApi = (*InventoryApiService)(&c.common)
 	c.InvoiceApi = (*InvoiceApiService)(&c.common)
 	c.NetworkApi = (*NetworkApiService)(&c.common)
@@ -119,11 +122,11 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.PermissionApi = (*PermissionApiService)(&c.common)
 	c.ProductApi = (*ProductApiService)(&c.common)
 	c.ProfileApi = (*ProfileApiService)(&c.common)
-	c.SPSApi = (*SPSApiService)(&c.common)
 	c.ServiceApi = (*ServiceApiService)(&c.common)
 	c.SshKeyApi = (*SshKeyApiService)(&c.common)
 	c.TicketApi = (*TicketApiService)(&c.common)
 	c.TokenApi = (*TokenApiService)(&c.common)
+	c.VLANApi = (*VLANApiService)(&c.common)
 	c.WebhookApi = (*WebhookApiService)(&c.common)
 
 	return c

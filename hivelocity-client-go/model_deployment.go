@@ -10,11 +10,11 @@
 package swagger
 
 type Deployment struct {
-	Price float32 `json:"price,omitempty"`
-	DeploymentConfiguration []interface{} `json:"deploymentConfiguration,omitempty"`
+	DeploymentName string `json:"deploymentName,omitempty"`
 	OrderNumber string `json:"orderNumber,omitempty"`
 	StartedProvisioning bool `json:"startedProvisioning,omitempty"`
+	DeploymentConfiguration []interface{} `json:"deploymentConfiguration,omitempty"`
 	DeploymentId int32 `json:"deploymentId,omitempty"`
-	DeploymentName string `json:"deploymentName,omitempty"`
+	Price float32 `json:"price,omitempty"`
 	Empty bool `json:"empty,omitempty"`
 }

@@ -23,8 +23,8 @@ type Ticket struct {
 	Contact *ContactDump `json:"contact,omitempty"`
 	Body string `json:"body,omitempty"`
 	NewReply bool `json:"newReply,omitempty"`
-	MetaData *interface{} `json:"metaData,omitempty"`
-	Replies *TicketPost `json:"replies,omitempty"`
+	MetaData interface{} `json:"metaData,omitempty"`
+	Replies []TicketPost `json:"replies,omitempty"`
 	ClientId float32 `json:"clientId,omitempty"`
 	ContactId float32 `json:"contactId,omitempty"`
 	Duration float32 `json:"duration,omitempty"`
