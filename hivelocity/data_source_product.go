@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
@@ -42,6 +43,12 @@ func dataSourceProduct() *schema.Resource {
 			"product_cpu_cores":              {Type: schema.TypeString, Computed: true},
 			"product_drive":                  {Type: schema.TypeString, Computed: true},
 			"product_memory":                 {Type: schema.TypeString, Computed: true},
+			"product_gpu":                    {Type: schema.TypeString, Computed: true},
+			"product_disabled_billing_periods": {
+				Type:     schema.TypeList,
+				Elem:     &schema.Schema{Type: schema.TypeString},
+				Computed: true,
+			},
 		},
 	}
 }
