@@ -21,7 +21,7 @@ terraform {
   required_providers {
     hivelocity = {
       versions = ["<VERSION>"]
-      source = "hivelocity.net/prod/hivelocity"
+      source = "hivelocity/hivelocity"
     }
   }
 }
