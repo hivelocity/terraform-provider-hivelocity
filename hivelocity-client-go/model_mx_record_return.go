@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,9 +10,9 @@
 package swagger
 
 type MxRecordReturn struct {
-	Ttl int32 `json:"ttl"`
-	Mx []MxValue `json:"mx"`
 	DomainId int32 `json:"domainId"`
+	Ttl int32 `json:"ttl"`
 	Type_ string `json:"type"`
+	Mx []MxValue `json:"mx"`
 	Name string `json:"name"`
 }

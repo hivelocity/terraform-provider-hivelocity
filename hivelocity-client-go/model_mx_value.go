@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,7 +10,7 @@
 package swagger
 
 type MxValue struct {
-	Preference int32 `json:"preference"`
 	Id int32 `json:"id"`
 	Exchange string `json:"exchange"`
+	Preference int32 `json:"preference"`
 }

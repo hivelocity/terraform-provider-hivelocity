@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,8 +10,8 @@
 package swagger
 
 type DeviceInitialCreds struct {
-	LockerUrl string `json:"lockerUrl,omitempty"`
-	Password string `json:"password,omitempty"`
-	User string `json:"user,omitempty"`
 	Port int32 `json:"port,omitempty"`
+	Password string `json:"password,omitempty"`
+	LockerUrl string `json:"lockerUrl,omitempty"`
+	User string `json:"user,omitempty"`
 }

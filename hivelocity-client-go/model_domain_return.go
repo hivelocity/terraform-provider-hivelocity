@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,8 +10,8 @@
 package swagger
 
 type DomainReturn struct {
-	DirectsTo string `json:"directsTo"`
 	DomainId int32 `json:"domainId"`
 	Summary interface{} `json:"summary,omitempty"`
+	DirectsTo string `json:"directsTo"`
 	Name string `json:"name"`
 }

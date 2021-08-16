@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,25 +10,25 @@
 package swagger
 
 type BillingInfo struct {
-	Company string `json:"company,omitempty"`
-	Zip string `json:"zip,omitempty"`
-	AchType string `json:"achType,omitempty"`
-	Address string `json:"address,omitempty"`
-	ClientId int32 `json:"clientId,omitempty"`
-	CcType string `json:"ccType,omitempty"`
-	Id int32 `json:"id,omitempty"`
-	Country string `json:"country,omitempty"`
-	First string `json:"first,omitempty"`
-	Phone string `json:"phone,omitempty"`
-	CcNum string `json:"ccNum,omitempty"`
-	Status int32 `json:"status,omitempty"`
-	Email string `json:"email,omitempty"`
-	AchBank string `json:"achBank,omitempty"`
-	AchAccount string `json:"achAccount,omitempty"`
 	AchAba string `json:"achAba,omitempty"`
+	AchType string `json:"achType,omitempty"`
+	Country string `json:"country,omitempty"`
+	CcExpire string `json:"ccExpire,omitempty"`
+	Last string `json:"last,omitempty"`
+	Address string `json:"address,omitempty"`
+	Company string `json:"company,omitempty"`
+	State string `json:"state,omitempty"`
+	AchAccount string `json:"achAccount,omitempty"`
+	AchBank string `json:"achBank,omitempty"`
+	CcNum string `json:"ccNum,omitempty"`
+	Id int32 `json:"id,omitempty"`
 	City string `json:"city,omitempty"`
 	PaymentType string `json:"paymentType,omitempty"`
-	CcExpire string `json:"ccExpire,omitempty"`
-	State string `json:"state,omitempty"`
-	Last string `json:"last,omitempty"`
+	Phone string `json:"phone,omitempty"`
+	First string `json:"first,omitempty"`
+	ClientId int32 `json:"clientId,omitempty"`
+	Status int32 `json:"status,omitempty"`
+	Zip string `json:"zip,omitempty"`
+	Email string `json:"email,omitempty"`
+	CcType string `json:"ccType,omitempty"`
 }

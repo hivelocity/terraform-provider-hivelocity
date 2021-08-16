@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,6 +10,6 @@
 package swagger
 
 type Permission struct {
-	UserId int32 `json:"userId"`
 	Permissions []string `json:"permissions"`
+	UserId int32 `json:"userId"`
 }

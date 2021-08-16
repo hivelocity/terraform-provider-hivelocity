@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,7 +10,7 @@
 package swagger
 
 type AaaaRecordUpdate struct {
-	Ttl int32 `json:"ttl,omitempty"`
 	Address string `json:"address,omitempty"`
+	Ttl int32 `json:"ttl,omitempty"`
 	Name string `json:"name,omitempty"`
 }

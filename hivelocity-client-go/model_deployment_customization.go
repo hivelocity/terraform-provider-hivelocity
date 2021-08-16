@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,15 +10,15 @@
 package swagger
 
 type DeploymentCustomization struct {
-	// must be one of ['monthly', 'quarterly', 'semi-annually', 'annually', 'biennial', 'triennial', 'hourly']
-	BillingPeriod string `json:"billingPeriod,omitempty"`
-	Quantity int32 `json:"quantity,omitempty"`
+	ProductId int32 `json:"productId"`
+	Hostnames []string `json:"hostnames"`
+	PublicSshKeyId int32 `json:"publicSshKeyId,omitempty"`
 	// Operating System's Name or ID
 	OperatingSystem string `json:"operatingSystem"`
-	Hostnames []string `json:"hostnames"`
 	Options []int32 `json:"options,omitempty"`
-	LocationCode string `json:"locationCode,omitempty"`
 	AdditionalNotes []string `json:"additionalNotes,omitempty"`
-	PublicSshKeyId int32 `json:"publicSshKeyId,omitempty"`
-	ProductId int32 `json:"productId"`
+	Quantity int32 `json:"quantity,omitempty"`
+	LocationCode string `json:"locationCode,omitempty"`
+	// must be one of ['monthly', 'quarterly', 'semi-annually', 'annually', 'biennial', 'triennial', 'hourly']
+	BillingPeriod string `json:"billingPeriod,omitempty"`
 }

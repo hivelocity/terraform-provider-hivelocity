@@ -31,11 +31,6 @@ Class | Method | HTTP request | Description
 *BareMetalDevicesApi* | [**PostBareMetalDeviceResource**](docs/BareMetalDevicesApi.md#postbaremetaldeviceresource) | **Post** /bare-metal-devices/ | Deploy a new bare metal server
 *BareMetalDevicesApi* | [**PutBareMetalDeviceIdResource**](docs/BareMetalDevicesApi.md#putbaremetaldeviceidresource) | **Put** /bare-metal-devices/{deviceId} | Update a bare metal device
 *BillingInfoApi* | [**GetBillingInfoResource**](docs/BillingInfoApi.md#getbillinginforesource) | **Get** /billing-info/ | Return a list with all Billing Info
-*CancellationApi* | [**GetCancellationDeviceResource**](docs/CancellationApi.md#getcancellationdeviceresource) | **Get** /cancellation/device/{deviceId} | Return the Cancellation found for a Device
-*CancellationApi* | [**GetCancellationIdResource**](docs/CancellationApi.md#getcancellationidresource) | **Get** /cancellation/cancellation/{cancellationId} | Return any cancellation by ID
-*CancellationApi* | [**GetCancellationResource**](docs/CancellationApi.md#getcancellationresource) | **Get** /cancellation/cancellation | Return the services cancellations of a client
-*CancellationApi* | [**GetCancellationServiceResource**](docs/CancellationApi.md#getcancellationserviceresource) | **Get** /cancellation/service/{serviceId} | Return the Cancellation found for a Service
-*CancellationApi* | [**PostCancellationResource**](docs/CancellationApi.md#postcancellationresource) | **Post** /cancellation/cancellation | Creates Cancellation for a device/service
 *ContactApi* | [**DeleteContactIdResource**](docs/ContactApi.md#deletecontactidresource) | **Delete** /contact/{contactId} | Delete a Contact
 *ContactApi* | [**GetContactIdResource**](docs/ContactApi.md#getcontactidresource) | **Get** /contact/{contactId} | Return details of a specific Contact
 *ContactApi* | [**GetContactResource**](docs/ContactApi.md#getcontactresource) | **Get** /contact/ | Return a list with all Contacts
@@ -44,9 +39,6 @@ Class | Method | HTTP request | Description
 *ContactApi* | [**PutContactIdResource**](docs/ContactApi.md#putcontactidresource) | **Put** /contact/{contactId} | Edit a Contact
 *ContactApi* | [**PutPasswordReset**](docs/ContactApi.md#putpasswordreset) | **Put** /contact/password | Recieve a token and password, verify the user and reset your password
 *ContactApi* | [**PutPasswordResource**](docs/ContactApi.md#putpasswordresource) | **Put** /contact/{contactId}/password | Change password for a Contact
-*CreditApi* | [**GetCreditResource**](docs/CreditApi.md#getcreditresource) | **Get** /credit/ | Return a list with all Credits
-*CreditApi* | [**GetTotalActiveCreditResource**](docs/CreditApi.md#gettotalactivecreditresource) | **Get** /credit/total | Return the client&#39;s total active credit amount
-*CreditApi* | [**PostCreditResource**](docs/CreditApi.md#postcreditresource) | **Post** /credit/ | Receive billing method id and amount and return the created Credit
 *DeploymentApi* | [**DeleteDeploymentIdResource**](docs/DeploymentApi.md#deletedeploymentidresource) | **Delete** /deploy/{deploymentId} | Delete the specified deployment
 *DeploymentApi* | [**GetDeploymentIdResource**](docs/DeploymentApi.md#getdeploymentidresource) | **Get** /deploy/{deploymentId} | Return a dictionary with deployment information
 *DeploymentApi* | [**GetDeploymentResource**](docs/DeploymentApi.md#getdeploymentresource) | **Get** /deploy/ | Return a list with all client deployments
@@ -56,21 +48,17 @@ Class | Method | HTTP request | Description
 *DeviceApi* | [**GetAllDeviceTagOrderResource**](docs/DeviceApi.md#getalldevicetagorderresource) | **Get** /device/tags-order/all | Get all device tags order
 *DeviceApi* | [**GetClientDeviceTagOrderResource**](docs/DeviceApi.md#getclientdevicetagorderresource) | **Get** /device/tags-order | Get device tags order for current user
 *DeviceApi* | [**GetClientDeviceTagResource**](docs/DeviceApi.md#getclientdevicetagresource) | **Get** /device/tags | Get all device tags for current client
-*DeviceApi* | [**GetDeviceIdEventResource**](docs/DeviceApi.md#getdeviceideventresource) | **Get** /device/{deviceId}/events | Returns all Events found for a single device
 *DeviceApi* | [**GetDeviceIdResource**](docs/DeviceApi.md#getdeviceidresource) | **Get** /device/{deviceId} | Returns detailed information for a Single Device
 *DeviceApi* | [**GetDeviceIpminatRuleResource**](docs/DeviceApi.md#getdeviceipminatruleresource) | **Get** /device/{deviceId}/ipmi/nat | Clear NAT rules based on the device client id
 *DeviceApi* | [**GetDeviceResource**](docs/DeviceApi.md#getdeviceresource) | **Get** /device/ | Returns Active Devices and basic MetaData
 *DeviceApi* | [**GetDeviceTagIdResource**](docs/DeviceApi.md#getdevicetagidresource) | **Get** /device/{deviceId}/tags | Get device tags
 *DeviceApi* | [**GetInitialCredsIdResource**](docs/DeviceApi.md#getinitialcredsidresource) | **Get** /device/{deviceId}/initial-creds | Returns initial password for the device
-*DeviceApi* | [**GetInitialPasswordIdResource**](docs/DeviceApi.md#getinitialpasswordidresource) | **Get** /device/{deviceId}/initial-password | Returns initial password for the device
 *DeviceApi* | [**GetIpmiInfoIdResource**](docs/DeviceApi.md#getipmiinfoidresource) | **Get** /device/{deviceId}/ipmi | Returns IPMI info data
 *DeviceApi* | [**GetIpmiInfoLoginDataResource**](docs/DeviceApi.md#getipmiinfologindataresource) | **Get** /device/{deviceId}/ipmi/login-data | Returns IPMI login credentials
 *DeviceApi* | [**GetIpmiThresholdsIdResource**](docs/DeviceApi.md#getipmithresholdsidresource) | **Get** /device/{deviceId}/ipmi/thresholds | Returns IPMI thresholds data
 *DeviceApi* | [**GetIpmiValidLoginIdResource**](docs/DeviceApi.md#getipmivalidloginidresource) | **Get** /device/{deviceId}/ipmi/valid-login | Returns if device have valid credentials for IPMI login
-*DeviceApi* | [**GetNetworkInterfaceResource**](docs/DeviceApi.md#getnetworkinterfaceresource) | **Get** /device/{deviceId}/interfaces | Returns a list of all Network Interfaces bound to a Device
 *DeviceApi* | [**GetPowerResource**](docs/DeviceApi.md#getpowerresource) | **Get** /device/{deviceId}/power | Get device&#39;s current power status
 *DeviceApi* | [**PostDeviceIpmiWhitelistResource**](docs/DeviceApi.md#postdeviceipmiwhitelistresource) | **Post** /device/{deviceId}/ipmi/whitelist/ | Add a public IP on IPMI whitelist
-*DeviceApi* | [**PostDeviceReloadResource**](docs/DeviceApi.md#postdevicereloadresource) | **Post** /device/{deviceId}/reload | Reload any SPS Device with any available OS
 *DeviceApi* | [**PostPowerResource**](docs/DeviceApi.md#postpowerresource) | **Post** /device/{deviceId}/power | Apply action to device power
 *DeviceApi* | [**PutClientDeviceTagOrderResource**](docs/DeviceApi.md#putclientdevicetagorderresource) | **Put** /device/tags-order | Update device tags order for current user
 *DeviceApi* | [**PutDeviceIdResource**](docs/DeviceApi.md#putdeviceidresource) | **Put** /device/{deviceId} | Updates Device MetaData for a Single Device
@@ -99,16 +87,6 @@ Class | Method | HTTP request | Description
 *InventoryApi* | [**GetLocationResource**](docs/InventoryApi.md#getlocationresource) | **Get** /inventory/locations | Return sps facilities and locations
 *InventoryApi* | [**GetStockByProductResource**](docs/InventoryApi.md#getstockbyproductresource) | **Get** /inventory/product/{productId} | Return a structured sps stock data, grouped by city or facility code for a single product
 *InventoryApi* | [**GetStockResource**](docs/InventoryApi.md#getstockresource) | **Get** /inventory/product | Return structured sps stock data, grouped by city or facility code for all products
-*InvoiceApi* | [**GetInvoiceIdDetails**](docs/InvoiceApi.md#getinvoiceiddetails) | **Get** /invoice/{invoiceId}/details | Return detailed information for an invoice
-*InvoiceApi* | [**GetInvoiceIdResource**](docs/InvoiceApi.md#getinvoiceidresource) | **Get** /invoice/{invoiceId} | Return serialized data on a single invoice
-*InvoiceApi* | [**GetInvoicePdfResource**](docs/InvoiceApi.md#getinvoicepdfresource) | **Get** /invoice/{invoiceId}/pdf-download | Return an Invoice PDF file in Base64 Encoded Format
-*InvoiceApi* | [**GetInvoiceResource**](docs/InvoiceApi.md#getinvoiceresource) | **Get** /invoice/ | Return serialized data on all invoices
-*InvoiceApi* | [**GetInvoiceSearchResource**](docs/InvoiceApi.md#getinvoicesearchresource) | **Get** /invoice/search | Return results of invoice search
-*NetworkApi* | [**GetNetworkTaskClientResource**](docs/NetworkApi.md#getnetworktaskclientresource) | **Get** /network/status/ | Returns the Last Status for a long running Network Task, such as modifying a VLAN
-*NetworkApi* | [**GetNetworkTaskDeviceResource**](docs/NetworkApi.md#getnetworktaskdeviceresource) | **Get** /network/status/{deviceId} | Returns the Last Status for a long running Network Task, such as modifying a VLAN
-*NetworkApi* | [**GetNullRouteResource**](docs/NetworkApi.md#getnullrouteresource) | **Get** /network/null/{ip} | Null route an IP
-*NetworkApi* | [**GetRemoveNullRouteResource**](docs/NetworkApi.md#getremovenullrouteresource) | **Get** /network/unnull/{ip} | Remove null route from an IP
-*NetworkApi* | [**PostDetailedNullRouteResource**](docs/NetworkApi.md#postdetailednullrouteresource) | **Post** /network/null | Null route an IP (with custom comments)
 *OrderApi* | [**GetOrderIdResource**](docs/OrderApi.md#getorderidresource) | **Get** /order/{orderId} | Return details of a specific Order
 *OrderApi* | [**GetOrderResource**](docs/OrderApi.md#getorderresource) | **Get** /order/ | Return a list with all Orders
 *PermissionApi* | [**GetPermissionAllResource**](docs/PermissionApi.md#getpermissionallresource) | **Get** /permission/ | Endpoint to get All Permissions
@@ -119,10 +97,6 @@ Class | Method | HTTP request | Description
 *ProductApi* | [**GetProductOperatingSystemsResource**](docs/ProductApi.md#getproductoperatingsystemsresource) | **Get** /product/{productId}/operating-systems | Return List of operating systems found for a Product
 *ProductApi* | [**GetProductOptionResource**](docs/ProductApi.md#getproductoptionresource) | **Get** /product/{productId}/options | Return List of Options found for a Product
 *ProductApi* | [**GetProductsAndOptionsResource**](docs/ProductApi.md#getproductsandoptionsresource) | **Get** /product/options | Return a mapping of Products and Options with pricing per-period
-*ProductApi* | [**PostProductMatchResource**](docs/ProductApi.md#postproductmatchresource) | **Post** /product/match | Return a list of Products matching the provided lshw output of a server
-*ProfileApi* | [**GetBasicProfileResource**](docs/ProfileApi.md#getbasicprofileresource) | **Get** /profile/basic | Get Basic Profile of current user or a contact with id
-*ProfileApi* | [**GetProfileResource**](docs/ProfileApi.md#getprofileresource) | **Get** /profile/ | Get Profile of current user or a contact with id
-*ProfileApi* | [**PutProfileResource**](docs/ProfileApi.md#putprofileresource) | **Put** /profile/ | Update Profile of current user or a contact with id
 *ServiceApi* | [**GetServiceIdResource**](docs/ServiceApi.md#getserviceidresource) | **Get** /service/{serviceId} | Return a dictionary with data from a specific account service
 *ServiceApi* | [**GetServiceResource**](docs/ServiceApi.md#getserviceresource) | **Get** /service/ | Return a list of all account services
 *SshKeyApi* | [**DeleteSshKeyIdResource**](docs/SshKeyApi.md#deletesshkeyidresource) | **Delete** /ssh_key/{sshKeyId} | Removes public ssh key
@@ -130,18 +104,6 @@ Class | Method | HTTP request | Description
 *SshKeyApi* | [**GetSshKeyResource**](docs/SshKeyApi.md#getsshkeyresource) | **Get** /ssh_key/ | Gets all public ssh key
 *SshKeyApi* | [**PostSshKeyResource**](docs/SshKeyApi.md#postsshkeyresource) | **Post** /ssh_key/ | Adds public ssh key
 *SshKeyApi* | [**PutSshKeyIdResource**](docs/SshKeyApi.md#putsshkeyidresource) | **Put** /ssh_key/{sshKeyId} | Updates public ssh key
-*TicketApi* | [**GetTicketIdResource**](docs/TicketApi.md#getticketidresource) | **Get** /tickets/{ticketId} | Returns details of a specific ticket
-*TicketApi* | [**GetTicketReplyResource**](docs/TicketApi.md#getticketreplyresource) | **Get** /tickets/{ticketId}/reply | Returns a reply for a specific ticket
-*TicketApi* | [**GetTicketResource**](docs/TicketApi.md#getticketresource) | **Get** /tickets/ | Returns a list with all Tickets
-*TicketApi* | [**GetTicketSearchResource**](docs/TicketApi.md#getticketsearchresource) | **Get** /tickets/search | Return results of ticket search
-*TicketApi* | [**PostTicketReplyResource**](docs/TicketApi.md#postticketreplyresource) | **Post** /tickets/{ticketId}/reply | Creates reply for a specific Ticket
-*TicketApi* | [**PostTicketResource**](docs/TicketApi.md#postticketresource) | **Post** /tickets/ | Creates a new ticket
-*TicketApi* | [**PutTicketIdResource**](docs/TicketApi.md#putticketidresource) | **Put** /tickets/{ticketId} | Updates a specific ticket
-*TokenApi* | [**DeleteTokenIdResource**](docs/TokenApi.md#deletetokenidresource) | **Delete** /token/{token} | Deletes the Public API Token
-*TokenApi* | [**GetTokenIdResource**](docs/TokenApi.md#gettokenidresource) | **Get** /token/{token} | Returns Public API Token
-*TokenApi* | [**GetTokenResource**](docs/TokenApi.md#gettokenresource) | **Get** /token/ | Returns a list of Public API Tokens for the current user
-*TokenApi* | [**PostTokenResource**](docs/TokenApi.md#posttokenresource) | **Post** /token/ | Create a new Public API Token for the current user
-*TokenApi* | [**PutTokenIdResource**](docs/TokenApi.md#puttokenidresource) | **Put** /token/{token} | Updates the Public API Token
 *VLANApi* | [**DeleteVlanIdResource**](docs/VLANApi.md#deletevlanidresource) | **Delete** /vlan/{vlanId} | Remove an existing Private VLAN
 *VLANApi* | [**GetVlanIdResource**](docs/VLANApi.md#getvlanidresource) | **Get** /vlan/{vlanId} | Fetch information from an existing Private VLAN
 *VLANApi* | [**GetVlanResource**](docs/VLANApi.md#getvlanresource) | **Get** /vlan/ | Return a list with all Private VLANs
@@ -169,43 +131,26 @@ Class | Method | HTTP request | Description
  - [BareMetalDevice](docs/BareMetalDevice.md)
  - [BareMetalDeviceCreate](docs/BareMetalDeviceCreate.md)
  - [BareMetalDeviceUpdate](docs/BareMetalDeviceUpdate.md)
- - [BasicProfile](docs/BasicProfile.md)
  - [BillingInfo](docs/BillingInfo.md)
- - [Cancellation](docs/Cancellation.md)
- - [CancellationCreate](docs/CancellationCreate.md)
  - [CityStateCountry](docs/CityStateCountry.md)
- - [Client](docs/Client.md)
  - [ContactCreate](docs/ContactCreate.md)
  - [ContactDump](docs/ContactDump.md)
  - [ContactUpdate](docs/ContactUpdate.md)
- - [CreateCredit](docs/CreateCredit.md)
- - [Credit](docs/Credit.md)
  - [Deployment](docs/Deployment.md)
  - [DeploymentCustomization](docs/DeploymentCustomization.md)
  - [DeploymentStart](docs/DeploymentStart.md)
- - [DetailedNullIp](docs/DetailedNullIp.md)
  - [Device](docs/Device.md)
- - [DeviceEvent](docs/DeviceEvent.md)
  - [DeviceInitialCreds](docs/DeviceInitialCreds.md)
- - [DeviceInterface](docs/DeviceInterface.md)
  - [DeviceIpmiInfo](docs/DeviceIpmiInfo.md)
  - [DeviceIpmiThresholds](docs/DeviceIpmiThresholds.md)
  - [DeviceIpmiWhitelistIp](docs/DeviceIpmiWhitelistIp.md)
- - [DevicePassword](docs/DevicePassword.md)
  - [DevicePower](docs/DevicePower.md)
- - [DeviceReload](docs/DeviceReload.md)
  - [DeviceTag](docs/DeviceTag.md)
  - [DeviceUpdate](docs/DeviceUpdate.md)
  - [DevicesIpmiThresholds](docs/DevicesIpmiThresholds.md)
  - [DomainCreate](docs/DomainCreate.md)
  - [DomainReturn](docs/DomainReturn.md)
- - [Hardware](docs/Hardware.md)
  - [Inventory](docs/Inventory.md)
- - [Invoice](docs/Invoice.md)
- - [InvoiceDetails](docs/InvoiceDetails.md)
- - [InvoiceDetailsServiceItems](docs/InvoiceDetailsServiceItems.md)
- - [InvoicePdf](docs/InvoicePdf.md)
- - [InvoiceSeachResult](docs/InvoiceSeachResult.md)
  - [IpmiInfo](docs/IpmiInfo.md)
  - [IpmiLoginData](docs/IpmiLoginData.md)
  - [IpmiSensor](docs/IpmiSensor.md)
@@ -213,7 +158,6 @@ Class | Method | HTTP request | Description
  - [Location](docs/Location.md)
  - [MxRecordReturn](docs/MxRecordReturn.md)
  - [MxValue](docs/MxValue.md)
- - [NetworkTask](docs/NetworkTask.md)
  - [Option](docs/Option.md)
  - [Options](docs/Options.md)
  - [OrderDump](docs/OrderDump.md)
@@ -223,12 +167,7 @@ Class | Method | HTTP request | Description
  - [Permission](docs/Permission.md)
  - [PermissionReturn](docs/PermissionReturn.md)
  - [ProductInfo](docs/ProductInfo.md)
- - [ProductMatch](docs/ProductMatch.md)
  - [ProductOption](docs/ProductOption.md)
- - [Profile](docs/Profile.md)
- - [ProfileUpdate](docs/ProfileUpdate.md)
- - [PublicApiTokenDump](docs/PublicApiTokenDump.md)
- - [PublicApiTokenLoad](docs/PublicApiTokenLoad.md)
  - [RecordValue](docs/RecordValue.md)
  - [ServiceDump](docs/ServiceDump.md)
  - [ServiceOption](docs/ServiceOption.md)
@@ -240,14 +179,6 @@ Class | Method | HTTP request | Description
  - [SshKeyResponse](docs/SshKeyResponse.md)
  - [SshKeyUpdate](docs/SshKeyUpdate.md)
  - [Stock](docs/Stock.md)
- - [Ticket](docs/Ticket.md)
- - [TicketAttach](docs/TicketAttach.md)
- - [TicketCreate](docs/TicketCreate.md)
- - [TicketCreateReply](docs/TicketCreateReply.md)
- - [TicketPost](docs/TicketPost.md)
- - [TicketPut](docs/TicketPut.md)
- - [TicketSeachResult](docs/TicketSeachResult.md)
- - [TotalActiveCredit](docs/TotalActiveCredit.md)
  - [UpdateDevicesIpmiThresholds](docs/UpdateDevicesIpmiThresholds.md)
  - [Vlan](docs/Vlan.md)
  - [VlanCreate](docs/VlanCreate.md)

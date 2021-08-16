@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,21 +10,21 @@
 package swagger
 
 type IpmiInfo struct {
-	IpmbEventGenerator string `json:"ipmbEventGenerator,omitempty"`
-	FruInventoryDevice string `json:"fruInventoryDevice,omitempty"`
-	AuxFirmwareRevInfo string `json:"auxFirmwareRevInfo,omitempty"`
-	SelDevice string `json:"selDevice,omitempty"`
-	ChassisDevice string `json:"chassisDevice,omitempty"`
-	FirmwareRevision string `json:"firmwareRevision,omitempty"`
-	SensorDevice string `json:"sensorDevice,omitempty"`
-	DeviceId string `json:"deviceId,omitempty"`
-	SdrRepositoryDevice string `json:"sdrRepositoryDevice,omitempty"`
-	ManufacturerId string `json:"manufacturerId,omitempty"`
 	IpmbEventReceiver string `json:"ipmbEventReceiver,omitempty"`
-	DeviceRevision string `json:"deviceRevision,omitempty"`
 	ProductId string `json:"productId,omitempty"`
-	Bridge string `json:"bridge,omitempty"`
-	DeviceSDRs string `json:"deviceSDRs,omitempty"`
-	DeviceAvailable string `json:"deviceAvailable,omitempty"`
+	AuxFirmwareRevInfo string `json:"auxFirmwareRevInfo,omitempty"`
+	ManufacturerId string `json:"manufacturerId,omitempty"`
 	IpmiVersion string `json:"ipmiVersion,omitempty"`
+	Bridge string `json:"bridge,omitempty"`
+	SensorDevice string `json:"sensorDevice,omitempty"`
+	DeviceRevision string `json:"deviceRevision,omitempty"`
+	DeviceId string `json:"deviceId,omitempty"`
+	FruInventoryDevice string `json:"fruInventoryDevice,omitempty"`
+	ChassisDevice string `json:"chassisDevice,omitempty"`
+	SdrRepositoryDevice string `json:"sdrRepositoryDevice,omitempty"`
+	SelDevice string `json:"selDevice,omitempty"`
+	IpmbEventGenerator string `json:"ipmbEventGenerator,omitempty"`
+	FirmwareRevision string `json:"firmwareRevision,omitempty"`
+	DeviceAvailable string `json:"deviceAvailable,omitempty"`
+	DeviceSDRs string `json:"deviceSDRs,omitempty"`
 }

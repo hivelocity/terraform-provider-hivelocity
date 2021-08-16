@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,12 +10,12 @@
 package swagger
 
 type ContactDump struct {
+	ContactId int32 `json:"contactId,omitempty"`
 	ClientId int32 `json:"clientId,omitempty"`
 	Description string `json:"description,omitempty"`
 	IsClient bool `json:"isClient,omitempty"`
-	Phone string `json:"phone,omitempty"`
 	FullName string `json:"fullName"`
-	Active int32 `json:"active"`
 	Email string `json:"email"`
-	ContactId int32 `json:"contactId,omitempty"`
+	Active int32 `json:"active"`
+	Phone string `json:"phone,omitempty"`
 }

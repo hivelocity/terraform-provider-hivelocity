@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,10 +10,10 @@
 package swagger
 
 type Option struct {
-	MonthlyPrice float32 `json:"monthlyPrice,omitempty"`
-	Expressions []string `json:"expressions,omitempty"`
-	Id int32 `json:"id,omitempty"`
 	Tags []string `json:"tags,omitempty"`
+	MonthlyPrice float32 `json:"monthlyPrice,omitempty"`
+	Id int32 `json:"id,omitempty"`
 	Currency string `json:"currency,omitempty"`
+	Expressions []string `json:"expressions,omitempty"`
 	Name string `json:"name,omitempty"`
 }

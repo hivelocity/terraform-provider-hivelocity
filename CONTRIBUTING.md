@@ -24,7 +24,7 @@ To rebuild the client and add it to your project repo:
 1. Install https://github.com/swagger-api/swagger-codegen
 2. run the following from the folder `terraform-provider-hivelocity`:
 
-`java -jar ~/Downloads/swagger-codegen-cli-2.4.15.jar generate -i http://localhost:5065/api/v2/swagger.json -l go -o ./hivelocity-client-go`
+`java -jar ~/Downloads/swagger-codegen-cli-2.4.15.jar generate -i http://localhost:5065/api/v2/swagger.json?partner=1 -l go -o ./hivelocity-client-go`
 
 ## Generating the documentation for the registry
 

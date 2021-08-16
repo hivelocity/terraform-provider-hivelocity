@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,8 +10,8 @@
 package swagger
 
 type SingleMxRecordCreate struct {
-	Preference int32 `json:"preference"`
-	Ttl int32 `json:"ttl"`
 	Exchange string `json:"exchange"`
+	Ttl int32 `json:"ttl"`
+	Preference int32 `json:"preference"`
 	Name string `json:"name"`
 }

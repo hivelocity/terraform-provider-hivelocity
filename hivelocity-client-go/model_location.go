@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,8 +10,8 @@
 package swagger
 
 type Location struct {
-	Location *CityStateCountry `json:"location,omitempty"`
-	Code string `json:"code,omitempty"`
-	Core bool `json:"core,omitempty"`
 	Edge bool `json:"edge,omitempty"`
+	Code string `json:"code,omitempty"`
+	Location *CityStateCountry `json:"location,omitempty"`
+	Core bool `json:"core,omitempty"`
 }

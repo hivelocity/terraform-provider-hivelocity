@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "Interact with Hivelocity"
   version: "2.0"
-  title: "Hivelocity API"
+  title: "Hivelocity API for Partners"
 basePath: "/api/v2"
 tags:
 - name: "Bandwidth"
@@ -13,40 +13,26 @@ tags:
     \ the /devices endpoint."
 - name: "BillingInfo"
   description: "Endpoints to manage Billing Info"
-- name: "Cancellation"
-  description: "Cancellation information"
 - name: "Contact"
   description: "Endpoints to manager Contacts"
-- name: "Credit"
-  description: "Endpoints to manage Credit"
 - name: "Device"
   description: "Access to your Bare-Metal or Virtual Devices"
 - name: "Domains"
   description: "Manage your DNS Domains"
 - name: "Inventory"
   description: "Products Inventory Data"
-- name: "Invoice"
-  description: "Invoice information and PDF download"
-- name: "Network"
-  description: "Endpoints to perform network related tasks"
 - name: "Order"
   description: "Get Order and its details"
 - name: "Permission"
   description: "Endpoints to manage Permissions"
 - name: "Product"
   description: "Endpoints to manage Products"
-- name: "Profile"
-  description: "Endpoints to manage Profiles"
 - name: "Deployment"
   description: "Endpoints to handle your servers provisioning"
 - name: "Service"
   description: "Service information"
 - name: "SshKey"
   description: "Endpoints to manage SSH key."
-- name: "Ticket"
-  description: "Ticket information"
-- name: "Token"
-  description: "Endpoints to manage Public API Token"
 - name: "VLAN"
   description: "Endpoints to manage VLANs"
 - name: "Webhook"
@@ -124,7 +110,7 @@ paths:
         description: "End Time of Custom Time Period (Unix Epoch Time)"
         required: false
         type: "integer"
-        default: 1628877661
+        default: 1629135660
         x-exportParamName: "End"
         x-optionalDataType: "Int32"
       - name: "X-Fields"
@@ -195,7 +181,7 @@ paths:
         description: "End Time of Custom Time Period (Unix Epoch Time)"
         required: false
         type: "integer"
-        default: 1628877661
+        default: 1629135660
         x-exportParamName: "End"
         x-optionalDataType: "Int32"
       - name: "X-Fields"
@@ -273,7 +259,7 @@ paths:
         description: "End Time of Custom Time Period (Unix Epoch Time)"
         required: false
         type: "integer"
-        default: 1628877661
+        default: 1629135660
         x-exportParamName: "End"
         x-optionalDataType: "Int32"
       - name: "X-Fields"
@@ -344,7 +330,7 @@ paths:
         description: "End Time of Custom Time Period (Unix Epoch Time)"
         required: false
         type: "integer"
-        default: 1628877661
+        default: 1629135660
         x-exportParamName: "End"
         x-optionalDataType: "Int32"
       - name: "X-Fields"
@@ -539,147 +525,6 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/BillingInfo"
-  /cancellation/cancellation:
-    get:
-      tags:
-      - "Cancellation"
-      summary: "Return the services cancellations of a client"
-      operationId: "get_cancellation_resource"
-      parameters:
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Cancellation"
-    post:
-      tags:
-      - "Cancellation"
-      summary: "Creates Cancellation for a device/service"
-      description: "reason options are:\n    'My current service is being upgraded',\n\
-        \    'Hardware/software/network or power issues',\n    'I think I have found\
-        \ a better deal',\n    'I have experienced tech support problems',\n    'I\
-        \ am consolidating my Hivelocity accounts',\n    'I am a reseller and my customer\
-        \ cancelled',\n    'I am moving to a different technology solution: Public\
-        \ Cloud',\n    'I am moving to a different technology solution: Managed Hosting\
-        \ Company',\n    'A product difference (Example: AWS)',\n    ''"
-      operationId: "post_cancellation_resource"
-      parameters:
-      - in: "body"
-        name: "payload"
-        required: true
-        schema:
-          $ref: "#/definitions/CancellationCreate"
-        x-exportParamName: "Payload"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            $ref: "#/definitions/Cancellation"
-        "400":
-          description: "Service/Device already being cancelled"
-        "401":
-          description: "Access to this resource is not permitted."
-        "404":
-          description: "Device not found"
-        "500":
-          description: "Service/Device already being cancelled"
-  /cancellation/cancellation/{cancellationId}:
-    get:
-      tags:
-      - "Cancellation"
-      summary: "Return any cancellation by ID"
-      operationId: "get_cancellation_id_resource"
-      parameters:
-      - name: "cancellationId"
-        in: "path"
-        required: true
-        type: "integer"
-        x-exportParamName: "CancellationId"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            $ref: "#/definitions/Cancellation"
-  /cancellation/device/{deviceId}:
-    get:
-      tags:
-      - "Cancellation"
-      summary: "Return the Cancellation found for a Device"
-      operationId: "get_cancellation_device_resource"
-      parameters:
-      - name: "deviceId"
-        in: "path"
-        required: true
-        type: "integer"
-        x-exportParamName: "DeviceId"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            $ref: "#/definitions/Cancellation"
-        "404":
-          description: "Device not found"
-  /cancellation/service/{serviceId}:
-    get:
-      tags:
-      - "Cancellation"
-      summary: "Return the Cancellation found for a Service"
-      operationId: "get_cancellation_service_resource"
-      parameters:
-      - name: "serviceId"
-        in: "path"
-        required: true
-        type: "integer"
-        x-exportParamName: "ServiceId"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            $ref: "#/definitions/Cancellation"
-        "404":
-          description: "Service not found"
   /contact/:
     get:
       tags:
@@ -861,77 +706,6 @@ paths:
           description: "Password was changed."
         "400":
           description: "Invalid password for authentication."
-  /credit/:
-    get:
-      tags:
-      - "Credit"
-      summary: "Return a list with all Credits"
-      operationId: "get_credit_resource"
-      parameters:
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Credit"
-    post:
-      tags:
-      - "Credit"
-      summary: "Receive billing method id and amount and return the created Credit"
-      operationId: "post_credit_resource"
-      parameters:
-      - in: "body"
-        name: "payload"
-        required: true
-        schema:
-          $ref: "#/definitions/CreateCredit"
-        x-exportParamName: "Payload"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            $ref: "#/definitions/Credit"
-        "201":
-          description: "Successfully added a new credit."
-        "503":
-          description: "Unable to add new credit."
-  /credit/total:
-    get:
-      tags:
-      - "Credit"
-      summary: "Return the client's total active credit amount"
-      operationId: "get_total_active_credit_resource"
-      parameters:
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            $ref: "#/definitions/TotalActiveCredit"
   /deploy/:
     get:
       tags:
@@ -1286,37 +1060,6 @@ paths:
             $ref: "#/definitions/Device"
         "400":
           description: "Unable to update Device MetaData."
-  /device/{deviceId}/deploy/script: {}
-  /device/{deviceId}/deploy/ssh_key: {}
-  /device/{deviceId}/events:
-    get:
-      tags:
-      - "Device"
-      summary: "Returns all Events found for a single device"
-      operationId: "get_device_id_event_resource"
-      parameters:
-      - name: "deviceId"
-        in: "path"
-        required: true
-        type: "string"
-        x-exportParamName: "DeviceId"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/DeviceEvent"
-        "404":
-          description: "Device not found"
   /device/{deviceId}/initial-creds:
     get:
       tags:
@@ -1346,62 +1089,6 @@ paths:
             $ref: "#/definitions/DeviceInitialCreds"
         "400":
           description: "Unable to get initial credentials for this Device."
-  /device/{deviceId}/initial-password:
-    get:
-      tags:
-      - "Device"
-      summary: "Returns initial password for the device"
-      operationId: "get_initial_password_id_resource"
-      parameters:
-      - name: "deviceId"
-        in: "path"
-        description: "ID of Device to retrieve initial password"
-        required: true
-        type: "integer"
-        x-exportParamName: "DeviceId"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Device initial password."
-          schema:
-            $ref: "#/definitions/DevicePassword"
-        "400":
-          description: "Unable to get initial password this Device."
-  /device/{deviceId}/interfaces:
-    get:
-      tags:
-      - "Device"
-      summary: "Returns a list of all Network Interfaces bound to a Device"
-      operationId: "get_network_interface_resource"
-      parameters:
-      - name: "deviceId"
-        in: "path"
-        description: "ID of Device to view Network Interfaces."
-        required: true
-        type: "integer"
-        x-exportParamName: "DeviceId"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/DeviceInterface"
   /device/{deviceId}/ipmi:
     get:
       tags:
@@ -1649,43 +1336,6 @@ paths:
           description: "Success"
           schema:
             $ref: "#/definitions/DevicePower"
-  /device/{deviceId}/reload:
-    post:
-      tags:
-      - "Device"
-      summary: "Reload any SPS Device with any available OS"
-      operationId: "post_device_reload_resource"
-      parameters:
-      - name: "deviceId"
-        in: "path"
-        required: true
-        type: "integer"
-        x-exportParamName: "DeviceId"
-      - in: "body"
-        name: "payload"
-        required: true
-        schema:
-          $ref: "#/definitions/DeviceReload"
-        x-exportParamName: "Payload"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            $ref: "#/definitions/ServiceOption"
-        "202":
-          description: "Success"
-        "400":
-          description: "Error"
-        "404":
-          description: "Device not found"
   /device/{deviceId}/tags:
     get:
       tags:
@@ -2466,279 +2116,6 @@ paths:
             $ref: "#/definitions/Stock"
         "404":
           description: "Product with given id not found"
-  /invoice/:
-    get:
-      tags:
-      - "Invoice"
-      summary: "Return serialized data on all invoices"
-      operationId: "get_invoice_resource"
-      parameters:
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Invoice"
-  /invoice/search:
-    get:
-      tags:
-      - "Invoice"
-      summary: "Return results of invoice search"
-      operationId: "get_invoice_search_resource"
-      parameters:
-      - name: "endDate"
-        in: "query"
-        description: "The end date range"
-        required: false
-        type: "integer"
-        x-exportParamName: "EndDate"
-        x-optionalDataType: "Int32"
-      - name: "startDate"
-        in: "query"
-        description: "The start date range"
-        required: false
-        type: "integer"
-        x-exportParamName: "StartDate"
-        x-optionalDataType: "Int32"
-      - name: "perPage"
-        in: "query"
-        description: "Number of items per page."
-        required: false
-        type: "integer"
-        default: 10
-        x-exportParamName: "PerPage"
-        x-optionalDataType: "Int32"
-      - name: "page"
-        in: "query"
-        description: "The page number of search."
-        required: false
-        type: "integer"
-        default: 1
-        x-exportParamName: "Page"
-        x-optionalDataType: "Int32"
-      - name: "q"
-        in: "query"
-        description: "Content search."
-        required: false
-        type: "string"
-        x-exportParamName: "Q"
-        x-optionalDataType: "String"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Invoice search results."
-          schema:
-            $ref: "#/definitions/InvoiceSeachResult"
-        "400":
-          description: "Invalid invoice search request."
-  /invoice/{invoiceId}:
-    get:
-      tags:
-      - "Invoice"
-      summary: "Return serialized data on a single invoice"
-      operationId: "get_invoice_id_resource"
-      parameters:
-      - name: "invoiceId"
-        in: "path"
-        description: "Invoice database ID"
-        required: true
-        type: "integer"
-        x-exportParamName: "InvoiceId"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            $ref: "#/definitions/Invoice"
-  /invoice/{invoiceId}/details:
-    get:
-      tags:
-      - "Invoice"
-      summary: "Return detailed information for an invoice"
-      description: "Same data as the PDF file but serialized"
-      operationId: "get_invoice_id_details"
-      parameters:
-      - name: "invoiceId"
-        in: "path"
-        description: "Invoice database ID"
-        required: true
-        type: "integer"
-        x-exportParamName: "InvoiceId"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            $ref: "#/definitions/InvoiceDetails"
-  /invoice/{invoiceId}/pdf-download:
-    get:
-      tags:
-      - "Invoice"
-      summary: "Return an Invoice PDF file in Base64 Encoded Format"
-      operationId: "get_invoice_pdf_resource"
-      parameters:
-      - name: "invoiceId"
-        in: "path"
-        description: "Invoice database ID"
-        required: true
-        type: "integer"
-        x-exportParamName: "InvoiceId"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            $ref: "#/definitions/InvoicePDF"
-  /network/null:
-    post:
-      tags:
-      - "Network"
-      summary: "Null route an IP (with custom comments)"
-      operationId: "post_detailed_null_route_resource"
-      parameters:
-      - in: "body"
-        name: "payload"
-        required: true
-        schema:
-          $ref: "#/definitions/DetailedNullIP"
-        x-exportParamName: "Payload"
-      responses:
-        "200":
-          description: "IP address is already null routed."
-        "201":
-          description: "IP has been null routed!"
-        "400":
-          description: "Bad Request"
-        "401":
-          description: "You are not authorized to null route this IP address."
-  /network/null/{ip}:
-    get:
-      tags:
-      - "Network"
-      summary: "Null route an IP"
-      operationId: "get_null_route_resource"
-      parameters:
-      - name: "ip"
-        in: "path"
-        required: true
-        type: "string"
-        x-exportParamName: "Ip"
-      responses:
-        "200":
-          description: "IP address is already null routed."
-        "201":
-          description: "IP has been null routed!"
-        "400":
-          description: "Bad Request"
-        "401":
-          description: "You are not authorized to null route this IP address."
-  /network/status/:
-    get:
-      tags:
-      - "Network"
-      summary: "Returns the Last Status for a long running Network Task, such as modifying\
-        \ a VLAN"
-      operationId: "get_network_task_client_resource"
-      parameters:
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success."
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/NetworkTask"
-  /network/status/{deviceId}:
-    get:
-      tags:
-      - "Network"
-      summary: "Returns the Last Status for a long running Network Task, such as modifying\
-        \ a VLAN"
-      operationId: "get_network_task_device_resource"
-      parameters:
-      - name: "deviceId"
-        in: "path"
-        required: true
-        type: "integer"
-        x-exportParamName: "DeviceId"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success."
-          schema:
-            $ref: "#/definitions/NetworkTask"
-  /network/unnull/{ip}:
-    get:
-      tags:
-      - "Network"
-      summary: "Remove null route from an IP"
-      operationId: "get_remove_null_route_resource"
-      parameters:
-      - name: "ip"
-        in: "path"
-        required: true
-        type: "string"
-        x-exportParamName: "Ip"
-      responses:
-        "200":
-          description: "IP address is not null routed."
-        "202":
-          description: "Null route has been removed!"
-        "400":
-          description: "Bad Request"
-        "401":
-          description: "You are not authorized to remove a null route on this IP address."
   /order/:
     get:
       tags:
@@ -2874,22 +2251,6 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/ProductInfo"
-  /product/match:
-    post:
-      tags:
-      - "Product"
-      summary: "Return a list of Products matching the provided lshw output of a server"
-      operationId: "post_product_match_resource"
-      parameters:
-      - in: "body"
-        name: "payload"
-        required: true
-        schema:
-          $ref: "#/definitions/ProductMatch"
-        x-exportParamName: "Payload"
-      responses:
-        "200":
-          description: "Success"
   /product/options:
     get:
       tags:
@@ -2966,100 +2327,6 @@ paths:
           description: "Product data was found"
           schema:
             $ref: "#/definitions/Options"
-  /profile/:
-    get:
-      tags:
-      - "Profile"
-      summary: "Get Profile of current user or a contact with id"
-      description: "The id is optional and if it is necessary must be sent as URL\
-        \ param."
-      operationId: "get_profile_resource"
-      parameters:
-      - name: "contactId"
-        in: "query"
-        description: "\"ID of Contact to manage Profile\""
-        required: false
-        type: "string"
-        x-exportParamName: "ContactId"
-        x-optionalDataType: "String"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            $ref: "#/definitions/Profile"
-    put:
-      tags:
-      - "Profile"
-      summary: "Update Profile of current user or a contact with id"
-      description: "The id is optional and if it is necessary must be sent as URL\
-        \ param."
-      operationId: "put_profile_resource"
-      parameters:
-      - name: "contactId"
-        in: "query"
-        description: "\"ID of Contact to manage Profile\""
-        required: false
-        type: "string"
-        x-exportParamName: "ContactId"
-        x-optionalDataType: "String"
-      - in: "body"
-        name: "payload"
-        required: true
-        schema:
-          $ref: "#/definitions/ProfileUpdate"
-        x-exportParamName: "Payload"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Profile successfully updated."
-          schema:
-            $ref: "#/definitions/Profile"
-        "400":
-          description: "Unable to update Profile Data."
-  /profile/basic:
-    get:
-      tags:
-      - "Profile"
-      summary: "Get Basic Profile of current user or a contact with id"
-      description: "The id is optional and if it is necessary must be sent as URL\
-        \ param."
-      operationId: "get_basic_profile_resource"
-      parameters:
-      - name: "contactId"
-        in: "query"
-        description: "\"ID of Contact to manage Basic Profile\""
-        required: false
-        type: "string"
-        x-exportParamName: "ContactId"
-        x-optionalDataType: "String"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            $ref: "#/definitions/BasicProfile"
   /service/:
     get:
       tags:
@@ -3176,7 +2443,6 @@ paths:
             $ref: "#/definitions/SshKeyResponse"
         "400":
           description: "Unable to added public ssh key"
-  /ssh_key/client/{clientId}: {}
   /ssh_key/{sshKeyId}:
     get:
       tags:
@@ -3260,353 +2526,6 @@ paths:
           description: "Current user is not the owner."
         "404":
           description: "Public ssh key not found."
-  /tickets/:
-    get:
-      tags:
-      - "Ticket"
-      summary: "Returns a list with all Tickets"
-      operationId: "get_ticket_resource"
-      parameters:
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "All the tickets retrieved."
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Ticket"
-    post:
-      tags:
-      - "Ticket"
-      summary: "Creates a new ticket"
-      operationId: "post_ticket_resource"
-      parameters:
-      - in: "body"
-        name: "payload"
-        required: true
-        schema:
-          $ref: "#/definitions/TicketCreate"
-        x-exportParamName: "Payload"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "201":
-          description: "Ticket successfully created"
-          schema:
-            $ref: "#/definitions/Ticket"
-        "400":
-          description: "Unable to create ticket"
-  /tickets/search:
-    get:
-      tags:
-      - "Ticket"
-      summary: "Return results of ticket search"
-      operationId: "get_ticket_search_resource"
-      parameters:
-      - name: "perPage"
-        in: "query"
-        description: "Number of items per page."
-        required: false
-        type: "integer"
-        default: 10
-        x-exportParamName: "PerPage"
-        x-optionalDataType: "Int32"
-      - name: "page"
-        in: "query"
-        description: "The page number of search."
-        required: false
-        type: "integer"
-        default: 1
-        x-exportParamName: "Page"
-        x-optionalDataType: "Int32"
-      - name: "q"
-        in: "query"
-        description: "Content search."
-        required: false
-        type: "string"
-        x-exportParamName: "Q"
-        x-optionalDataType: "String"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Ticket search results."
-          schema:
-            $ref: "#/definitions/TicketSeachResult"
-        "400":
-          description: "Invalid ticket search request."
-  /tickets/{ticketId}:
-    get:
-      tags:
-      - "Ticket"
-      summary: "Returns details of a specific ticket"
-      operationId: "get_ticket_id_resource"
-      parameters:
-      - name: "ticketId"
-        in: "path"
-        description: "ticket database ID"
-        required: true
-        type: "integer"
-        x-exportParamName: "TicketId"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "The ticket retrieved."
-          schema:
-            $ref: "#/definitions/Ticket"
-        "404":
-          description: "The ticket id not found."
-    put:
-      tags:
-      - "Ticket"
-      summary: "Updates a specific ticket"
-      operationId: "put_ticket_id_resource"
-      parameters:
-      - name: "ticketId"
-        in: "path"
-        description: "ticket database ID"
-        required: true
-        type: "integer"
-        x-exportParamName: "TicketId"
-      - in: "body"
-        name: "payload"
-        required: true
-        schema:
-          $ref: "#/definitions/TicketPut"
-        x-exportParamName: "Payload"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Ticket successfully updated."
-          schema:
-            $ref: "#/definitions/Ticket"
-        "404":
-          description: "The ticket id not found."
-  /tickets/{ticketId}/reply:
-    get:
-      tags:
-      - "Ticket"
-      summary: "Returns a reply for a specific ticket"
-      operationId: "get_ticket_reply_resource"
-      parameters:
-      - name: "ticketId"
-        in: "path"
-        description: "ticket database ID"
-        required: true
-        type: "integer"
-        x-exportParamName: "TicketId"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "The ticket replies retrieved."
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/TicketPost"
-        "404":
-          description: "The ticket id not found."
-    post:
-      tags:
-      - "Ticket"
-      summary: "Creates reply for a specific Ticket"
-      operationId: "post_ticket_reply_resource"
-      parameters:
-      - name: "ticketId"
-        in: "path"
-        description: "ticket database ID"
-        required: true
-        type: "integer"
-        x-exportParamName: "TicketId"
-      - in: "body"
-        name: "payload"
-        required: true
-        schema:
-          $ref: "#/definitions/TicketCreateReply"
-        x-exportParamName: "Payload"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "201":
-          description: "Ticket reply successfully created."
-          schema:
-            $ref: "#/definitions/TicketPost"
-        "404":
-          description: "The ticket id not found."
-  /token/:
-    get:
-      tags:
-      - "Token"
-      summary: "Returns a list of Public API Tokens for the current user"
-      operationId: "get_token_resource"
-      parameters:
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Public API Tokens retrieved."
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/PublicApiToken-dump"
-    post:
-      tags:
-      - "Token"
-      summary: "Create a new Public API Token for the current user"
-      operationId: "post_token_resource"
-      parameters:
-      - in: "body"
-        name: "payload"
-        required: true
-        schema:
-          $ref: "#/definitions/PublicApiToken-load"
-        x-exportParamName: "Payload"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Success"
-          schema:
-            $ref: "#/definitions/PublicApiToken-dump"
-        "201":
-          description: "Public API Token created."
-        "500":
-          description: "Unable to create Public API Token."
-  /token/{token}:
-    get:
-      tags:
-      - "Token"
-      summary: "Returns Public API Token"
-      operationId: "get_token_id_resource"
-      parameters:
-      - name: "token"
-        in: "path"
-        description: "Public API Token"
-        required: true
-        type: "string"
-        x-exportParamName: "Token"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Public API Token retrieved."
-          schema:
-            $ref: "#/definitions/PublicApiToken-dump"
-        "400":
-          description: "Unable to retrieve Public API Token."
-    put:
-      tags:
-      - "Token"
-      summary: "Updates the Public API Token"
-      operationId: "put_token_id_resource"
-      parameters:
-      - name: "token"
-        in: "path"
-        description: "Public API Token"
-        required: true
-        type: "string"
-        x-exportParamName: "Token"
-      - in: "body"
-        name: "payload"
-        required: true
-        schema:
-          $ref: "#/definitions/PublicApiToken-load"
-        x-exportParamName: "Payload"
-      - name: "X-Fields"
-        in: "header"
-        description: "An optional fields mask"
-        required: false
-        type: "string"
-        format: "mask"
-        x-exportParamName: "XFields"
-        x-optionalDataType: "String"
-      responses:
-        "200":
-          description: "Public API Token successfully updated."
-          schema:
-            $ref: "#/definitions/PublicApiToken-dump"
-        "400":
-          description: "Unable to update the Public API Token."
-    delete:
-      tags:
-      - "Token"
-      summary: "Deletes the Public API Token"
-      operationId: "delete_token_id_resource"
-      parameters:
-      - name: "token"
-        in: "path"
-        description: "Public API Token"
-        required: true
-        type: "string"
-        x-exportParamName: "Token"
-      responses:
-        "201":
-          description: "Public API Token successfully removed."
-        "400":
-          description: "Unable to remove the Public API Token."
   /vlan/:
     get:
       tags:
@@ -3963,95 +2882,95 @@ definitions:
     - "osName"
     - "productId"
     properties:
+      publicSshKeyId:
+        type: "integer"
+      locationName:
+        type: "string"
+      vlanId:
+        type: "integer"
+      productId:
+        type: "integer"
       script:
         type: "string"
       period:
         type: "string"
         example: "hourly"
-      locationName:
-        type: "string"
-      publicSshKeyId:
-        type: "integer"
-      productId:
-        type: "integer"
       osName:
         type: "string"
-      vlanId:
-        type: "integer"
       hostname:
         type: "string"
     example:
       period: "hourly"
       hostname: "hostname"
       locationName: "locationName"
-      productId: 6
-      vlanId: 1
+      productId: 1
+      vlanId: 6
       osName: "osName"
       script: "script"
       publicSshKeyId: 0
   BareMetalDevice:
     type: "object"
     properties:
-      powerStatus:
-        type: "string"
-      period:
-        type: "string"
-        example: "hourly"
-      productName:
-        type: "string"
-      primaryIp:
-        type: "string"
-      script:
-        type: "string"
-      orderId:
-        type: "integer"
-      serviceId:
-        type: "integer"
-      locationName:
-        type: "string"
       tags:
         type: "array"
         items:
           type: "string"
+      locationName:
+        type: "string"
+      vlanId:
+        type: "integer"
       publicSshKeyId:
         type: "integer"
       productId:
         type: "integer"
+      period:
+        type: "string"
+        example: "hourly"
+      script:
+        type: "string"
       osName:
         type: "string"
-      vlanId:
+      serviceId:
         type: "integer"
+      productName:
+        type: "string"
+      powerStatus:
+        type: "string"
       hostname:
         type: "string"
       deviceId:
         type: "integer"
+      orderId:
+        type: "integer"
+      primaryIp:
+        type: "string"
     example:
       period: "hourly"
       locationName: "locationName"
-      productId: 5
-      orderId: 0
-      vlanId: 5
+      productId: 1
+      vlanId: 0
+      orderId: 2
       osName: "osName"
-      deviceId: 2
-      productName: "productName"
+      deviceId: 5
       script: "script"
+      productName: "productName"
       tags:
       - "tags"
       - "tags"
-      publicSshKeyId: 1
+      publicSshKeyId: 6
       powerStatus: "powerStatus"
       hostname: "hostname"
       primaryIp: "primaryIp"
-      serviceId: 6
+      serviceId: 5
   BareMetalDeviceUpdate:
     type: "object"
     properties:
-      hostname:
-        type: "string"
       tags:
         type: "array"
         items:
           type: "string"
+      hostname:
+        type: "string"
     example:
       hostname: "hostname"
       tags:
@@ -4060,57 +2979,57 @@ definitions:
   BillingInfo:
     type: "object"
     properties:
-      company:
-        type: "string"
-      zip:
+      achAba:
         type: "string"
       achType:
         type: "string"
-      address:
-        type: "string"
-      clientId:
-        type: "integer"
-      ccType:
-        type: "string"
-      id:
-        type: "integer"
       country:
         type: "string"
-      first:
+      ccExpire:
         type: "string"
-      phone:
+      last:
         type: "string"
-      ccNum:
+      address:
         type: "string"
-      status:
-        type: "integer"
-      email:
+      company:
         type: "string"
-      achBank:
+      state:
         type: "string"
       achAccount:
         type: "string"
-      achAba:
+      achBank:
         type: "string"
+      ccNum:
+        type: "string"
+      id:
+        type: "integer"
       city:
         type: "string"
       paymentType:
         type: "string"
-      ccExpire:
+      phone:
         type: "string"
-      state:
+      first:
         type: "string"
-      last:
+      clientId:
+        type: "integer"
+      status:
+        type: "integer"
+      zip:
+        type: "string"
+      email:
+        type: "string"
+      ccType:
         type: "string"
     example:
       zip: "zip"
       country: "country"
       address: "address"
-      clientId: 0
+      clientId: 6
       last: "last"
       city: "city"
-      ccNum: "ccNum"
       achBank: "achBank"
+      ccNum: "ccNum"
       achType: "achType"
       paymentType: "paymentType"
       ccType: "ccType"
@@ -4119,71 +3038,11 @@ definitions:
       phone: "phone"
       achAccount: "achAccount"
       company: "company"
-      id: 6
       state: "state"
+      id: 0
       first: "first"
       email: "email"
       status: 1
-  CancellationCreate:
-    type: "object"
-    required:
-    - "deviceId"
-    - "reason"
-    - "serviceId"
-    properties:
-      deviceId:
-        type: "integer"
-      reason:
-        type: "string"
-      serviceId:
-        type: "integer"
-    example:
-      reason: "reason"
-      serviceId: 6
-      deviceId: 0
-  Cancellation:
-    type: "object"
-    properties:
-      clientId:
-        type: "integer"
-      monthlyPayment:
-        type: "integer"
-      requestDate:
-        type: "string"
-        format: "date-time"
-      name:
-        type: "string"
-      id:
-        type: "integer"
-      deviceId:
-        type: "integer"
-      startDate:
-        type: "string"
-        format: "date-time"
-      activeMonths:
-        type: "integer"
-      planId:
-        type: "integer"
-      cancelled:
-        type: "boolean"
-      serviceId:
-        type: "integer"
-      deletedAt:
-        type: "string"
-        format: "date-time"
-    example:
-      deletedAt: "2000-01-23T04:56:07.000+00:00"
-      clientId: 0
-      monthlyPayment: 6
-      activeMonths: 5
-      requestDate: "2000-01-23T04:56:07.000+00:00"
-      name: "name"
-      cancelled: true
-      planId: 2
-      id: 1
-      serviceId: 7
-      deviceId: 5
-      startDate: "2000-01-23T04:56:07.000+00:00"
   ContactCreate:
     type: "object"
     required:
@@ -4191,21 +3050,21 @@ definitions:
     - "email"
     - "fullName"
     properties:
-      password:
-        type: "string"
-        default: "de718a3e72e1d090d9c08a8e005318b1"
       description:
-        type: "string"
-      phone:
         type: "string"
       fullName:
         type: "string"
       email:
         type: "string"
+      password:
+        type: "string"
+        default: "31e817a5e7547ebf7fa41a793c3a7e1b"
       active:
         type: "integer"
+      phone:
+        type: "string"
     example:
-      password: "de718a3e72e1d090d9c08a8e005318b1"
+      password: "31e817a5e7547ebf7fa41a793c3a7e1b"
       phone: "phone"
       description: "description"
       fullName: "fullName"
@@ -4218,29 +3077,29 @@ definitions:
     - "email"
     - "fullName"
     properties:
+      contactId:
+        type: "integer"
       clientId:
         type: "integer"
       description:
         type: "string"
       isClient:
         type: "boolean"
-      phone:
-        type: "string"
       fullName:
+        type: "string"
+      email:
         type: "string"
       active:
         type: "integer"
-      email:
+      phone:
         type: "string"
-      contactId:
-        type: "integer"
     example:
-      clientId: 0
+      clientId: 6
+      contactId: 0
       phone: "phone"
-      contactId: 1
       description: "description"
       fullName: "fullName"
-      active: 6
+      active: 1
       isClient: true
       email: "email"
   ContactUpdate:
@@ -4248,14 +3107,14 @@ definitions:
     properties:
       description:
         type: "string"
-      phone:
-        type: "string"
       fullName:
         type: "string"
       email:
         type: "string"
       active:
         type: "integer"
+      phone:
+        type: "string"
     example:
       phone: "phone"
       description: "description"
@@ -4268,9 +3127,9 @@ definitions:
     - "newPassword"
     - "password"
     properties:
-      password:
-        type: "string"
       newPassword:
+        type: "string"
+      password:
         type: "string"
     example:
       password: "password"
@@ -4297,54 +3156,6 @@ definitions:
         type: "string"
     example:
       email: "email"
-  CreateCredit:
-    type: "object"
-    properties:
-      amount:
-        type: "number"
-      billingInfoId:
-        type: "integer"
-    example:
-      amount: 0.80082819046101150206595775671303272247314453125
-      billingInfoId: 6
-  Credit:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-      amount:
-        type: "number"
-      balance:
-        type: "number"
-      clientId:
-        type: "integer"
-      created:
-        type: "integer"
-      orderId:
-        type: "integer"
-      reason:
-        type: "string"
-      status:
-        type: "string"
-      billingInfoId:
-        type: "integer"
-    example:
-      reason: "reason"
-      amount: 6.02745618307040320615897144307382404804229736328125
-      clientId: 5
-      balance: 1.46581298050294517310021547018550336360931396484375
-      orderId: 2
-      billingInfoId: 7
-      created: 5
-      id: 0
-      status: "status"
-  TotalActiveCredit:
-    type: "object"
-    properties:
-      totalActive:
-        type: "number"
-    example:
-      totalActive: 0.80082819046101150206595775671303272247314453125
   Device:
     type: "object"
     required:
@@ -4451,28 +3262,6 @@ definitions:
     example:
       hostname: "server1.mydomain.com"
       name: "A Descriptive Name for this Device"
-  DeviceInterface:
-    type: "object"
-    properties:
-      status:
-        type: "integer"
-      name:
-        type: "string"
-      interfaceId:
-        type: "integer"
-      private:
-        type: "boolean"
-      switchName:
-        type: "string"
-      switchPort:
-        type: "string"
-    example:
-      private: true
-      switchName: "switchName"
-      name: "name"
-      interfaceId: 6
-      switchPort: "switchPort"
-      status: 0
   DevicePower:
     type: "object"
     properties:
@@ -4527,26 +3316,26 @@ definitions:
   DeviceIPMIInfo:
     type: "object"
     properties:
-      info:
-        $ref: "#/definitions/IPMIInfo"
       sensors:
         type: "array"
         items:
           $ref: "#/definitions/IPMISensor"
+      info:
+        $ref: "#/definitions/IPMIInfo"
     example:
       sensors:
       - name: "name"
         reading: 0.80082819046101150206595775671303272247314453125
         units: "units"
+        group: "group"
         sensorId: "sensorId"
         status: true
-        group: "group"
       - name: "name"
         reading: 0.80082819046101150206595775671303272247314453125
         units: "units"
+        group: "group"
         sensorId: "sensorId"
         status: true
-        group: "group"
       info:
         fruInventoryDevice: "fruInventoryDevice"
         sdrRepositoryDevice: "sdrRepositoryDevice"
@@ -4557,50 +3346,72 @@ definitions:
         deviceRevision: "deviceRevision"
         ipmbEventGenerator: "ipmbEventGenerator"
         deviceId: "deviceId"
-        chassisDevice: "chassisDevice"
         ipmiVersion: "ipmiVersion"
+        chassisDevice: "chassisDevice"
         selDevice: "selDevice"
         ipmbEventReceiver: "ipmbEventReceiver"
         auxFirmwareRevInfo: "auxFirmwareRevInfo"
         bridge: "bridge"
         sensorDevice: "sensorDevice"
         firmwareRevision: "firmwareRevision"
+  IPMISensor:
+    type: "object"
+    properties:
+      group:
+        type: "string"
+      sensorId:
+        type: "string"
+      status:
+        type: "boolean"
+      reading:
+        type: "number"
+      units:
+        type: "string"
+      name:
+        type: "string"
+    example:
+      name: "name"
+      reading: 0.80082819046101150206595775671303272247314453125
+      units: "units"
+      group: "group"
+      sensorId: "sensorId"
+      status: true
   IPMIInfo:
     type: "object"
     properties:
-      ipmbEventGenerator:
-        type: "string"
-      fruInventoryDevice:
-        type: "string"
-      auxFirmwareRevInfo:
-        type: "string"
-      selDevice:
-        type: "string"
-      chassisDevice:
-        type: "string"
-      firmwareRevision:
-        type: "string"
-      sensorDevice:
-        type: "string"
-      deviceId:
-        type: "string"
-      sdrRepositoryDevice:
-        type: "string"
-      manufacturerId:
-        type: "string"
       ipmbEventReceiver:
-        type: "string"
-      deviceRevision:
         type: "string"
       productId:
         type: "string"
+      auxFirmwareRevInfo:
+        type: "string"
+      manufacturerId:
+        type: "string"
+      ipmiVersion:
+        type: "string"
       bridge:
         type: "string"
-      deviceSDRs:
+      sensorDevice:
+        type: "string"
+      deviceRevision:
+        type: "string"
+      deviceId:
+        type: "string"
+      fruInventoryDevice:
+        type: "string"
+      chassisDevice:
+        type: "string"
+      sdrRepositoryDevice:
+        type: "string"
+      selDevice:
+        type: "string"
+      ipmbEventGenerator:
+        type: "string"
+      firmwareRevision:
         type: "string"
       deviceAvailable:
         type: "string"
-      ipmiVersion:
+      deviceSDRs:
         type: "string"
     example:
       fruInventoryDevice: "fruInventoryDevice"
@@ -4612,51 +3423,29 @@ definitions:
       deviceRevision: "deviceRevision"
       ipmbEventGenerator: "ipmbEventGenerator"
       deviceId: "deviceId"
-      chassisDevice: "chassisDevice"
       ipmiVersion: "ipmiVersion"
+      chassisDevice: "chassisDevice"
       selDevice: "selDevice"
       ipmbEventReceiver: "ipmbEventReceiver"
       auxFirmwareRevInfo: "auxFirmwareRevInfo"
       bridge: "bridge"
       sensorDevice: "sensorDevice"
       firmwareRevision: "firmwareRevision"
-  IPMISensor:
-    type: "object"
-    properties:
-      reading:
-        type: "number"
-      sensorId:
-        type: "string"
-      units:
-        type: "string"
-      status:
-        type: "boolean"
-      group:
-        type: "string"
-      name:
-        type: "string"
-    example:
-      name: "name"
-      reading: 0.80082819046101150206595775671303272247314453125
-      units: "units"
-      sensorId: "sensorId"
-      status: true
-      group: "group"
   IPMILoginData:
     type: "object"
     properties:
-      password:
+      drivertype:
         type: "string"
-      host:
+      password:
         type: "string"
       username:
         type: "string"
-      drivertype:
+      host:
         type: "string"
     example:
       password: "password"
-      host: "host"
       drivertype: "drivertype"
+      host: "host"
       username: "username"
   IPMIValidLogin:
     type: "object"
@@ -4667,29 +3456,20 @@ definitions:
         type: "boolean"
     example:
       valid: true
-  DevicePassword:
-    type: "object"
-    required:
-    - "password"
-    properties:
-      password:
-        type: "string"
-    example:
-      password: "password"
   DeviceInitialCreds:
     type: "object"
     properties:
-      lockerUrl:
-        type: "string"
+      port:
+        type: "integer"
       password:
+        type: "string"
+      lockerUrl:
         type: "string"
       user:
         type: "string"
-      port:
-        type: "integer"
     example:
-      lockerUrl: "lockerUrl"
       password: "password"
+      lockerUrl: "lockerUrl"
       port: 0
       user: "user"
   DeviceIPMIWhitelistIP:
@@ -4699,63 +3479,6 @@ definitions:
     properties:
       custIp:
         type: "string"
-  DeviceEvent:
-    type: "object"
-    properties:
-      time:
-        type: "integer"
-      action:
-        type: "string"
-    example:
-      action: "action"
-      time: 0
-  DeviceReload:
-    type: "object"
-    required:
-    - "operatingSystemId"
-    properties:
-      controlPanelId:
-        type: "integer"
-      script:
-        type: "string"
-      publicSshKeyIds:
-        type: "array"
-        items:
-          type: "integer"
-      body:
-        type: "string"
-      operatingSystemId:
-        type: "integer"
-    example:
-      controlPanelId: 0
-      operatingSystemId: 1
-      publicSshKeyIds:
-      - 6
-      - 6
-      body: "body"
-      script: "script"
-  ServiceOption:
-    type: "object"
-    properties:
-      serviceOptionId:
-        type: "integer"
-      name:
-        type: "string"
-      optionId:
-        type: "integer"
-      upgradeName:
-        type: "string"
-      groupName:
-        type: "string"
-      invoiceHide:
-        type: "string"
-    example:
-      serviceOptionId: 0
-      groupName: "groupName"
-      invoiceHide: "invoiceHide"
-      name: "name"
-      optionId: 6
-      upgradeName: "upgradeName"
   DomainCreate:
     type: "object"
     required:
@@ -4772,13 +3495,13 @@ definitions:
     - "domainId"
     - "name"
     properties:
-      directsTo:
-        type: "string"
       domainId:
         type: "integer"
       summary:
         type: "object"
         properties: {}
+      directsTo:
+        type: "string"
       name:
         type: "string"
     example:
@@ -4792,43 +3515,16 @@ definitions:
     - "name"
     - "ttl"
     properties:
-      ttl:
-        type: "integer"
       address:
         type: "string"
+      ttl:
+        type: "integer"
       name:
         type: "string"
     example:
       address: "address"
       name: "name"
       ttl: 0
-  SingleARecordReturn:
-    type: "object"
-    required:
-    - "domainId"
-    - "name"
-    - "ttl"
-    - "type"
-    properties:
-      ttl:
-        type: "integer"
-      id:
-        type: "integer"
-      address:
-        type: "string"
-      domainId:
-        type: "integer"
-      type:
-        type: "string"
-      name:
-        type: "string"
-    example:
-      address: "address"
-      name: "name"
-      id: 6
-      type: "type"
-      ttl: 0
-      domainId: 1
   ARecordReturn:
     type: "object"
     required:
@@ -4838,11 +3534,9 @@ definitions:
     - "ttl"
     - "type"
     properties:
-      ttl:
-        type: "integer"
-      name:
-        type: "string"
       domainId:
+        type: "integer"
+      ttl:
         type: "integer"
       type:
         type: "string"
@@ -4850,6 +3544,8 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/RecordValue"
+      name:
+        type: "string"
     example:
       addresses:
       - address: "address"
@@ -4858,8 +3554,8 @@ definitions:
         id: 1
       name: "name"
       type: "type"
-      ttl: 0
-      domainId: 6
+      ttl: 6
+      domainId: 0
   RecordValue:
     type: "object"
     properties:
@@ -4870,13 +3566,40 @@ definitions:
     example:
       address: "address"
       id: 1
-  ARecordUpdate:
+  SingleARecordReturn:
     type: "object"
+    required:
+    - "domainId"
+    - "name"
+    - "ttl"
+    - "type"
     properties:
-      ttl:
+      domainId:
         type: "integer"
       address:
         type: "string"
+      ttl:
+        type: "integer"
+      type:
+        type: "string"
+      id:
+        type: "integer"
+      name:
+        type: "string"
+    example:
+      address: "address"
+      name: "name"
+      id: 1
+      type: "type"
+      ttl: 6
+      domainId: 0
+  ARecordUpdate:
+    type: "object"
+    properties:
+      address:
+        type: "string"
+      ttl:
+        type: "integer"
       name:
         type: "string"
     example:
@@ -4890,10 +3613,10 @@ definitions:
     - "name"
     - "ttl"
     properties:
-      ttl:
-        type: "integer"
       address:
         type: "string"
+      ttl:
+        type: "integer"
       name:
         type: "string"
   AAAARecordReturn:
@@ -4905,11 +3628,9 @@ definitions:
     - "ttl"
     - "type"
     properties:
-      ttl:
-        type: "integer"
-      name:
-        type: "string"
       domainId:
+        type: "integer"
+      ttl:
         type: "integer"
       type:
         type: "string"
@@ -4917,6 +3638,8 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/RecordValue"
+      name:
+        type: "string"
     example:
       addresses:
       - address: "address"
@@ -4925,15 +3648,15 @@ definitions:
         id: 1
       name: "name"
       type: "type"
-      ttl: 0
-      domainId: 6
+      ttl: 6
+      domainId: 0
   AAAARecordUpdate:
     type: "object"
     properties:
-      ttl:
-        type: "integer"
       address:
         type: "string"
+      ttl:
+        type: "integer"
       name:
         type: "string"
   SingleMXRecordCreate:
@@ -4944,14 +3667,64 @@ definitions:
     - "preference"
     - "ttl"
     properties:
+      exchange:
+        type: "string"
+      ttl:
+        type: "integer"
       preference:
+        type: "integer"
+      name:
+        type: "string"
+  MXRecordReturn:
+    type: "object"
+    required:
+    - "domainId"
+    - "mx"
+    - "name"
+    - "ttl"
+    - "type"
+    properties:
+      domainId:
         type: "integer"
       ttl:
         type: "integer"
-      exchange:
+      type:
         type: "string"
+      mx:
+        type: "array"
+        items:
+          $ref: "#/definitions/MXValue"
       name:
         type: "string"
+    example:
+      name: "name"
+      mx:
+      - preference: 5
+        exchange: "exchange"
+        id: 1
+      - preference: 5
+        exchange: "exchange"
+        id: 1
+      type: "type"
+      ttl: 6
+      domainId: 0
+  MXValue:
+    type: "object"
+    required:
+    - "exchange"
+    - "id"
+    - "preference"
+    properties:
+      id:
+        type: "integer"
+      exchange:
+        type: "string"
+      preference:
+        type: "integer"
+    example:
+      preference: 5
+      exchange: "exchange"
+      id: 1
   SingleMXRecordReturn:
     type: "object"
     required:
@@ -4963,89 +3736,39 @@ definitions:
     - "ttl"
     - "type"
     properties:
-      ttl:
-        type: "integer"
-      id:
+      domainId:
         type: "integer"
       exchange:
         type: "string"
-      preference:
-        type: "integer"
-      domainId:
-        type: "integer"
-      type:
-        type: "string"
-      name:
-        type: "string"
-    example:
-      preference: 1
-      name: "name"
-      exchange: "exchange"
-      id: 6
-      type: "type"
-      ttl: 0
-      domainId: 5
-  MXRecordReturn:
-    type: "object"
-    required:
-    - "domainId"
-    - "mx"
-    - "name"
-    - "ttl"
-    - "type"
-    properties:
       ttl:
         type: "integer"
-      mx:
-        type: "array"
-        items:
-          $ref: "#/definitions/MXValue"
-      domainId:
-        type: "integer"
       type:
         type: "string"
+      id:
+        type: "integer"
+      preference:
+        type: "integer"
       name:
         type: "string"
     example:
+      preference: 5
       name: "name"
-      mx:
-      - preference: 6
-        exchange: "exchange"
-        id: 1
-      - preference: 6
-        exchange: "exchange"
-        id: 1
-      type: "type"
-      ttl: 0
-      domainId: 5
-  MXValue:
-    type: "object"
-    required:
-    - "exchange"
-    - "id"
-    - "preference"
-    properties:
-      preference:
-        type: "integer"
-      id:
-        type: "integer"
-      exchange:
-        type: "string"
-    example:
-      preference: 6
       exchange: "exchange"
       id: 1
+      type: "type"
+      ttl: 6
+      domainId: 0
   SingleMXRecordUpdate:
     type: "object"
     required:
     - "exchange"
     properties:
-      preference:
-        type: "integer"
-      ttl:
-        type: "integer"
       exchange:
         type: "string"
+      ttl:
+        type: "integer"
+      preference:
+        type: "integer"
       name:
         type: "string"
   Inventory:
@@ -5057,111 +3780,111 @@ definitions:
   Stock:
     type: "object"
     properties:
-      product_on_sale:
+      product_monthly_price:
+        type: "number"
+      edge:
         type: "boolean"
-      product_triennial_price:
+      product_annually_price:
         type: "number"
-      product_cpu_cores:
-        type: "string"
-      stock:
-        type: "string"
-      annually_location_premium:
+      product_display_price:
         type: "number"
-      product_original_price:
+      core:
+        type: "boolean"
+      monthly_location_premium:
         type: "number"
       data_center:
         type: "string"
-      biennial_location_premium:
-        type: "number"
-      product_semi_annually_price:
-        type: "number"
-      product_id:
-        type: "integer"
-      product_drive:
+      product_cpu_cores:
         type: "string"
-      product_hourly_price:
+      product_triennial_price:
         type: "number"
+      stock:
+        type: "string"
+      product_gpu:
+        type: "string"
       product_disabled_billing_periods:
         type: "array"
         items:
           type: "string"
-      product_cpu:
-        type: "string"
+      biennial_location_premium:
+        type: "number"
       product_name:
         type: "string"
-      product_quarterly_price:
-        type: "number"
+      product_drive:
+        type: "string"
+      product_cpu:
+        type: "string"
+      product_on_sale:
+        type: "boolean"
       triennial_location_premium:
         type: "number"
-      hourly_location_premium:
+      product_hourly_price:
         type: "number"
-      monthly_location_premium:
+      annually_location_premium:
         type: "number"
-      product_memory:
-        type: "string"
-      quarterly_location_premium:
+      product_quarterly_price:
         type: "number"
       product_biennial_price:
         type: "number"
-      product_annually_price:
+      product_original_price:
         type: "number"
-      product_gpu:
-        type: "string"
-      core:
-        type: "boolean"
-      product_monthly_price:
-        type: "number"
-      product_display_price:
-        type: "number"
-      semi_annually_location_premium:
+      quarterly_location_premium:
         type: "number"
       product_bandwidth:
         type: "string"
-      edge:
-        type: "boolean"
+      product_memory:
+        type: "string"
+      product_id:
+        type: "integer"
+      semi_annually_location_premium:
+        type: "number"
+      hourly_location_premium:
+        type: "number"
+      product_semi_annually_price:
+        type: "number"
     example:
       product_gpu: "product_gpu"
       product_cpu: "product_cpu"
-      biennial_location_premium: 5.962133916683182377482808078639209270477294921875
+      biennial_location_premium: 2.3021358869347654518833223846741020679473876953125
       product_memory: "product_memory"
-      product_monthly_price: 1.489415909854170383397331534069962799549102783203125
+      product_monthly_price: 0.80082819046101150206595775671303272247314453125
       edge: true
-      product_hourly_price: 7.061401241503109105224211816675961017608642578125
-      quarterly_location_premium: 7.3862819483858839220147274318151175975799560546875
-      product_id: 2
-      semi_annually_location_premium: 7.4577447736837658709418974467553198337554931640625
+      product_hourly_price: 9.301444243932575517419536481611430644989013671875
+      quarterly_location_premium: 1.231513536777255612975068288506008684635162353515625
+      product_id: 1
+      semi_annually_location_premium: 1.489415909854170383397331534069962799549102783203125
       stock: "stock"
       data_center: "data_center"
-      hourly_location_premium: 2.027123023002321833274663731572218239307403564453125
+      hourly_location_premium: 6.8468526983526398765889098285697400569915771484375
+      product_annually_price: 6.02745618307040320615897144307382404804229736328125
       product_name: "product_name"
-      product_annually_price: 1.024645700144157789424070870154537260532379150390625
-      triennial_location_premium: 3.61607674925191080461672754609026014804840087890625
-      product_triennial_price: 0.80082819046101150206595775671303272247314453125
+      triennial_location_premium: 7.061401241503109105224211816675961017608642578125
+      core: true
+      product_triennial_price: 5.63737665663332876420099637471139430999755859375
       product_disabled_billing_periods:
       - "product_disabled_billing_periods"
       - "product_disabled_billing_periods"
-      core: true
       product_drive: "product_drive"
       product_cpu_cores: "product_cpu_cores"
-      product_quarterly_price: 9.301444243932575517419536481611430644989013671875
+      product_quarterly_price: 2.027123023002321833274663731572218239307403564453125
       product_bandwidth: "product_bandwidth"
-      annually_location_premium: 6.02745618307040320615897144307382404804229736328125
+      annually_location_premium: 3.61607674925191080461672754609026014804840087890625
       product_on_sale: true
-      monthly_location_premium: 4.1456080298839363962315474054776132106781005859375
-      product_biennial_price: 1.231513536777255612975068288506008684635162353515625
-      product_display_price: 6.8468526983526398765889098285697400569915771484375
-      product_original_price: 1.46581298050294517310021547018550336360931396484375
-      product_semi_annually_price: 5.63737665663332876420099637471139430999755859375
+      product_display_price: 1.46581298050294517310021547018550336360931396484375
+      monthly_location_premium: 5.962133916683182377482808078639209270477294921875
+      product_biennial_price: 4.1456080298839363962315474054776132106781005859375
+      product_original_price: 7.3862819483858839220147274318151175975799560546875
+      product_semi_annually_price: 7.4577447736837658709418974467553198337554931640625
   Location:
     type: "object"
     properties:
-      location:
-        $ref: "#/definitions/CityStateCountry"
+      edge:
+        type: "boolean"
       code:
         type: "string"
+      location:
+        $ref: "#/definitions/CityStateCountry"
       core:
-        type: "boolean"
-      edge:
         type: "boolean"
     example:
       core: true
@@ -5176,260 +3899,46 @@ definitions:
     properties:
       state:
         type: "string"
-      country:
-        type: "string"
       city:
+        type: "string"
+      country:
         type: "string"
     example:
       country: "country"
       city: "city"
       state: "state"
-  Invoice:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-      amount:
-        type: "number"
-      amountUnpaid:
-        type: "number"
-      clientId:
-        type: "integer"
-      created:
-        type: "integer"
-      datePaid:
-        type: "integer"
-      due:
-        type: "integer"
-      sent:
-        type: "integer"
-      status:
-        type: "string"
-    example:
-      amount: 6.02745618307040320615897144307382404804229736328125
-      clientId: 5
-      datePaid: 2
-      due: 7
-      created: 5
-      id: 0
-      amountUnpaid: 1.46581298050294517310021547018550336360931396484375
-      sent: 9
-      status: "status"
-  InvoicePDF:
-    type: "object"
-    properties:
-      invoiceId:
-        type: "integer"
-      pdfData:
-        type: "string"
-    example:
-      pdfData: "pdfData"
-      invoiceId: 0
-  InvoiceDetails:
-    type: "object"
-    properties:
-      accountBalance:
-        type: "number"
-      clientAddress:
-        type: "string"
-      clientName:
-        type: "string"
-      companyName:
-        type: "string"
-      invoiceDate:
-        type: "string"
-        format: "date-time"
-      invoiceDue:
-        type: "string"
-        format: "date-time"
-      invoiceNumber:
-        type: "string"
-      serviceItems:
-        type: "array"
-        items:
-          $ref: "#/definitions/InvoiceDetailsServiceItems"
-      taxesValue:
-        type: "number"
-      totalDue:
-        type: "number"
-      paymentHistory:
-        type: "array"
-        items:
-          type: "object"
-          properties: {}
-      refundHistory:
-        type: "array"
-        items:
-          type: "object"
-          properties: {}
-      taxesList:
-        type: "array"
-        items:
-          type: "object"
-          properties: {}
-      priorBalance:
-        type: "number"
-      paymentsRefunds:
-        type: "number"
-    example:
-      clientName: "clientName"
-      taxesList:
-      - "{}"
-      - "{}"
-      taxesValue: 5.63737665663332876420099637471139430999755859375
-      companyName: "companyName"
-      totalDue: 2.3021358869347654518833223846741020679473876953125
-      refundHistory:
-      - "{}"
-      - "{}"
-      paymentHistory:
-      - "{}"
-      - "{}"
-      serviceItems:
-      - unitPrice: 1.46581298050294517310021547018550336360931396484375
-        quantity: 6
-        dateRange: "{}"
-        description: "description"
-        serviceId: 5
-      - unitPrice: 1.46581298050294517310021547018550336360931396484375
-        quantity: 6
-        dateRange: "{}"
-        description: "description"
-        serviceId: 5
-      invoiceDate: "2000-01-23T04:56:07.000+00:00"
-      clientAddress: "clientAddress"
-      priorBalance: 7.061401241503109105224211816675961017608642578125
-      invoiceDue: "2000-01-23T04:56:07.000+00:00"
-      paymentsRefunds: 9.301444243932575517419536481611430644989013671875
-      invoiceNumber: "invoiceNumber"
-      accountBalance: 0.80082819046101150206595775671303272247314453125
-  InvoiceDetailsServiceItems:
-    type: "object"
-    properties:
-      dateRange:
-        type: "object"
-        properties: {}
-      description:
-        type: "string"
-      quantity:
-        type: "integer"
-      unitPrice:
-        type: "number"
-      serviceId:
-        type: "integer"
-    example:
-      unitPrice: 1.46581298050294517310021547018550336360931396484375
-      quantity: 6
-      dateRange: "{}"
-      description: "description"
-      serviceId: 5
-  InvoiceSeachResult:
-    type: "object"
-    properties:
-      hasPrev:
-        type: "boolean"
-      items:
-        $ref: "#/definitions/Invoice"
-      perPage:
-        type: "integer"
-      pages:
-        type: "integer"
-      nextPage:
-        type: "integer"
-      total:
-        type: "integer"
-      hasNext:
-        type: "boolean"
-      prevPage:
-        type: "integer"
-      page:
-        type: "integer"
-    example:
-      total: 5
-      perPage: 0
-      pages: 6
-      hasPrev: true
-      nextPage: 1
-      hasNext: true
-      prevPage: 5
-      page: 2
-      items:
-        amount: 6.02745618307040320615897144307382404804229736328125
-        clientId: 5
-        datePaid: 2
-        due: 7
-        created: 5
-        id: 0
-        amountUnpaid: 1.46581298050294517310021547018550336360931396484375
-        sent: 9
-        status: "status"
-  DetailedNullIP:
-    type: "object"
-    required:
-    - "ip"
-    properties:
-      comments:
-        type: "string"
-        example: "Null routed via API"
-      ip:
-        type: "string"
-  NetworkTask:
-    type: "object"
-    properties:
-      clientId:
-        type: "integer"
-      result:
-        type: "string"
-      taskFinished:
-        type: "integer"
-      taskId:
-        type: "string"
-      deviceId:
-        type: "integer"
-      metaData:
-        type: "string"
-      taskCreated:
-        type: "integer"
-    example:
-      result: "result"
-      metaData: "metaData"
-      clientId: 0
-      taskCreated: 5
-      taskFinished: 6
-      deviceId: 1
-      taskId: "taskId"
   Order-dump:
     type: "object"
     properties:
-      total:
-        type: "number"
+      status:
+        type: "string"
       orderId:
         type: "integer"
+      owner:
+        type: "string"
       info:
         type: "object"
         properties: {}
-      owner:
-        type: "string"
-      status:
-        type: "string"
+      total:
+        type: "number"
     example:
       owner: "owner"
-      total: 0.80082819046101150206595775671303272247314453125
-      orderId: 6
-      info: "{}"
+      total: 6.02745618307040320615897144307382404804229736328125
+      orderId: 0
       status: "status"
+      info: "{}"
   Permission:
     type: "object"
     required:
     - "permissions"
     - "userId"
     properties:
-      userId:
-        type: "integer"
       permissions:
         type: "array"
         items:
           type: "string"
+      userId:
+        type: "integer"
     example:
       permissions:
       - "permissions"
@@ -5445,141 +3954,101 @@ definitions:
   ProductInfo:
     type: "object"
     properties:
-      product_on_sale:
-        type: "boolean"
-      product_triennial_price:
-        type: "number"
-      product_cpu_cores:
-        type: "string"
-      stock:
-        type: "string"
-      annually_location_premium:
-        type: "number"
-      product_original_price:
-        type: "number"
-      data_center:
-        type: "string"
-      biennial_location_premium:
-        type: "number"
-      product_semi_annually_price:
-        type: "number"
-      product_id:
-        type: "integer"
-      product_drive:
-        type: "string"
-      product_hourly_price:
-        type: "number"
-      product_disabled_billing_periods:
-        type: "array"
-        items:
-          type: "string"
-      product_cpu:
-        type: "string"
-      product_name:
-        type: "string"
-      product_quarterly_price:
-        type: "number"
-      triennial_location_premium:
-        type: "number"
-      hourly_location_premium:
-        type: "number"
-      monthly_location_premium:
-        type: "number"
-      product_memory:
-        type: "string"
-      quarterly_location_premium:
-        type: "number"
-      product_biennial_price:
-        type: "number"
-      product_annually_price:
-        type: "number"
-      product_gpu:
-        type: "string"
-      core:
-        type: "boolean"
       product_monthly_price:
+        type: "number"
+      edge:
+        type: "boolean"
+      product_annually_price:
         type: "number"
       product_display_price:
         type: "number"
-      semi_annually_location_premium:
-        type: "number"
-      product_bandwidth:
-        type: "string"
-      edge:
+      core:
         type: "boolean"
-    example:
-      product_gpu: "product_gpu"
-      product_cpu: "product_cpu"
-      biennial_location_premium: 5.962133916683182377482808078639209270477294921875
-      product_memory: "product_memory"
-      product_monthly_price: 1.489415909854170383397331534069962799549102783203125
-      edge: true
-      product_hourly_price: 7.061401241503109105224211816675961017608642578125
-      quarterly_location_premium: 7.3862819483858839220147274318151175975799560546875
-      product_id: 2
-      semi_annually_location_premium: 7.4577447736837658709418974467553198337554931640625
-      stock: "stock"
-      data_center: "data_center"
-      hourly_location_premium: 2.027123023002321833274663731572218239307403564453125
-      product_name: "product_name"
-      product_annually_price: 1.024645700144157789424070870154537260532379150390625
-      triennial_location_premium: 3.61607674925191080461672754609026014804840087890625
-      product_triennial_price: 0.80082819046101150206595775671303272247314453125
-      product_disabled_billing_periods:
-      - "product_disabled_billing_periods"
-      - "product_disabled_billing_periods"
-      core: true
-      product_drive: "product_drive"
-      product_cpu_cores: "product_cpu_cores"
-      product_quarterly_price: 9.301444243932575517419536481611430644989013671875
-      product_bandwidth: "product_bandwidth"
-      annually_location_premium: 6.02745618307040320615897144307382404804229736328125
-      product_on_sale: true
-      monthly_location_premium: 4.1456080298839363962315474054776132106781005859375
-      product_biennial_price: 1.231513536777255612975068288506008684635162353515625
-      product_display_price: 6.8468526983526398765889098285697400569915771484375
-      product_original_price: 1.46581298050294517310021547018550336360931396484375
-      product_semi_annually_price: 5.63737665663332876420099637471139430999755859375
-  ProductMatch:
-    type: "object"
-    properties:
-      hwInfo:
-        $ref: "#/definitions/Hardware"
-      deviceId:
-        type: "integer"
-      locationCode:
+      monthly_location_premium:
+        type: "number"
+      data_center:
         type: "string"
-      marketClients:
+      product_cpu_cores:
+        type: "string"
+      product_triennial_price:
+        type: "number"
+      stock:
+        type: "string"
+      product_gpu:
+        type: "string"
+      product_disabled_billing_periods:
         type: "array"
         items:
           type: "string"
-      lshwOutput:
-        type: "object"
-        properties: {}
+      biennial_location_premium:
+        type: "number"
+      product_name:
+        type: "string"
+      product_drive:
+        type: "string"
+      product_cpu:
+        type: "string"
+      product_on_sale:
+        type: "boolean"
+      triennial_location_premium:
+        type: "number"
+      product_hourly_price:
+        type: "number"
+      annually_location_premium:
+        type: "number"
+      product_quarterly_price:
+        type: "number"
+      product_biennial_price:
+        type: "number"
+      product_original_price:
+        type: "number"
+      quarterly_location_premium:
+        type: "number"
+      product_bandwidth:
+        type: "string"
+      product_memory:
+        type: "string"
+      product_id:
+        type: "integer"
+      semi_annually_location_premium:
+        type: "number"
+      hourly_location_premium:
+        type: "number"
+      product_semi_annually_price:
+        type: "number"
     example:
-      marketClients:
-      - "marketClients"
-      - "marketClients"
-      lshwOutput: "{}"
-      hwInfo:
-        memory: "memory"
-        cpu: "cpu"
-        storage: "storage"
-      locationCode: "locationCode"
-      deviceId: 0
-  Hardware:
-    type: "object"
-    properties:
-      storage:
-        type: "string"
-      cpu:
-        type: "string"
-      memory:
-        type: "string"
-    example:
-      memory: "memory"
-      cpu: "cpu"
-      storage: "storage"
+      product_gpu: "product_gpu"
+      product_cpu: "product_cpu"
+      biennial_location_premium: 2.3021358869347654518833223846741020679473876953125
+      product_memory: "product_memory"
+      product_monthly_price: 0.80082819046101150206595775671303272247314453125
+      edge: true
+      product_hourly_price: 9.301444243932575517419536481611430644989013671875
+      quarterly_location_premium: 1.231513536777255612975068288506008684635162353515625
+      product_id: 1
+      semi_annually_location_premium: 1.489415909854170383397331534069962799549102783203125
+      stock: "stock"
+      data_center: "data_center"
+      hourly_location_premium: 6.8468526983526398765889098285697400569915771484375
+      product_annually_price: 6.02745618307040320615897144307382404804229736328125
+      product_name: "product_name"
+      triennial_location_premium: 7.061401241503109105224211816675961017608642578125
+      core: true
+      product_triennial_price: 5.63737665663332876420099637471139430999755859375
+      product_disabled_billing_periods:
+      - "product_disabled_billing_periods"
+      - "product_disabled_billing_periods"
+      product_drive: "product_drive"
+      product_cpu_cores: "product_cpu_cores"
+      product_quarterly_price: 2.027123023002321833274663731572218239307403564453125
+      product_bandwidth: "product_bandwidth"
+      annually_location_premium: 3.61607674925191080461672754609026014804840087890625
+      product_on_sale: true
+      product_display_price: 1.46581298050294517310021547018550336360931396484375
+      monthly_location_premium: 5.962133916683182377482808078639209270477294921875
+      product_biennial_price: 4.1456080298839363962315474054776132106781005859375
+      product_original_price: 7.3862819483858839220147274318151175975799560546875
+      product_semi_annually_price: 7.4577447736837658709418974467553198337554931640625
   Options:
     type: "object"
     additionalProperties:
@@ -5589,20 +4058,20 @@ definitions:
   Option:
     type: "object"
     properties:
-      monthlyPrice:
-        type: "number"
-      expressions:
-        type: "array"
-        items:
-          type: "string"
-      id:
-        type: "integer"
       tags:
         type: "array"
         items:
           type: "string"
+      monthlyPrice:
+        type: "number"
+      id:
+        type: "integer"
       currency:
         type: "string"
+      expressions:
+        type: "array"
+        items:
+          type: "string"
       name:
         type: "string"
     example:
@@ -5631,171 +4100,15 @@ definitions:
       productId: 0
       options: "{}"
       pricing: "{}"
-  ProfileUpdate:
-    type: "object"
-    properties:
-      requireOauthLogin:
-        type: "string"
-      company:
-        type: "string"
-      zip:
-        type: "string"
-      city:
-        type: "string"
-      requirePayPalOauthLogin:
-        type: "string"
-      full_name:
-        type: "string"
-      country:
-        type: "string"
-      first:
-        type: "string"
-      phone:
-        type: "string"
-      state:
-        type: "string"
-      last:
-        type: "string"
-      address:
-        type: "string"
-      email:
-        type: "string"
-    example:
-      zip: "zip"
-      requirePayPalOauthLogin: "requirePayPalOauthLogin"
-      country: "country"
-      address: "address"
-      last: "last"
-      city: "city"
-      full_name: "full_name"
-      phone: "phone"
-      company: "company"
-      state: "state"
-      requireOauthLogin: "requireOauthLogin"
-      first: "first"
-      email: "email"
-  Profile:
-    type: "object"
-    properties:
-      company:
-        type: "object"
-        properties: {}
-      zip:
-        type: "object"
-        properties: {}
-      city:
-        type: "object"
-        properties: {}
-      full_name:
-        type: "object"
-        properties: {}
-      id:
-        type: "integer"
-      country:
-        type: "object"
-        properties: {}
-      first:
-        type: "string"
-      phone:
-        type: "string"
-      login:
-        type: "string"
-      state:
-        type: "object"
-        properties: {}
-      last:
-        type: "string"
-      created:
-        type: "object"
-        properties: {}
-      meta_data:
-        type: "object"
-        properties: {}
-      fax:
-        type: "object"
-        properties: {}
-      address:
-        type: "object"
-        properties: {}
-      email:
-        type: "string"
-      is_client:
-        type: "boolean"
-    example:
-      zip: "{}"
-      country: "{}"
-      address: "{}"
-      last: "last"
-      city: "{}"
-      created: "{}"
-      login: "login"
-      full_name: "{}"
-      phone: "phone"
-      meta_data: "{}"
-      company: "{}"
-      id: 0
-      state: "{}"
-      is_client: true
-      fax: "{}"
-      first: "first"
-      email: "email"
-  BasicProfile:
-    type: "object"
-    properties:
-      company:
-        type: "object"
-        properties: {}
-      zip:
-        type: "object"
-        properties: {}
-      city:
-        type: "object"
-        properties: {}
-      full_name:
-        type: "object"
-        properties: {}
-      id:
-        type: "integer"
-      country:
-        type: "object"
-        properties: {}
-      first:
-        type: "string"
-      login:
-        type: "string"
-      state:
-        type: "object"
-        properties: {}
-      last:
-        type: "string"
-      meta_data:
-        type: "object"
-        properties: {}
-      email:
-        type: "string"
-      is_client:
-        type: "boolean"
-    example:
-      zip: "{}"
-      country: "{}"
-      last: "last"
-      city: "{}"
-      login: "login"
-      full_name: "{}"
-      meta_data: "{}"
-      company: "{}"
-      id: 0
-      state: "{}"
-      is_client: true
-      first: "first"
-      email: "email"
   Deployment:
     type: "object"
     properties:
-      deploymentName:
-        type: "string"
-      orderNumber:
-        type: "string"
+      price:
+        type: "number"
+      deploymentId:
+        type: "integer"
+      empty:
+        type: "boolean"
       startedProvisioning:
         type: "boolean"
       deploymentConfiguration:
@@ -5803,21 +4116,19 @@ definitions:
         items:
           type: "object"
           properties: {}
-      deploymentId:
-        type: "integer"
-      price:
-        type: "number"
-      empty:
-        type: "boolean"
+      orderNumber:
+        type: "string"
+      deploymentName:
+        type: "string"
     example:
-      orderNumber: "orderNumber"
       deploymentConfiguration:
       - "{}"
       - "{}"
-      price: 6.02745618307040320615897144307382404804229736328125
-      deploymentId: 0
-      deploymentName: "deploymentName"
+      orderNumber: "orderNumber"
+      price: 0.80082819046101150206595775671303272247314453125
+      deploymentId: 6
       startedProvisioning: true
+      deploymentName: "deploymentName"
       empty: true
   DeploymentCustomization:
     type: "object"
@@ -5826,51 +4137,51 @@ definitions:
     - "operatingSystem"
     - "productId"
     properties:
-      billingPeriod:
-        type: "string"
-        description: "must be one of ['monthly', 'quarterly', 'semi-annually', 'annually',\
-          \ 'biennial', 'triennial', 'hourly']"
-        default: "monthly"
-      quantity:
+      productId:
         type: "integer"
-      operatingSystem:
-        type: "string"
-        description: "Operating System's Name or ID"
       hostnames:
-        type: "array"
-        items:
-          type: "string"
-      options:
-        type: "array"
-        items:
-          type: "integer"
-      locationCode:
-        type: "string"
-        default: ""
-      additionalNotes:
         type: "array"
         items:
           type: "string"
       publicSshKeyId:
         type: "integer"
-      productId:
+      operatingSystem:
+        type: "string"
+        description: "Operating System's Name or ID"
+      options:
+        type: "array"
+        items:
+          type: "integer"
+      additionalNotes:
+        type: "array"
+        items:
+          type: "string"
+      quantity:
         type: "integer"
+      locationCode:
+        type: "string"
+        default: ""
+      billingPeriod:
+        type: "string"
+        description: "must be one of ['monthly', 'quarterly', 'semi-annually', 'annually',\
+          \ 'biennial', 'triennial', 'hourly']"
+        default: "monthly"
     example:
-      quantity: 0
-      productId: 5
+      quantity: 5
+      productId: 0
       billingPeriod: "monthly"
       options:
-      - 6
-      - 6
+      - 1
+      - 1
       hostnames:
       - "hostnames"
       - "hostnames"
-      locationCode: "locationCode"
       additionalNotes:
       - "additionalNotes"
       - "additionalNotes"
+      locationCode: "locationCode"
       operatingSystem: "operatingSystem"
-      publicSshKeyId: 1
+      publicSshKeyId: 6
   DeploymentStart:
     type: "object"
     required:
@@ -5959,12 +4270,12 @@ definitions:
       discountedCost: 4.1456080298839363962315474054776132106781005859375
       orderId: 3
       endDate: 6
-      billingInfoId: 4
+      billingInfoId: 9
       discount: 2.027123023002321833274663731572218239307403564453125
       serviceDiscountPerPeriod: 1.231513536777255612975068288506008684635162353515625
       productName: "productName"
       lastRenew: 2
-      colocationCharge: 5.02500479152029466689555192715488374233245849609375
+      colocationCharge: 9.3693102714106686335071572102606296539306640625
       discountType: "discountType"
       serviceId: 0
       renewDate: 7
@@ -5974,33 +4285,55 @@ definitions:
       period: "period"
       billedPrice: 1.46581298050294517310021547018550336360931396484375
       quantity: 9.301444243932575517419536481611430644989013671875
-      productId: 7
+      productId: 4
       serviceCost: 5.63737665663332876420099637471139430999755859375
       created: 6
       cancelAfter: 1
       ipAddress: "ipAddress"
       reseller: "reseller"
       serviceOptions:
-      - serviceOptionId: 0
+      - serviceOptionId: 7
         groupName: "groupName"
         invoiceHide: "invoiceHide"
         name: "name"
-        optionId: 6
+        optionId: 1
         upgradeName: "upgradeName"
-      - serviceOptionId: 0
+      - serviceOptionId: 7
         groupName: "groupName"
         invoiceHide: "invoiceHide"
         name: "name"
-        optionId: 6
+        optionId: 1
         upgradeName: "upgradeName"
       childServices:
       - "{}"
       - "{}"
       serviceDiscount: 7.3862819483858839220147274318151175975799560546875
-      contractTerm: 1
+      contractTerm: 5
       startDate: 1
       billedPricePerPeriod: 5.962133916683182377482808078639209270477294921875
       status: "status"
+  ServiceOption:
+    type: "object"
+    properties:
+      serviceOptionId:
+        type: "integer"
+      name:
+        type: "string"
+      optionId:
+        type: "integer"
+      upgradeName:
+        type: "string"
+      groupName:
+        type: "string"
+      invoiceHide:
+        type: "string"
+    example:
+      serviceOptionId: 7
+      groupName: "groupName"
+      invoiceHide: "invoiceHide"
+      name: "name"
+      optionId: 1
+      upgradeName: "upgradeName"
   SshKey:
     type: "object"
     required:
@@ -6037,381 +4370,6 @@ definitions:
     example:
       name: "name"
       publicKey: "publicKey"
-  TicketCreate:
-    type: "object"
-    required:
-    - "queue"
-    - "subject"
-    properties:
-      subject:
-        type: "string"
-      priority:
-        type: "number"
-      body:
-        type: "string"
-      source:
-        type: "number"
-      status:
-        type: "string"
-        example: "open"
-      queue:
-        type: "string"
-      assignment:
-        type: "number"
-    example:
-      subject: "subject"
-      assignment: 1.46581298050294517310021547018550336360931396484375
-      source: 6.02745618307040320615897144307382404804229736328125
-      priority: 0.80082819046101150206595775671303272247314453125
-      body: "body"
-      queue: "queue"
-      status: "open"
-  Ticket:
-    type: "object"
-    properties:
-      status:
-        type: "string"
-      subject:
-        type: "string"
-      queue:
-        type: "string"
-      updated:
-        type: "number"
-      opened:
-        type: "number"
-        example: 1.628877662E9
-      serviceId:
-        type: "number"
-      client:
-        $ref: "#/definitions/Client"
-      priority:
-        type: "string"
-      id:
-        type: "number"
-      posts:
-        type: "number"
-      contact:
-        $ref: "#/definitions/Contact-dump"
-      body:
-        type: "string"
-      newReply:
-        type: "boolean"
-      metaData:
-        type: "object"
-        properties: {}
-      replies:
-        type: "array"
-        items:
-          $ref: "#/definitions/TicketPost"
-      clientId:
-        type: "number"
-      contactId:
-        type: "number"
-      duration:
-        type: "number"
-      internalTicket:
-        type: "number"
-    example:
-      clientId: 1.489415909854170383397331534069962799549102783203125
-      contactId: 6.8468526983526398765889098285697400569915771484375
-      subject: "subject"
-      opened: 1.628877662E9
-      priority: "priority"
-      body: "body"
-      posts: 5.63737665663332876420099637471139430999755859375
-      newReply: true
-      duration: 7.4577447736837658709418974467553198337554931640625
-      metaData: "{}"
-      internalTicket: 1.173074250955943309548956676735542714595794677734375
-      replies:
-      - date: 7.3862819483858839220147274318151175975799560546875
-        clientId: 2.3021358869347654518833223846741020679473876953125
-        attachments: 1.231513536777255612975068288506008684635162353515625
-        fromAdmin: true
-        hidden: 4.1456080298839363962315474054776132106781005859375
-        contactId: 1.024645700144157789424070870154537260532379150390625
-        subject: "subject"
-        body: "body"
-        ubersmith_attached_files:
-        - name: "name"
-          id: 2.027123023002321833274663731572218239307403564453125
-        - name: "name"
-          id: 2.027123023002321833274663731572218239307403564453125
-        adminId: 3.61607674925191080461672754609026014804840087890625
-        from: "{}"
-        id: 9.301444243932575517419536481611430644989013671875
-        ticketId: 7.061401241503109105224211816675961017608642578125
-      - date: 7.3862819483858839220147274318151175975799560546875
-        clientId: 2.3021358869347654518833223846741020679473876953125
-        attachments: 1.231513536777255612975068288506008684635162353515625
-        fromAdmin: true
-        hidden: 4.1456080298839363962315474054776132106781005859375
-        contactId: 1.024645700144157789424070870154537260532379150390625
-        subject: "subject"
-        body: "body"
-        ubersmith_attached_files:
-        - name: "name"
-          id: 2.027123023002321833274663731572218239307403564453125
-        - name: "name"
-          id: 2.027123023002321833274663731572218239307403564453125
-        adminId: 3.61607674925191080461672754609026014804840087890625
-        from: "{}"
-        id: 9.301444243932575517419536481611430644989013671875
-        ticketId: 7.061401241503109105224211816675961017608642578125
-      contact:
-        clientId: 0
-        phone: "phone"
-        contactId: 1
-        description: "description"
-        fullName: "fullName"
-        active: 6
-        isClient: true
-        email: "email"
-      client:
-        zip: "zip"
-        country: "country"
-        last: "last"
-        city: "city"
-        fullName: "fullName"
-        isClient: true
-        login: "login"
-        metaData: "{}"
-        company: "company"
-        id: 1.46581298050294517310021547018550336360931396484375
-        state: "state"
-        first: "first"
-        email: "email"
-      id: 5.962133916683182377482808078639209270477294921875
-      serviceId: 6.02745618307040320615897144307382404804229736328125
-      updated: 0.80082819046101150206595775671303272247314453125
-      queue: "queue"
-      status: "status"
-  Client:
-    type: "object"
-    properties:
-      company:
-        type: "string"
-      zip:
-        type: "string"
-      city:
-        type: "string"
-      id:
-        type: "number"
-      first:
-        type: "string"
-      country:
-        type: "string"
-      isClient:
-        type: "boolean"
-      metaData:
-        type: "object"
-        properties: {}
-      login:
-        type: "string"
-      fullName:
-        type: "string"
-      state:
-        type: "string"
-      last:
-        type: "string"
-      email:
-        type: "string"
-    example:
-      zip: "zip"
-      country: "country"
-      last: "last"
-      city: "city"
-      fullName: "fullName"
-      isClient: true
-      login: "login"
-      metaData: "{}"
-      company: "company"
-      id: 1.46581298050294517310021547018550336360931396484375
-      state: "state"
-      first: "first"
-      email: "email"
-  TicketPost:
-    type: "object"
-    properties:
-      subject:
-        type: "string"
-      clientId:
-        type: "number"
-      fromAdmin:
-        type: "boolean"
-      body:
-        type: "string"
-      ticketId:
-        type: "number"
-      id:
-        type: "number"
-      adminId:
-        type: "number"
-      ubersmith_attached_files:
-        type: "array"
-        items:
-          $ref: "#/definitions/TicketAttach"
-      from:
-        type: "object"
-        properties: {}
-      hidden:
-        type: "number"
-      date:
-        type: "number"
-      attachments:
-        type: "number"
-      contactId:
-        type: "number"
-    example:
-      date: 7.3862819483858839220147274318151175975799560546875
-      clientId: 2.3021358869347654518833223846741020679473876953125
-      attachments: 1.231513536777255612975068288506008684635162353515625
-      fromAdmin: true
-      hidden: 4.1456080298839363962315474054776132106781005859375
-      contactId: 1.024645700144157789424070870154537260532379150390625
-      subject: "subject"
-      body: "body"
-      ubersmith_attached_files:
-      - name: "name"
-        id: 2.027123023002321833274663731572218239307403564453125
-      - name: "name"
-        id: 2.027123023002321833274663731572218239307403564453125
-      adminId: 3.61607674925191080461672754609026014804840087890625
-      from: "{}"
-      id: 9.301444243932575517419536481611430644989013671875
-      ticketId: 7.061401241503109105224211816675961017608642578125
-  TicketAttach:
-    type: "object"
-    properties:
-      id:
-        type: "number"
-      name:
-        type: "string"
-    example:
-      name: "name"
-      id: 2.027123023002321833274663731572218239307403564453125
-  TicketSeachResult:
-    type: "object"
-    properties:
-      hasPrev:
-        type: "boolean"
-      items:
-        $ref: "#/definitions/TicketPost"
-      perPage:
-        type: "integer"
-      pages:
-        type: "integer"
-      nextPage:
-        type: "integer"
-      total:
-        type: "integer"
-      hasNext:
-        type: "boolean"
-      prevPage:
-        type: "integer"
-      page:
-        type: "integer"
-    example:
-      total: 5
-      perPage: 0
-      pages: 6
-      hasPrev: true
-      nextPage: 1
-      hasNext: true
-      prevPage: 5
-      page: 2
-      items:
-        date: 7.3862819483858839220147274318151175975799560546875
-        clientId: 2.3021358869347654518833223846741020679473876953125
-        attachments: 1.231513536777255612975068288506008684635162353515625
-        fromAdmin: true
-        hidden: 4.1456080298839363962315474054776132106781005859375
-        contactId: 1.024645700144157789424070870154537260532379150390625
-        subject: "subject"
-        body: "body"
-        ubersmith_attached_files:
-        - name: "name"
-          id: 2.027123023002321833274663731572218239307403564453125
-        - name: "name"
-          id: 2.027123023002321833274663731572218239307403564453125
-        adminId: 3.61607674925191080461672754609026014804840087890625
-        from: "{}"
-        id: 9.301444243932575517419536481611430644989013671875
-        ticketId: 7.061401241503109105224211816675961017608642578125
-  TicketPut:
-    type: "object"
-    properties:
-      status:
-        type: "string"
-    example:
-      status: "status"
-  TicketCreateReply:
-    type: "object"
-    required:
-    - "body"
-    properties:
-      subject:
-        type: "string"
-      cc:
-        type: "string"
-      type:
-        type: "number"
-      encrypted:
-        type: "string"
-      body:
-        type: "string"
-      replyTo:
-        type: "string"
-      recipient:
-        type: "string"
-      headers:
-        type: "string"
-      hidden:
-        type: "number"
-      date:
-        type: "number"
-      attachments:
-        type: "array"
-        example:
-        - name: ""
-          file: ""
-        items:
-          type: "object"
-          properties: {}
-      contactId:
-        type: "number"
-    example:
-      cc: "cc"
-      date: 1.46581298050294517310021547018550336360931396484375
-      headers: "headers"
-      attachments:
-      - name: ""
-        file: ""
-      encrypted: "encrypted"
-      hidden: 6.02745618307040320615897144307382404804229736328125
-      contactId: 5.962133916683182377482808078639209270477294921875
-      subject: "subject"
-      replyTo: "replyTo"
-      recipient: "recipient"
-      type: 0.80082819046101150206595775671303272247314453125
-      body: "body"
-  PublicApiToken-load:
-    type: "object"
-    properties:
-      name:
-        type: "string"
-  PublicApiToken-dump:
-    type: "object"
-    required:
-    - "token"
-    properties:
-      token:
-        type: "string"
-      name:
-        type: "string"
-    example:
-      name: "name"
-      token: "token"
   VlanCreate:
     type: "object"
     properties:
@@ -6429,35 +4387,35 @@ definitions:
   Vlan:
     type: "object"
     properties:
-      deviceIds:
-        type: "array"
-        items:
-          type: "integer"
-      vlanId:
+      vlanNum:
+        type: "integer"
+      facilityCode:
+        type: "string"
+      vlanTag:
         type: "integer"
       description:
-        type: "string"
-      facilityCode:
         type: "string"
       pendingDevices:
         type: "array"
         items:
           type: "integer"
-      vlanNum:
+      vlanId:
         type: "integer"
-      vlanTag:
-        type: "integer"
+      deviceIds:
+        type: "array"
+        items:
+          type: "integer"
     example:
       facilityCode: "facilityCode"
       pendingDevices:
       - 1
       - 1
       deviceIds:
-      - 0
-      - 0
-      vlanTag: 5
-      vlanId: 6
-      vlanNum: 5
+      - 5
+      - 5
+      vlanTag: 6
+      vlanId: 5
+      vlanNum: 0
       description: "description"
   WebhookEvent:
     type: "object"

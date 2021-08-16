@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,19 +10,19 @@
 package swagger
 
 type BareMetalDevice struct {
-	PowerStatus string `json:"powerStatus,omitempty"`
-	Period string `json:"period,omitempty"`
-	ProductName string `json:"productName,omitempty"`
-	PrimaryIp string `json:"primaryIp,omitempty"`
-	Script string `json:"script,omitempty"`
-	OrderId int32 `json:"orderId,omitempty"`
-	ServiceId int32 `json:"serviceId,omitempty"`
-	LocationName string `json:"locationName,omitempty"`
 	Tags []string `json:"tags,omitempty"`
+	LocationName string `json:"locationName,omitempty"`
+	VlanId int32 `json:"vlanId,omitempty"`
 	PublicSshKeyId int32 `json:"publicSshKeyId,omitempty"`
 	ProductId int32 `json:"productId,omitempty"`
+	Period string `json:"period,omitempty"`
+	Script string `json:"script,omitempty"`
 	OsName string `json:"osName,omitempty"`
-	VlanId int32 `json:"vlanId,omitempty"`
+	ServiceId int32 `json:"serviceId,omitempty"`
+	ProductName string `json:"productName,omitempty"`
+	PowerStatus string `json:"powerStatus,omitempty"`
 	Hostname string `json:"hostname,omitempty"`
 	DeviceId int32 `json:"deviceId,omitempty"`
+	OrderId int32 `json:"orderId,omitempty"`
+	PrimaryIp string `json:"primaryIp,omitempty"`
 }

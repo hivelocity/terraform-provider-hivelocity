@@ -8,7 +8,6 @@ Method | HTTP request | Description
 [**GetProductOperatingSystemsResource**](ProductApi.md#GetProductOperatingSystemsResource) | **Get** /product/{productId}/operating-systems | Return List of operating systems found for a Product
 [**GetProductOptionResource**](ProductApi.md#GetProductOptionResource) | **Get** /product/{productId}/options | Return List of Options found for a Product
 [**GetProductsAndOptionsResource**](ProductApi.md#GetProductsAndOptionsResource) | **Get** /product/options | Return a mapping of Products and Options with pricing per-period
-[**PostProductMatchResource**](ProductApi.md#PostProductMatchResource) | **Post** /product/match | Return a list of Products matching the provided lshw output of a server
 
 
 # **GetProductListResource**
@@ -135,32 +134,6 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**[]ProductOption**](ProductOption.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **PostProductMatchResource**
-> PostProductMatchResource(ctx, payload)
-Return a list of Products matching the provided lshw output of a server
-
-### Required Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **payload** | [**ProductMatch**](ProductMatch.md)|  | 
-
-### Return type
-
- (empty response body)
 
 ### Authorization
 

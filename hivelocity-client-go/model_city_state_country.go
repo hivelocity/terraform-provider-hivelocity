@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -11,6 +11,6 @@ package swagger
 
 type CityStateCountry struct {
 	State string `json:"state,omitempty"`
-	Country string `json:"country,omitempty"`
 	City string `json:"city,omitempty"`
+	Country string `json:"country,omitempty"`
 }

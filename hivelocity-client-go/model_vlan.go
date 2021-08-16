@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,11 +10,11 @@
 package swagger
 
 type Vlan struct {
-	DeviceIds []int32 `json:"deviceIds,omitempty"`
-	VlanId int32 `json:"vlanId,omitempty"`
-	Description string `json:"description,omitempty"`
-	FacilityCode string `json:"facilityCode,omitempty"`
-	PendingDevices []int32 `json:"pendingDevices,omitempty"`
 	VlanNum int32 `json:"vlanNum,omitempty"`
+	FacilityCode string `json:"facilityCode,omitempty"`
 	VlanTag int32 `json:"vlanTag,omitempty"`
+	Description string `json:"description,omitempty"`
+	PendingDevices []int32 `json:"pendingDevices,omitempty"`
+	VlanId int32 `json:"vlanId,omitempty"`
+	DeviceIds []int32 `json:"deviceIds,omitempty"`
 }
