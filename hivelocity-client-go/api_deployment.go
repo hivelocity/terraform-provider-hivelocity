@@ -1,6 +1,6 @@
 
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -27,7 +27,7 @@ var (
 
 type DeploymentApiService service
 
-/* 
+/*
 DeploymentApiService Delete the specified deployment
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deploymentId Id of the deployment to interact with
@@ -110,7 +110,7 @@ func (a *DeploymentApiService) DeleteDeploymentIdResource(ctx context.Context, d
 	return localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeploymentApiService Return a dictionary with deployment information
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deploymentId Id of the deployment to interact with
@@ -193,9 +193,7 @@ func (a *DeploymentApiService) GetDeploymentIdResource(ctx context.Context, depl
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -221,7 +219,7 @@ func (a *DeploymentApiService) GetDeploymentIdResource(ctx context.Context, depl
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeploymentApiService Return a list with all client deployments
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *DeploymentApiGetDeploymentResourceOpts - Optional Parameters:
@@ -302,9 +300,7 @@ func (a *DeploymentApiService) GetDeploymentResource(ctx context.Context, localV
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -330,7 +326,7 @@ func (a *DeploymentApiService) GetDeploymentResource(ctx context.Context, localV
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeploymentApiService Input a billing info id and script to process and finish a deployment
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deploymentId Id of the deployment to interact with
@@ -416,7 +412,7 @@ func (a *DeploymentApiService) PostDeploymentIdResource(ctx context.Context, dep
 	return localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeploymentApiService Start a new deployment
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *DeploymentApiPostDeploymentResourceOpts - Optional Parameters:
@@ -502,9 +498,7 @@ func (a *DeploymentApiService) PostDeploymentResource(ctx context.Context, local
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -530,7 +524,7 @@ func (a *DeploymentApiService) PostDeploymentResource(ctx context.Context, local
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 DeploymentApiService Receive product, quantity and options to be added on the deployment
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param deploymentId Id of the deployment to interact with
@@ -616,9 +610,7 @@ func (a *DeploymentApiService) PutDeploymentIdResource(ctx context.Context, depl
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -643,3 +635,4 @@ func (a *DeploymentApiService) PutDeploymentIdResource(ctx context.Context, depl
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
+

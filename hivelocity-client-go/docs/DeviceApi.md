@@ -7,21 +7,17 @@ Method | HTTP request | Description
 [**GetAllDeviceTagOrderResource**](DeviceApi.md#GetAllDeviceTagOrderResource) | **Get** /device/tags-order/all | Get all device tags order
 [**GetClientDeviceTagOrderResource**](DeviceApi.md#GetClientDeviceTagOrderResource) | **Get** /device/tags-order | Get device tags order for current user
 [**GetClientDeviceTagResource**](DeviceApi.md#GetClientDeviceTagResource) | **Get** /device/tags | Get all device tags for current client
-[**GetDeviceIdEventResource**](DeviceApi.md#GetDeviceIdEventResource) | **Get** /device/{deviceId}/events | Returns all Events found for a single device
 [**GetDeviceIdResource**](DeviceApi.md#GetDeviceIdResource) | **Get** /device/{deviceId} | Returns detailed information for a Single Device
 [**GetDeviceIpminatRuleResource**](DeviceApi.md#GetDeviceIpminatRuleResource) | **Get** /device/{deviceId}/ipmi/nat | Clear NAT rules based on the device client id
 [**GetDeviceResource**](DeviceApi.md#GetDeviceResource) | **Get** /device/ | Returns Active Devices and basic MetaData
 [**GetDeviceTagIdResource**](DeviceApi.md#GetDeviceTagIdResource) | **Get** /device/{deviceId}/tags | Get device tags
 [**GetInitialCredsIdResource**](DeviceApi.md#GetInitialCredsIdResource) | **Get** /device/{deviceId}/initial-creds | Returns initial password for the device
-[**GetInitialPasswordIdResource**](DeviceApi.md#GetInitialPasswordIdResource) | **Get** /device/{deviceId}/initial-password | Returns initial password for the device
 [**GetIpmiInfoIdResource**](DeviceApi.md#GetIpmiInfoIdResource) | **Get** /device/{deviceId}/ipmi | Returns IPMI info data
 [**GetIpmiInfoLoginDataResource**](DeviceApi.md#GetIpmiInfoLoginDataResource) | **Get** /device/{deviceId}/ipmi/login-data | Returns IPMI login credentials
 [**GetIpmiThresholdsIdResource**](DeviceApi.md#GetIpmiThresholdsIdResource) | **Get** /device/{deviceId}/ipmi/thresholds | Returns IPMI thresholds data
 [**GetIpmiValidLoginIdResource**](DeviceApi.md#GetIpmiValidLoginIdResource) | **Get** /device/{deviceId}/ipmi/valid-login | Returns if device have valid credentials for IPMI login
-[**GetNetworkInterfaceResource**](DeviceApi.md#GetNetworkInterfaceResource) | **Get** /device/{deviceId}/interfaces | Returns a list of all Network Interfaces bound to a Device
 [**GetPowerResource**](DeviceApi.md#GetPowerResource) | **Get** /device/{deviceId}/power | Get device&#39;s current power status
 [**PostDeviceIpmiWhitelistResource**](DeviceApi.md#PostDeviceIpmiWhitelistResource) | **Post** /device/{deviceId}/ipmi/whitelist/ | Add a public IP on IPMI whitelist
-[**PostDeviceReloadResource**](DeviceApi.md#PostDeviceReloadResource) | **Post** /device/{deviceId}/reload | Reload any SPS Device with any available OS
 [**PostPowerResource**](DeviceApi.md#PostPowerResource) | **Post** /device/{deviceId}/power | Apply action to device power
 [**PutClientDeviceTagOrderResource**](DeviceApi.md#PutClientDeviceTagOrderResource) | **Put** /device/tags-order | Update device tags order for current user
 [**PutDeviceIdResource**](DeviceApi.md#PutDeviceIdResource) | **Put** /device/{deviceId} | Updates Device MetaData for a Single Device
@@ -117,41 +113,6 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**DeviceTag**](DeviceTag.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **GetDeviceIdEventResource**
-> []DeviceEvent GetDeviceIdEventResource(ctx, deviceId, optional)
-Returns all Events found for a single device
-
-### Required Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **deviceId** | **string**|  | 
- **optional** | ***DeviceApiGetDeviceIdEventResourceOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-Optional parameters are passed through a pointer to a DeviceApiGetDeviceIdEventResourceOpts struct
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **xFields** | **optional.String**| An optional fields mask | 
-
-### Return type
-
-[**[]DeviceEvent**](DeviceEvent.md)
 
 ### Authorization
 
@@ -330,41 +291,6 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **GetInitialPasswordIdResource**
-> DevicePassword GetInitialPasswordIdResource(ctx, deviceId, optional)
-Returns initial password for the device
-
-### Required Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **deviceId** | **int32**| ID of Device to retrieve initial password | 
- **optional** | ***DeviceApiGetInitialPasswordIdResourceOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-Optional parameters are passed through a pointer to a DeviceApiGetInitialPasswordIdResourceOpts struct
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **xFields** | **optional.String**| An optional fields mask | 
-
-### Return type
-
-[**DevicePassword**](DevicePassword.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **GetIpmiInfoIdResource**
 > DeviceIpmiInfo GetIpmiInfoIdResource(ctx, deviceId, optional)
 Returns IPMI info data
@@ -505,41 +431,6 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **GetNetworkInterfaceResource**
-> []DeviceInterface GetNetworkInterfaceResource(ctx, deviceId, optional)
-Returns a list of all Network Interfaces bound to a Device
-
-### Required Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **deviceId** | **int32**| ID of Device to view Network Interfaces. | 
- **optional** | ***DeviceApiGetNetworkInterfaceResourceOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-Optional parameters are passed through a pointer to a DeviceApiGetNetworkInterfaceResourceOpts struct
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **xFields** | **optional.String**| An optional fields mask | 
-
-### Return type
-
-[**[]DeviceInterface**](DeviceInterface.md)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **GetPowerResource**
 > DevicePower GetPowerResource(ctx, deviceId, optional)
 Get device's current power status
@@ -592,43 +483,6 @@ Name | Type | Description  | Notes
 ### Return type
 
  (empty response body)
-
-### Authorization
-
-[apiKey](../README.md#apiKey)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **PostDeviceReloadResource**
-> ServiceOption PostDeviceReloadResource(ctx, deviceId, payload, optional)
-Reload any SPS Device with any available OS
-
-### Required Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **deviceId** | **int32**|  | 
-  **payload** | [**DeviceReload**](DeviceReload.md)|  | 
- **optional** | ***DeviceApiPostDeviceReloadResourceOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-Optional parameters are passed through a pointer to a DeviceApiPostDeviceReloadResourceOpts struct
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
- **xFields** | **optional.String**| An optional fields mask | 
-
-### Return type
-
-[**ServiceOption**](ServiceOption.md)
 
 ### Authorization
 

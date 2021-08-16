@@ -1,6 +1,6 @@
 
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -27,7 +27,7 @@ var (
 
 type ContactApiService service
 
-/* 
+/*
 ContactApiService Delete a Contact
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param contactId ID of Contact to View / Update
@@ -110,7 +110,7 @@ func (a *ContactApiService) DeleteContactIdResource(ctx context.Context, contact
 	return localVarHttpResponse, nil
 }
 
-/* 
+/*
 ContactApiService Return details of a specific Contact
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param contactId ID of Contact to View / Update
@@ -193,9 +193,7 @@ func (a *ContactApiService) GetContactIdResource(ctx context.Context, contactId 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -221,7 +219,7 @@ func (a *ContactApiService) GetContactIdResource(ctx context.Context, contactId 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 ContactApiService Return a list with all Contacts
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *ContactApiGetContactResourceOpts - Optional Parameters:
@@ -302,9 +300,7 @@ func (a *ContactApiService) GetContactResource(ctx context.Context, localVarOpti
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -330,7 +326,7 @@ func (a *ContactApiService) GetContactResource(ctx context.Context, localVarOpti
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 ContactApiService Create a new Contact
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -414,9 +410,7 @@ func (a *ContactApiService) PostContactResource(ctx context.Context, payload Con
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -442,7 +436,7 @@ func (a *ContactApiService) PostContactResource(ctx context.Context, payload Con
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 ContactApiService Recieve a request to reset password, and send a link by email with token
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -526,7 +520,7 @@ func (a *ContactApiService) PostPasswordReset(ctx context.Context, payload Passw
 	return localVarHttpResponse, nil
 }
 
-/* 
+/*
 ContactApiService Edit a Contact
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param contactId ID of Contact to View / Update
@@ -612,9 +606,7 @@ func (a *ContactApiService) PutContactIdResource(ctx context.Context, contactId 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
+		return localVarReturnValue, localVarHttpResponse, err
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -640,7 +632,7 @@ func (a *ContactApiService) PutContactIdResource(ctx context.Context, contactId 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/* 
+/*
 ContactApiService Recieve a token and password, verify the user and reset your password
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -724,7 +716,7 @@ func (a *ContactApiService) PutPasswordReset(ctx context.Context, payload Passwo
 	return localVarHttpResponse, nil
 }
 
-/* 
+/*
 ContactApiService Change password for a Contact
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param contactId \&quot;ID of Contact to change password\&quot;
@@ -809,3 +801,4 @@ func (a *ContactApiService) PutPasswordResource(ctx context.Context, contactId i
 
 	return localVarHttpResponse, nil
 }
+

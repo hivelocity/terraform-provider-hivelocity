@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,10 +10,10 @@
 package swagger
 
 type IpmiSensor struct {
-	Units string `json:"units,omitempty"`
-	Name string `json:"name,omitempty"`
-	Reading float32 `json:"reading,omitempty"`
-	Status bool `json:"status,omitempty"`
 	Group string `json:"group,omitempty"`
 	SensorId string `json:"sensorId,omitempty"`
+	Status bool `json:"status,omitempty"`
+	Reading float32 `json:"reading,omitempty"`
+	Units string `json:"units,omitempty"`
+	Name string `json:"name,omitempty"`
 }

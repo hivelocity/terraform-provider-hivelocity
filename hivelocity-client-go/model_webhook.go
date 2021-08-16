@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -14,5 +14,5 @@ type Webhook struct {
 	Name string `json:"name"`
 	Event string `json:"event"`
 	Url string `json:"url"`
-	Headers *interface{} `json:"headers,omitempty"`
+	Headers interface{} `json:"headers,omitempty"`
 }

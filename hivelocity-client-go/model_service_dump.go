@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -30,7 +30,7 @@ type ServiceDump struct {
 	CancelAfter int32 `json:"cancelAfter,omitempty"`
 	StartDate int32 `json:"startDate,omitempty"`
 	EndDate int32 `json:"endDate,omitempty"`
-	ServiceOptions *ServiceOption `json:"serviceOptions,omitempty"`
+	ServiceOptions []ServiceOption `json:"serviceOptions,omitempty"`
 	ServiceDevices []interface{} `json:"serviceDevices,omitempty"`
 	ChildServices []interface{} `json:"childServices,omitempty"`
 	ProductId int32 `json:"productId,omitempty"`

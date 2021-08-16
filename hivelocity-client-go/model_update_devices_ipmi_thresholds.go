@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,6 +10,6 @@
 package swagger
 
 type UpdateDevicesIpmiThresholds struct {
+	Thresholds interface{} `json:"thresholds"`
 	DeviceIds []int32 `json:"device_ids"`
-	Thresholds *interface{} `json:"thresholds"`
 }

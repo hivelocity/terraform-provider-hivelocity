@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,6 +10,6 @@
 package swagger
 
 type PasswordResponse struct {
-	Password string `json:"password"`
 	Token string `json:"token"`
+	Password string `json:"password"`
 }

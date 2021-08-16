@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,9 +10,9 @@
 package swagger
 
 type OrderDump struct {
-	Owner string `json:"owner,omitempty"`
-	Total float32 `json:"total,omitempty"`
-	Info *interface{} `json:"info,omitempty"`
-	OrderId int32 `json:"orderId,omitempty"`
 	Status string `json:"status,omitempty"`
+	OrderId int32 `json:"orderId,omitempty"`
+	Owner string `json:"owner,omitempty"`
+	Info interface{} `json:"info,omitempty"`
+	Total float32 `json:"total,omitempty"`
 }

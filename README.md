@@ -10,39 +10,6 @@ Requirements
 ------------
 
 -	[Terraform](https://www.terraform.io/downloads.html) 0.13.x
--	[Go](https://golang.org/doc/install) 1.15+ (to build the provider plugin)
-
-Building the provider
----------------------
-
-You need to install the provider based on instructions for [installing 3rd-party provider plugins for Terraform 0.13](https://www.hashicorp.com/blog/automatic-installation-of-third-party-providers-with-terraform-0-13).
-
-First you must download the binary for the provider.  You have two options:
-
-1. You can download the latest release from the [release page](https://github.com/hivelocity/terraform-provider-hivelocity/releases).
-2. Download the repository directly as a go binary `go get -u github.com/hivelocity/terraform-provider-hivelocity`
-
-Next, create the Hivelocity provider plugin directory. 
-
-```sh
-mkdir -p ~/.terraform.d/plugins/hivelocity.net/prod/hivelocity/<VERSION>/<OS>_<ARCH>
-```
-
-Note: `<VERSION>` is the most recent version of this provider.
-
-Note: `<OS>` and `<ARCH>` use the Go language's standard OS and architecture names; for example, darwin_amd64.
-
-Finally, symlink your binary to the new plugin directory
-
-```sh
-ln -s $GOPATH/bin/terraform-provider-hivelocity ~/.terraform.d/plugins/hivelocity.net/prod/hivelocity/<VERSION>/<OS>_<ARCH>/terraform-provider-hivelocity
-```
-
-Set an environment variable containing the Hivelocity API key:
-```
-export HIVELOCITY_API_KEY=<your-api-key>
-```
-The API key can also be specified in the provider configuration as shown below.
 
 Example Usage
 -------------
@@ -54,7 +21,7 @@ terraform {
   required_providers {
     hivelocity = {
       versions = ["<VERSION>"]
-      source = "hivelocity.net/prod/hivelocity"
+      source = "hivelocity/hivelocity"
     }
   }
 }
@@ -156,16 +123,6 @@ How to test Cloud-Init script locally
 ---------------------------
 
 Please see https://api-docs.hivelocity.net/cloud-init-test
-
-How to build the plugin to another platform
----------------------------
-An example to build for Windows with an amd64 architecture, execute the command below into the Hivelocity Provider path.
-
-```bash
-GOOS=windows GOARCH=amd64 go build -o terraform-provider-hivelocity.exe main.go
-```
-
-[Here](https://github.com/golang/go/wiki/MinimumRequirements) you can get a list of Go supported platforms.
 
 Developing the provider
 ---------------------------

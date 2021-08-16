@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -37,7 +37,7 @@ var (
 	xmlCheck  = regexp.MustCompile("(?i:(?:application|text)/xml)")
 )
 
-// APIClient manages communication with the Hivelocity API API v2.0
+// APIClient manages communication with the Hivelocity API for Partners API v2.0
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
 	cfg    *Configuration
@@ -51,21 +51,15 @@ type APIClient struct {
 
 	BillingInfoApi *BillingInfoApiService
 
-	CancellationApi *CancellationApiService
-
 	ContactApi *ContactApiService
-
-	CreditApi *CreditApiService
 
 	DeploymentApi *DeploymentApiService
 
 	DeviceApi *DeviceApiService
 
+	DomainsApi *DomainsApiService
+
 	InventoryApi *InventoryApiService
-
-	InvoiceApi *InvoiceApiService
-
-	NetworkApi *NetworkApiService
 
 	OrderApi *OrderApiService
 
@@ -73,17 +67,11 @@ type APIClient struct {
 
 	ProductApi *ProductApiService
 
-	ProfileApi *ProfileApiService
-
-	SPSApi *SPSApiService
-
 	ServiceApi *ServiceApiService
 
 	SshKeyApi *SshKeyApiService
 
-	TicketApi *TicketApiService
-
-	TokenApi *TokenApiService
+	VLANApi *VLANApiService
 
 	WebhookApi *WebhookApiService
 }
@@ -107,23 +95,17 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.BandwidthApi = (*BandwidthApiService)(&c.common)
 	c.BareMetalDevicesApi = (*BareMetalDevicesApiService)(&c.common)
 	c.BillingInfoApi = (*BillingInfoApiService)(&c.common)
-	c.CancellationApi = (*CancellationApiService)(&c.common)
 	c.ContactApi = (*ContactApiService)(&c.common)
-	c.CreditApi = (*CreditApiService)(&c.common)
 	c.DeploymentApi = (*DeploymentApiService)(&c.common)
 	c.DeviceApi = (*DeviceApiService)(&c.common)
+	c.DomainsApi = (*DomainsApiService)(&c.common)
 	c.InventoryApi = (*InventoryApiService)(&c.common)
-	c.InvoiceApi = (*InvoiceApiService)(&c.common)
-	c.NetworkApi = (*NetworkApiService)(&c.common)
 	c.OrderApi = (*OrderApiService)(&c.common)
 	c.PermissionApi = (*PermissionApiService)(&c.common)
 	c.ProductApi = (*ProductApiService)(&c.common)
-	c.ProfileApi = (*ProfileApiService)(&c.common)
-	c.SPSApi = (*SPSApiService)(&c.common)
 	c.ServiceApi = (*ServiceApiService)(&c.common)
 	c.SshKeyApi = (*SshKeyApiService)(&c.common)
-	c.TicketApi = (*TicketApiService)(&c.common)
-	c.TokenApi = (*TokenApiService)(&c.common)
+	c.VLANApi = (*VLANApiService)(&c.common)
 	c.WebhookApi = (*WebhookApiService)(&c.common)
 
 	return c

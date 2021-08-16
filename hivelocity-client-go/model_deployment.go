@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -11,10 +11,10 @@ package swagger
 
 type Deployment struct {
 	Price float32 `json:"price,omitempty"`
+	DeploymentId int32 `json:"deploymentId,omitempty"`
+	Empty bool `json:"empty,omitempty"`
+	StartedProvisioning bool `json:"startedProvisioning,omitempty"`
 	DeploymentConfiguration []interface{} `json:"deploymentConfiguration,omitempty"`
 	OrderNumber string `json:"orderNumber,omitempty"`
-	StartedProvisioning bool `json:"startedProvisioning,omitempty"`
-	DeploymentId int32 `json:"deploymentId,omitempty"`
 	DeploymentName string `json:"deploymentName,omitempty"`
-	Empty bool `json:"empty,omitempty"`
 }

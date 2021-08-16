@@ -1,5 +1,5 @@
 /*
- * Hivelocity API
+ * Hivelocity API for Partners
  *
  * Interact with Hivelocity
  *
@@ -10,8 +10,8 @@
 package swagger
 
 type IpmiLoginData struct {
-	Host string `json:"host,omitempty"`
 	Drivertype string `json:"drivertype,omitempty"`
 	Password string `json:"password,omitempty"`
 	Username string `json:"username,omitempty"`
+	Host string `json:"host,omitempty"`
 }

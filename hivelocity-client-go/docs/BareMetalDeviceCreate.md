@@ -3,12 +3,12 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**PublicSshKeyId** | **int32** |  | [optional] [default to null]
 **LocationName** | **string** |  | [default to null]
 **VlanId** | **int32** |  | [optional] [default to null]
-**Script** | **string** |  | [optional] [default to null]
 **ProductId** | **int32** |  | [default to null]
+**Script** | **string** |  | [optional] [default to null]
 **Period** | **string** |  | [optional] [default to null]
-**PublicSshKeyId** | **int32** |  | [optional] [default to null]
 **OsName** | **string** |  | [default to null]
 **Hostname** | **string** |  | [default to null]
 
