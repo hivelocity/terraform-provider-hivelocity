@@ -46,25 +46,25 @@ It is recommend you set the environment variable `export TF_LOG=DEBUG` so that y
 
 ## Data Sources
 
-All data sources should be added to the `examples/data_sources/main.tf` file for development.  
+All data sources should be added to the `examples/data-sources/` folder for development.
 
 Once you have updated the example, you can test your new data source from the root of the repo:
 
-`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity && cd examples/data_sources && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform apply --auto-approve`
+`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity && cd examples/data-sources/<data-source> && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform apply --auto-approve`
 
 ## Resources
 
-All resources should have their own folder with a `main.tf` file added to `examples` for development.  
+All resources should be added to the `examples/resources/` folder for development.
 
 Once you have updated the example, you can test your new data source from the root of the repo:
 
 To Create/Update:
 
-`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_device && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform apply --auto-approve`
+`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity && cd examples/resources/hivelocity_bare_metal_device && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform apply --auto-approve`
 
 To Delete:
 
-`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity && cd examples/bare_metal_device && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform delete --auto-approve`
+`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity && cd examples/resources/hivelocity_bare_metal_device && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform delete --auto-approve`
 
 Testing provider code
 ---------------------------
