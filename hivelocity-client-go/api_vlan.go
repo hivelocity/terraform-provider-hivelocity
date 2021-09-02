@@ -27,7 +27,7 @@ var (
 
 type VLANApiService service
 
-/*
+/* 
 VLANApiService Remove an existing Private VLAN
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param vlanId Id of the VLAN to interact with
@@ -110,7 +110,9 @@ func (a *VLANApiService) DeleteVlanIdResource(ctx context.Context, vlanId int32,
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -136,7 +138,7 @@ func (a *VLANApiService) DeleteVlanIdResource(ctx context.Context, vlanId int32,
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 VLANApiService Fetch information from an existing Private VLAN
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param vlanId Id of the VLAN to interact with
@@ -219,7 +221,9 @@ func (a *VLANApiService) GetVlanIdResource(ctx context.Context, vlanId int32, lo
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -245,7 +249,7 @@ func (a *VLANApiService) GetVlanIdResource(ctx context.Context, vlanId int32, lo
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 VLANApiService Return a list with all Private VLANs
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *VLANApiGetVlanResourceOpts - Optional Parameters:
@@ -326,7 +330,9 @@ func (a *VLANApiService) GetVlanResource(ctx context.Context, localVarOptionals 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -352,7 +358,7 @@ func (a *VLANApiService) GetVlanResource(ctx context.Context, localVarOptionals 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 VLANApiService Create a new Private VLAN
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -436,7 +442,9 @@ func (a *VLANApiService) PostVlanResource(ctx context.Context, payload VlanCreat
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -462,7 +470,7 @@ func (a *VLANApiService) PostVlanResource(ctx context.Context, payload VlanCreat
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 VLANApiService Update an existing Private VLAN, including adding and/or removing devices from it
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param vlanId Id of the VLAN to interact with
@@ -548,7 +556,9 @@ func (a *VLANApiService) PutVlanIdResource(ctx context.Context, vlanId int32, pa
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -573,4 +583,3 @@ func (a *VLANApiService) PutVlanIdResource(ctx context.Context, vlanId int32, pa
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
-

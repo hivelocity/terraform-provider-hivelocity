@@ -10,6 +10,7 @@ Requirements
 ------------
 
 -	[Terraform](https://www.terraform.io/downloads.html) 0.13.x
+-	[Go](https://golang.org/doc/install) 1.15+ (to build the provider plugin)
 
 Example Usage
 -------------
@@ -128,6 +129,3 @@ Developing the provider
 ---------------------------
 
 Please see https://github.com/hivelocity/terraform-provider-hivelocity/blob/main/CONTRIBUTING.md
-
-
-

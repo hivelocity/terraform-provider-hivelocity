@@ -10,9 +10,9 @@
 package swagger
 
 type MxRecordReturn struct {
+	Name string `json:"name"`
+	Mx []MxValue `json:"mx"`
 	DomainId int32 `json:"domainId"`
 	Ttl int32 `json:"ttl"`
 	Type_ string `json:"type"`
-	Mx []MxValue `json:"mx"`
-	Name string `json:"name"`
 }

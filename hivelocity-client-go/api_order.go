@@ -27,7 +27,7 @@ var (
 
 type OrderApiService service
 
-/*
+/* 
 OrderApiService Return details of a specific Order
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param orderId \&quot;ID of Order to View\&quot;
@@ -110,7 +110,9 @@ func (a *OrderApiService) GetOrderIdResource(ctx context.Context, orderId int32,
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -136,7 +138,7 @@ func (a *OrderApiService) GetOrderIdResource(ctx context.Context, orderId int32,
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 OrderApiService Return a list with all Orders
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *OrderApiGetOrderResourceOpts - Optional Parameters:
@@ -217,7 +219,9 @@ func (a *OrderApiService) GetOrderResource(ctx context.Context, localVarOptional
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -242,4 +246,3 @@ func (a *OrderApiService) GetOrderResource(ctx context.Context, localVarOptional
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
-

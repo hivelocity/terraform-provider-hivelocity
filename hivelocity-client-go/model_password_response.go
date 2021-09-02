@@ -10,6 +10,6 @@
 package swagger
 
 type PasswordResponse struct {
-	Token string `json:"token"`
 	Password string `json:"password"`
+	Token string `json:"token"`
 }

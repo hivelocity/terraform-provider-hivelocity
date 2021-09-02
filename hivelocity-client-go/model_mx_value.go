@@ -11,6 +11,6 @@ package swagger
 
 type MxValue struct {
 	Id int32 `json:"id"`
-	Exchange string `json:"exchange"`
 	Preference int32 `json:"preference"`
+	Exchange string `json:"exchange"`
 }

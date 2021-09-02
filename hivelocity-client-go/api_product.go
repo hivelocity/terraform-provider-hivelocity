@@ -27,7 +27,7 @@ var (
 
 type ProductApiService service
 
-/*
+/* 
 ProductApiService Return structured sps stock data in a list
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *ProductApiGetProductListResourceOpts - Optional Parameters:
@@ -108,7 +108,9 @@ func (a *ProductApiService) GetProductListResource(ctx context.Context, localVar
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -134,7 +136,7 @@ func (a *ProductApiService) GetProductListResource(ctx context.Context, localVar
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 ProductApiService Return List of operating systems found for a Product
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param productId ID of the Product
@@ -217,7 +219,9 @@ func (a *ProductApiService) GetProductOperatingSystemsResource(ctx context.Conte
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -243,7 +247,7 @@ func (a *ProductApiService) GetProductOperatingSystemsResource(ctx context.Conte
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 ProductApiService Return List of Options found for a Product
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param productId ID of the Product
@@ -326,7 +330,9 @@ func (a *ProductApiService) GetProductOptionResource(ctx context.Context, produc
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -352,7 +358,7 @@ func (a *ProductApiService) GetProductOptionResource(ctx context.Context, produc
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 ProductApiService Return a mapping of Products and Options with pricing per-period
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *ProductApiGetProductsAndOptionsResourceOpts - Optional Parameters:
@@ -433,7 +439,9 @@ func (a *ProductApiService) GetProductsAndOptionsResource(ctx context.Context, l
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -458,4 +466,3 @@ func (a *ProductApiService) GetProductsAndOptionsResource(ctx context.Context, l
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
-

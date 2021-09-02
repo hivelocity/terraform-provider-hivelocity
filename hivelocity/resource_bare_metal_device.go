@@ -3,12 +3,13 @@ package hivelocity
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
 
 func resourceBareMetalDevice() *schema.Resource {
@@ -54,7 +55,6 @@ func resourceBareMetalDevice() *schema.Resource {
 			"os_name": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: true,
 			},
 			"location_name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -89,8 +89,8 @@ func resourceBareMetalDevice() *schema.Resource {
 			},
 			"script": &schema.Schema{
 				Type:     schema.TypeString,
-				Computed: true,
 				Optional: true,
+				Default:  nil,
 			},
 			"period": &schema.Schema{
 				Type:     schema.TypeString,
@@ -203,27 +203,76 @@ func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, 
 	}
 
 	payload := swagger.BareMetalDeviceUpdate{}
+	reload_required := false
 
+	tags, err := getTags(d)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	payload.Tags = tags
+
+	hostname := d.Get("hostname").(string)
+	payload.Hostname = hostname
 	if d.HasChange("hostname") {
-		hostname := d.Get("hostname").(string)
-		payload.Hostname = hostname
+		reload_required = true
 	}
 
-	if d.HasChange("tags") {
-		tags, err := getTags(d)
-		if err != nil {
-			return diag.FromErr(err)
-		}
-		payload.Tags = tags
+	osName := d.Get("os_name").(string)
+	payload.OsName = osName
+	if d.HasChange("os_name") {
+		reload_required = true
 	}
+
+	publicSshKeyId := d.Get("public_ssh_key_id").(int)
+	payload.PublicSshKeyId = int32(publicSshKeyId)
+	if d.HasChange("public_ssh_key_id") {
+		reload_required = true
+	}
+
+	script := d.Get("script").(string)
+	payload.Script = script
+	if d.HasChange("script") {
+		reload_required = true
+	}
+
 	if d.HasChange("vlan_id") {
 		// TODO: Currently no-op until VLAN IDS deployed
+	}
+
+	// If a reload is required, it's necessary to turn the device off first
+	if reload_required {
+		devicePower, _, err := hv.client.DeviceApi.GetPowerResource(hv.auth, int32(deviceId), nil)
+		if err != nil {
+			myErr := err.(swagger.GenericSwaggerError)
+			return diag.Errorf("GET /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
+		}
+
+		if devicePower.PowerStatus == "ON" {
+			_, _, err = hv.client.DeviceApi.PostPowerResource(hv.auth, int32(deviceId), "shutdown", nil)
+			if err != nil {
+				myErr := err.(swagger.GenericSwaggerError)
+				return diag.Errorf("POST /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
+			}
+
+			// Power status will transition to PENDING, then OFF
+			_, err := waitForDevicePowerOff(d, hv, int32(deviceId))
+			if err != nil {
+				return diag.Errorf("error powering off device %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(deviceId), err)
+			}
+		}
 	}
 
 	_, _, err = hv.client.BareMetalDevicesApi.PutBareMetalDeviceIdResource(hv.auth, int32(deviceId), payload, nil)
 	if err != nil {
 		myErr := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("PUT /bare-metal-device/%s failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
+	}
+
+	if reload_required {
+		_, err := waitForDeviceReload(d, hv, int32(deviceId))
+		if err != nil {
+			return diag.Errorf("error reloading device %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(deviceId), err)
+		}
 	}
 
 	d.Set("last_updated", time.Now().Format(time.RFC850))

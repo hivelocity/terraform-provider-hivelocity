@@ -10,6 +10,6 @@
 package swagger
 
 type DeviceIpmiInfo struct {
-	Sensors []IpmiSensor `json:"sensors,omitempty"`
 	Info *IpmiInfo `json:"info,omitempty"`
+	Sensors []IpmiSensor `json:"sensors,omitempty"`
 }

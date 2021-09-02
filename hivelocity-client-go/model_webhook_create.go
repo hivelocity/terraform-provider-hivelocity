@@ -13,5 +13,5 @@ type WebhookCreate struct {
 	Name string `json:"name,omitempty"`
 	Event string `json:"event"`
 	Url string `json:"url"`
-	Headers interface{} `json:"headers,omitempty"`
+	Headers *interface{} `json:"headers,omitempty"`
 }
