@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Drivertype** | **string** |  | [optional] [default to null]
 **Password** | **string** |  | [optional] [default to null]
+**Drivertype** | **string** |  | [optional] [default to null]
 **Username** | **string** |  | [optional] [default to null]
 **Host** | **string** |  | [optional] [default to null]
 

@@ -10,8 +10,8 @@
 package swagger
 
 type Location struct {
-	Edge bool `json:"edge,omitempty"`
-	Code string `json:"code,omitempty"`
-	Location *CityStateCountry `json:"location,omitempty"`
 	Core bool `json:"core,omitempty"`
+	Location *CityStateCountry `json:"location,omitempty"`
+	Code string `json:"code,omitempty"`
+	Edge bool `json:"edge,omitempty"`
 }

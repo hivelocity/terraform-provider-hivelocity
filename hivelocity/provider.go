@@ -36,6 +36,7 @@ func Provider() *schema.Provider {
 		ResourcesMap: map[string]*schema.Resource{
 			"hivelocity_bare_metal_device": resourceBareMetalDevice(),
 			"hivelocity_ssh_key":           resourceSSHKey(),
+			"hivelocity_vlan":              resourceVlan(),
 		},
 		ConfigureContextFunc: configureProvider,
 	}

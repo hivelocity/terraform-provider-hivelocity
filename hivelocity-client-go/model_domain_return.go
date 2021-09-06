@@ -10,8 +10,8 @@
 package swagger
 
 type DomainReturn struct {
-	DomainId int32 `json:"domainId"`
 	Summary interface{} `json:"summary,omitempty"`
-	DirectsTo string `json:"directsTo"`
+	DomainId int32 `json:"domainId"`
 	Name string `json:"name"`
+	DirectsTo string `json:"directsTo"`
 }

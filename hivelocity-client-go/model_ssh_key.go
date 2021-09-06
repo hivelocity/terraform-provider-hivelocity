@@ -10,6 +10,6 @@
 package swagger
 
 type SshKey struct {
-	PublicKey string `json:"publicKey"`
 	Name string `json:"name"`
+	PublicKey string `json:"publicKey"`
 }

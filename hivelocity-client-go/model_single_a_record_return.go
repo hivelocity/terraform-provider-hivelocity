@@ -10,10 +10,10 @@
 package swagger
 
 type SingleARecordReturn struct {
-	DomainId int32 `json:"domainId"`
-	Address string `json:"address,omitempty"`
-	Ttl int32 `json:"ttl"`
-	Type_ string `json:"type"`
-	Id int32 `json:"id,omitempty"`
 	Name string `json:"name"`
+	Address string `json:"address,omitempty"`
+	Id int32 `json:"id,omitempty"`
+	Type_ string `json:"type"`
+	Ttl int32 `json:"ttl"`
+	DomainId int32 `json:"domainId"`
 }

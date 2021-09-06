@@ -10,11 +10,11 @@
 package swagger
 
 type Vlan struct {
-	VlanNum int32 `json:"vlanNum,omitempty"`
-	FacilityCode string `json:"facilityCode,omitempty"`
 	VlanTag int32 `json:"vlanTag,omitempty"`
-	Description string `json:"description,omitempty"`
-	PendingDevices []int32 `json:"pendingDevices,omitempty"`
-	VlanId int32 `json:"vlanId,omitempty"`
+	VlanNum int32 `json:"vlanNum,omitempty"`
 	DeviceIds []int32 `json:"deviceIds,omitempty"`
+	PendingDevices []int32 `json:"pendingDevices,omitempty"`
+	FacilityCode string `json:"facilityCode,omitempty"`
+	Description string `json:"description,omitempty"`
+	VlanId int32 `json:"vlanId,omitempty"`
 }
