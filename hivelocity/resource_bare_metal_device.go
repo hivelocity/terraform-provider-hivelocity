@@ -3,12 +3,13 @@ package hivelocity
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
 
 func resourceBareMetalDevice() *schema.Resource {
@@ -132,22 +133,27 @@ func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, 
 	if err != nil {
 		d.SetId("")
 		myErr := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("POST /bare-metal-device failed! (%s)\n\n %s", err, myErr.Body())
+		return diag.Errorf("POST /bare-metal-devices failed! (%s)\n\n %s", err, myErr.Body())
 	}
 
 	_, err = waitForOrder(d, hv, bareMetalDevice.OrderId)
 	if err != nil {
 		d.SetId("")
+		myErr := err.(swagger.GenericSwaggerError)
 		if strings.Contains(fmt.Sprint(err), "'cancelled'") {
-			return diag.Errorf("Your deployment (order %s) has been 'cancelled'. Please contact Hivelocity support if you believe this is a mistake.", fmt.Sprint(bareMetalDevice.OrderId))
+			return diag.Errorf("Your deployment (order %d) has been 'cancelled'. Please contact Hivelocity support if you believe this is a mistake.\n\n %s",
+				bareMetalDevice.OrderId, myErr.Body())
 		}
-		return diag.Errorf("error provisioning order %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(bareMetalDevice.OrderId), err)
+		return diag.Errorf("Error provisioning order %d. The Hivelocity team will investigate:\n\n%s\n\n %s",
+			bareMetalDevice.OrderId, err, myErr.Body())
 	}
 
 	device, err := waitForDevice(d, hv, bareMetalDevice.OrderId)
 	if err != nil {
 		d.SetId("")
-		return diag.Errorf("error finding devices for order %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(bareMetalDevice.OrderId), err)
+		myErr := err.(swagger.GenericSwaggerError)
+		return diag.Errorf("Error finding devices for order %d. The Hivelocity team will investigate:\n\n%s\n\n %s",
+			bareMetalDevice.OrderId, err, myErr.Body())
 	}
 
 	newDeviceId := device.(swagger.BareMetalDevice).DeviceId
@@ -173,7 +179,8 @@ func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m 
 
 	deviceResponse, _, err := hv.client.BareMetalDevicesApi.GetBareMetalDeviceIdResource(hv.auth, int32(deviceId), nil)
 	if err != nil {
-		return diag.FromErr(err)
+		myErr := err.(swagger.GenericSwaggerError)
+		return diag.Errorf("GET /bare-metal-devices/%d failed! (%s)\n\n %s", deviceId, err, myErr.Body())
 	}
 
 	d.Set("device_id", deviceResponse.DeviceId)
@@ -223,7 +230,7 @@ func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, 
 	_, _, err = hv.client.BareMetalDevicesApi.PutBareMetalDeviceIdResource(hv.auth, int32(deviceId), payload, nil)
 	if err != nil {
 		myErr := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("PUT /bare-metal-device/%s failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
+		return diag.Errorf("PUT /bare-metal-devices/%d failed! (%s)\n\n %s", deviceId, err, myErr.Body())
 	}
 
 	d.Set("last_updated", time.Now().Format(time.RFC850))
@@ -251,7 +258,7 @@ func resourceBareMetalDeviceDelete(ctx context.Context, d *schema.ResourceData, 
 	_, err = hv.client.BareMetalDevicesApi.DeleteBareMetalDeviceIdResource(hv.auth, int32(deviceId), nil)
 	if err != nil {
 		myErr := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("DELETE /bare-metal-device/%s failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
+		return diag.Errorf("DELETE /bare-metal-devices/%d failed! (%s)\n\n %s", deviceId, err, myErr.Body())
 	}
 
 	d.SetId("")

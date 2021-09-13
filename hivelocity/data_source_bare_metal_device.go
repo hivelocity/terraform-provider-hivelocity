@@ -4,8 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
 
 func dataSourceBareMetalDevice() *schema.Resource {
@@ -105,7 +107,8 @@ func dataSourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, 
 
 	bareMetalDeviceInfo, _, err := hv.client.BareMetalDevicesApi.GetBareMetalDeviceResource(hv.auth, nil)
 	if err != nil {
-		return diag.FromErr(err)
+		myErr := err.(swagger.GenericSwaggerError)
+		return diag.Errorf("GET /bare-metal-devices failed! (%s)\n\n %s", err, myErr.Body())
 	}
 
 	jsonProductInfo, err := json.Marshal(bareMetalDeviceInfo)

@@ -71,7 +71,8 @@ func resourceSSHKeyRead(ctx context.Context, d *schema.ResourceData, m interface
 
 	SSHKeyResponse, _, err := hv.client.SshKeyApi.GetSshKeyIdResource(hv.auth, int32(SSHKeyID), nil)
 	if err != nil {
-		return diag.FromErr(err)
+		myErr := err.(swagger.GenericSwaggerError)
+		return diag.Errorf("GET /ssh_key/%d failed! (%s)\n\n %s", SSHKeyID, err, myErr.Body())
 	}
 
 	d.Set("ssh_key_id", SSHKeyResponse.SshKeyId)

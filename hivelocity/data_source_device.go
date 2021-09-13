@@ -4,8 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
 
 func buildDeviceSchema() map[string]*schema.Schema {
@@ -82,7 +84,7 @@ func buildDeviceSchema() map[string]*schema.Schema {
 func dataSourceDevice() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataSourceDeviceRead,
-		Schema: buildDeviceSchema(),
+		Schema:      buildDeviceSchema(),
 	}
 }
 
@@ -94,7 +96,8 @@ func dataSourceDeviceRead(ctx context.Context, d *schema.ResourceData, m interfa
 
 	hivelocityDevices, _, err := hv.client.DeviceApi.GetDeviceResource(hv.auth, nil)
 	if err != nil {
-		return diag.FromErr(err)
+		myErr := err.(swagger.GenericSwaggerError)
+		return diag.Errorf("GET /device failed! (%s)\n\n %s", err, myErr.Body())
 	}
 
 	jsonDevices, err := json.Marshal(hivelocityDevices)
