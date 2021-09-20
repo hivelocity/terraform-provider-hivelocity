@@ -1,5 +1,5 @@
 ifeq ($(HIVELOCITY_API_URL),)
-	HIVELOCITY_API_URL:=https://core.hivelocity.net
+	HIVELOCITY_API_URL:=https://core.hivelocity.net/api/v2
 endif
 
 ifeq ($(GOPATH),)
@@ -20,10 +20,10 @@ SWAGGER_CODEGEN_CLI:=https://repo1.maven.org/maven2/io/swagger/swagger-codegen-c
 
 default: build
 
-install: build
+install:
 	go install
 
-build: client hivelocity/*
+build: client
 	go build -o $(BUILDPATH)/terraform-provider-hivelocity
 
 swagger-codegen-cli.jar:
@@ -39,3 +39,9 @@ docs: build
 
 swagger:
 	curl -o swagger.json $(HIVELOCITY_API_URL)/swagger.json?partner=1
+
+test:
+	go test github.com/hivelocity/terraform-provider-hivelocity/hivelocity
+
+testacc:
+	TF_ACC=1 go test github.com/hivelocity/terraform-provider-hivelocity/hivelocity

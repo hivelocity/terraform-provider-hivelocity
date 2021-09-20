@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
 
 func buildDeviceInitialCredsSchema() map[string]*schema.Schema {
@@ -50,7 +51,8 @@ func dataSourceDeviceInitialCredsRead(ctx context.Context, d *schema.ResourceDat
 	deviceID := int32(d.Get("device_id").(int))
 	hivelocityInitialCreds, _, err := hv.client.DeviceApi.GetInitialCredsIdResource(hv.auth, deviceID, nil)
 	if err != nil {
-		return diag.FromErr(err)
+		myErr := err.(swagger.GenericSwaggerError)
+		return diag.Errorf("GET /device/%d/initial-creds failed! (%s)\n\n %s", deviceID, err, myErr.Body())
 	}
 
 	jsonInitialCreds, err := json.Marshal(hivelocityInitialCreds)

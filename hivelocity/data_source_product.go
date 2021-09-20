@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
 
 func dataSourceProduct() *schema.Resource {
@@ -58,7 +59,8 @@ func dataSourceProductRead(ctx context.Context, d *schema.ResourceData, m interf
 
 	productInfo, _, err := hv.client.ProductApi.GetProductListResource(hv.auth, nil)
 	if err != nil {
-		return diag.FromErr(err)
+		myErr := err.(swagger.GenericSwaggerError)
+		return diag.Errorf("GET /product/list failed! (%s)\n\n %s", err, myErr.Body())
 	}
 
 	jsonProductInfo, err := json.Marshal(productInfo)
