@@ -10,7 +10,7 @@
 package swagger
 
 type MxValue struct {
-	Id int32 `json:"id"`
-	Preference int32 `json:"preference"`
 	Exchange string `json:"exchange"`
+	Preference int32 `json:"preference"`
+	Id int32 `json:"id"`
 }

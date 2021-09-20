@@ -33,7 +33,7 @@ Name | Type | Description  | Notes
 
 
  **start** | **optional.Int32**| Start Time of Custom Time Period. (Unix Epoch Time) | [default to 0]
- **end** | **optional.Int32**| End Time of Custom Time Period (Unix Epoch Time) | [default to 1630700931]
+ **end** | **optional.Int32**| End Time of Custom Time Period (Unix Epoch Time) | [default to 1632161114]
  **xFields** | **optional.String**| An optional fields mask | 
 
 ### Return type
@@ -77,7 +77,7 @@ Name | Type | Description  | Notes
 
  **historical** | **optional.Bool**| Include Historical Interface Data for Device for Resellers | [default to false]
  **start** | **optional.Int32**| Start Time of Custom Time Period. (Unix Epoch Time) | [default to 0]
- **end** | **optional.Int32**| End Time of Custom Time Period (Unix Epoch Time) | [default to 1630700931]
+ **end** | **optional.Int32**| End Time of Custom Time Period (Unix Epoch Time) | [default to 1632161114]
  **xFields** | **optional.String**| An optional fields mask | 
 
 ### Return type
@@ -118,7 +118,7 @@ Name | Type | Description  | Notes
 
 
  **start** | **optional.Int32**| Start Time of Custom Time Period. (Unix Epoch Time) | [default to 0]
- **end** | **optional.Int32**| End Time of Custom Time Period (Unix Epoch Time) | [default to 1630700931]
+ **end** | **optional.Int32**| End Time of Custom Time Period (Unix Epoch Time) | [default to 1632161114]
  **xFields** | **optional.String**| An optional fields mask | 
 
 ### Return type
@@ -161,7 +161,7 @@ Name | Type | Description  | Notes
 
 
  **start** | **optional.Int32**| Start Time of Custom Time Period. (Unix Epoch Time) | [default to 0]
- **end** | **optional.Int32**| End Time of Custom Time Period (Unix Epoch Time) | [default to 1630700931]
+ **end** | **optional.Int32**| End Time of Custom Time Period (Unix Epoch Time) | [default to 1632161114]
  **xFields** | **optional.String**| An optional fields mask | 
 
 ### Return type

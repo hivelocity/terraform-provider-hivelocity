@@ -10,6 +10,6 @@
 package swagger
 
 type RecordValue struct {
-	Id int32 `json:"id,omitempty"`
 	Address string `json:"address,omitempty"`
+	Id int32 `json:"id,omitempty"`
 }

@@ -10,6 +10,6 @@
 package swagger
 
 type UpdateDevicesIpmiThresholds struct {
-	Thresholds interface{} `json:"thresholds"`
+	Thresholds *interface{} `json:"thresholds"`
 	DeviceIds []int32 `json:"device_ids"`
 }

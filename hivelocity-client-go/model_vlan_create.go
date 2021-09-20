@@ -10,6 +10,6 @@
 package swagger
 
 type VlanCreate struct {
-	Description string `json:"description,omitempty"`
 	DeviceIds []int32 `json:"deviceIds,omitempty"`
+	Description string `json:"description,omitempty"`
 }

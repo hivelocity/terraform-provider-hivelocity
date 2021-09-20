@@ -27,7 +27,7 @@ var (
 
 type DomainsApiService service
 
-/*
+/* 
 DomainsApiService Delete a single A Record value for given zone
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -112,7 +112,7 @@ func (a *DomainsApiService) DeleteARecordIdResource(ctx context.Context, domainI
 	return localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Delete an AAAA Record for given zone
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -197,7 +197,7 @@ func (a *DomainsApiService) DeleteAaaaRecordIdResource(ctx context.Context, doma
 	return localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Delete domain for given id
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainId
@@ -280,7 +280,7 @@ func (a *DomainsApiService) DeleteDomainIdResource(ctx context.Context, domainId
 	return localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Delete an MX Record for given zone
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -365,7 +365,7 @@ func (a *DomainsApiService) DeleteMxRecordIdResource(ctx context.Context, domain
 	return localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Return Single A Records found for given id
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -450,7 +450,9 @@ func (a *DomainsApiService) GetARecordIdResource(ctx context.Context, domainID i
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -476,7 +478,7 @@ func (a *DomainsApiService) GetARecordIdResource(ctx context.Context, domainID i
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Return all A Records found for given zone
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -559,7 +561,9 @@ func (a *DomainsApiService) GetARecordResource(ctx context.Context, domainID int
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -585,7 +589,7 @@ func (a *DomainsApiService) GetARecordResource(ctx context.Context, domainID int
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Return Single AAAA Records found for given id
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -670,7 +674,9 @@ func (a *DomainsApiService) GetAaaaRecordIdResource(ctx context.Context, domainI
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -696,7 +702,7 @@ func (a *DomainsApiService) GetAaaaRecordIdResource(ctx context.Context, domainI
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Return all AAAA Records found for given zone
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -779,7 +785,9 @@ func (a *DomainsApiService) GetAaaaRecordResource(ctx context.Context, domainID 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -805,7 +813,7 @@ func (a *DomainsApiService) GetAaaaRecordResource(ctx context.Context, domainID 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Return a domain for given id
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainId
@@ -888,7 +896,9 @@ func (a *DomainsApiService) GetDomainIdResource(ctx context.Context, domainId in
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -914,7 +924,7 @@ func (a *DomainsApiService) GetDomainIdResource(ctx context.Context, domainId in
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Return the domains of a client
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *DomainsApiGetDomainResourceOpts - Optional Parameters:
@@ -995,7 +1005,9 @@ func (a *DomainsApiService) GetDomainResource(ctx context.Context, localVarOptio
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1021,7 +1033,7 @@ func (a *DomainsApiService) GetDomainResource(ctx context.Context, localVarOptio
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Return Single MX Records found for given id
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -1106,7 +1118,9 @@ func (a *DomainsApiService) GetMxRecordIdResource(ctx context.Context, domainID 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1132,7 +1146,7 @@ func (a *DomainsApiService) GetMxRecordIdResource(ctx context.Context, domainID 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Return all MX Records found for given zone
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -1215,7 +1229,9 @@ func (a *DomainsApiService) GetMxRecordResource(ctx context.Context, domainID in
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1241,7 +1257,7 @@ func (a *DomainsApiService) GetMxRecordResource(ctx context.Context, domainID in
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Create a new A Record for given zone
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -1327,7 +1343,9 @@ func (a *DomainsApiService) PostARecordResource(ctx context.Context, domainID in
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1353,7 +1371,7 @@ func (a *DomainsApiService) PostARecordResource(ctx context.Context, domainID in
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Create a new AAAA Record for given zone
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -1439,7 +1457,9 @@ func (a *DomainsApiService) PostAaaaRecordResource(ctx context.Context, domainID
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1465,7 +1485,7 @@ func (a *DomainsApiService) PostAaaaRecordResource(ctx context.Context, domainID
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Create a new domain
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param payload
@@ -1549,7 +1569,9 @@ func (a *DomainsApiService) PostDomainResource(ctx context.Context, payload Doma
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1575,7 +1597,7 @@ func (a *DomainsApiService) PostDomainResource(ctx context.Context, payload Doma
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Create a new MX Record for given zone
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -1661,7 +1683,9 @@ func (a *DomainsApiService) PostMxRecordResource(ctx context.Context, domainID i
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1687,7 +1711,7 @@ func (a *DomainsApiService) PostMxRecordResource(ctx context.Context, domainID i
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Update an A Record for given zone
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -1775,7 +1799,9 @@ func (a *DomainsApiService) PutARecordIdResource(ctx context.Context, domainID i
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1801,7 +1827,7 @@ func (a *DomainsApiService) PutARecordIdResource(ctx context.Context, domainID i
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Update an AAAA Record for given id
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -1889,7 +1915,9 @@ func (a *DomainsApiService) PutAaaaRecordIdResource(ctx context.Context, domainI
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -1915,7 +1943,7 @@ func (a *DomainsApiService) PutAaaaRecordIdResource(ctx context.Context, domainI
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
-/*
+/* 
 DomainsApiService Update an MX Record for given zone
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domainID
@@ -2003,7 +2031,9 @@ func (a *DomainsApiService) PutMxRecordIdResource(ctx context.Context, domainID 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		return localVarReturnValue, localVarHttpResponse, err
+		if err == nil { 
+			return localVarReturnValue, localVarHttpResponse, err
+		}
 	}
 
 	if localVarHttpResponse.StatusCode >= 300 {
@@ -2028,4 +2058,3 @@ func (a *DomainsApiService) PutMxRecordIdResource(ctx context.Context, domainID 
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
-

@@ -24,8 +24,8 @@ Name | Type | Description | Notes
 **StartDate** | **int32** |  | [optional] [default to null]
 **EndDate** | **int32** |  | [optional] [default to null]
 **ServiceOptions** | [**[]ServiceOption**](ServiceOption.md) |  | [optional] [default to null]
-**ServiceDevices** | **[]interface{}** |  | [optional] [default to null]
-**ChildServices** | **[]interface{}** |  | [optional] [default to null]
+**ServiceDevices** | [**[]interface{}**](interface{}.md) |  | [optional] [default to null]
+**ChildServices** | [**[]interface{}**](interface{}.md) |  | [optional] [default to null]
 **ProductId** | **int32** |  | [optional] [default to null]
 **ProductName** | **string** |  | [optional] [default to null]
 **Reseller** | **string** |  | [optional] [default to null]
@@ -33,6 +33,7 @@ Name | Type | Description | Notes
 **ContractTerm** | **int32** |  | [optional] [default to null]
 **BillingInfoId** | **int32** |  | [optional] [default to null]
 **ColocationCharge** | **float32** |  | [optional] [default to null]
+**ResellerBmaasCharge** | **float32** |  | [optional] [default to null]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

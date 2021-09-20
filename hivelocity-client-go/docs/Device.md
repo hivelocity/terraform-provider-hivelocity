@@ -17,17 +17,17 @@ Name | Type | Description | Notes
 **ManagedAlertsTotal** | **int32** |  | [optional] [default to null]
 **Hostname** | **string** |  | [optional] [default to null]
 **IpmiEnabled** | **bool** |  | [optional] [default to null]
-**DisplayedTags** | **[]interface{}** |  | [optional] [default to null]
+**DisplayedTags** | [**[]interface{}**](interface{}.md) |  | [optional] [default to null]
 **Tags** | **[]string** |  | [optional] [default to null]
-**Location** | **interface{}** |  | [optional] [default to null]
+**Location** | [***interface{}**](interface{}.md) |  | [optional] [default to null]
 **PrimaryIp** | **string** |  | [optional] [default to null]
 **IpmiAddress** | **string** |  | [optional] [default to null]
 **ServiceMonitors** | **[]string** |  | [optional] [default to null]
-**BillingInfo** | **interface{}** |  | [optional] [default to null]
+**BillingInfo** | [***interface{}**](interface{}.md) |  | [optional] [default to null]
 **ServicePlan** | **int32** |  | [optional] [default to null]
 **LastInvoiceId** | **int32** |  | [optional] [default to null]
 **SelfProvisioning** | **bool** |  | [optional] [default to null]
-**Metadata** | **interface{}** |  | [optional] [default to null]
+**Metadata** | [***interface{}**](interface{}.md) |  | [optional] [default to null]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

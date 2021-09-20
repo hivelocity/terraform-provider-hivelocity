@@ -11,6 +11,6 @@ package swagger
 
 type ARecordUpdate struct {
 	Address string `json:"address,omitempty"`
-	Name string `json:"name,omitempty"`
 	Ttl int32 `json:"ttl,omitempty"`
+	Name string `json:"name,omitempty"`
 }
