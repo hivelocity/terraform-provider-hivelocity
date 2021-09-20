@@ -11,6 +11,6 @@ package swagger
 
 type ProductOption struct {
 	ProductId int32 `json:"productId,omitempty"`
-	Options interface{} `json:"options,omitempty"`
-	Pricing interface{} `json:"pricing,omitempty"`
+	Options *interface{} `json:"options,omitempty"`
+	Pricing *interface{} `json:"pricing,omitempty"`
 }

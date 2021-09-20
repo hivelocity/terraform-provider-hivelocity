@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Metadata** | **interface{}** |  | [optional] [default to null]
+**Metadata** | [***interface{}**](interface{}.md) |  | [optional] [default to null]
 **BandwidthData** | [**[][]float32**](array.md) |  | [optional] [default to null]
 **Interface_** | **string** |  | [optional] [default to null]
 **SwitchId** | **string** |  | [optional] [default to null]

@@ -11,6 +11,6 @@ package swagger
 
 type SshKeyResponse struct {
 	PublicKey string `json:"publicKey,omitempty"`
-	SshKeyId int32 `json:"sshKeyId,omitempty"`
 	Name string `json:"name,omitempty"`
+	SshKeyId int32 `json:"sshKeyId,omitempty"`
 }

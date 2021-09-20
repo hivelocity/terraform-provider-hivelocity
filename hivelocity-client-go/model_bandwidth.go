@@ -10,7 +10,7 @@
 package swagger
 
 type Bandwidth struct {
-	Metadata interface{} `json:"metadata,omitempty"`
+	Metadata *interface{} `json:"metadata,omitempty"`
 	BandwidthData [][]float32 `json:"bandwidthData,omitempty"`
 	Interface_ string `json:"interface,omitempty"`
 	SwitchId string `json:"switchId,omitempty"`

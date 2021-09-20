@@ -10,7 +10,7 @@
 package swagger
 
 type ARecordCreate struct {
+	Name string `json:"name"`
 	Address string `json:"address,omitempty"`
 	Ttl int32 `json:"ttl"`
-	Name string `json:"name"`
 }

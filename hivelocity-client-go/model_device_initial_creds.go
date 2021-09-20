@@ -10,8 +10,8 @@
 package swagger
 
 type DeviceInitialCreds struct {
-	Port int32 `json:"port,omitempty"`
 	Password string `json:"password,omitempty"`
 	LockerUrl string `json:"lockerUrl,omitempty"`
+	Port int32 `json:"port,omitempty"`
 	User string `json:"user,omitempty"`
 }

@@ -10,9 +10,9 @@
 package swagger
 
 type ARecordReturn struct {
+	Name string `json:"name"`
+	Addresses []RecordValue `json:"addresses"`
 	DomainId int32 `json:"domainId"`
 	Ttl int32 `json:"ttl"`
 	Type_ string `json:"type"`
-	Addresses []RecordValue `json:"addresses"`
-	Name string `json:"name"`
 }
