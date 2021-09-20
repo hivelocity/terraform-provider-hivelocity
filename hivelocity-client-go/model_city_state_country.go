@@ -11,6 +11,6 @@ package swagger
 
 type CityStateCountry struct {
 	City string `json:"city,omitempty"`
-	Country string `json:"country,omitempty"`
 	State string `json:"state,omitempty"`
+	Country string `json:"country,omitempty"`
 }

@@ -10,7 +10,7 @@
 package swagger
 
 type SshKeyResponse struct {
+	SshKeyId int32 `json:"sshKeyId,omitempty"`
 	PublicKey string `json:"publicKey,omitempty"`
 	Name string `json:"name,omitempty"`
-	SshKeyId int32 `json:"sshKeyId,omitempty"`
 }

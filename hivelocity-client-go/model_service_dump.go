@@ -40,4 +40,5 @@ type ServiceDump struct {
 	ContractTerm int32 `json:"contractTerm,omitempty"`
 	BillingInfoId int32 `json:"billingInfoId,omitempty"`
 	ColocationCharge float32 `json:"colocationCharge,omitempty"`
+	ResellerBmaasCharge float32 `json:"resellerBmaasCharge,omitempty"`
 }

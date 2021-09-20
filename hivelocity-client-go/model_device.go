@@ -14,6 +14,7 @@ type Device struct {
 	Name string `json:"name"`
 	Status string `json:"status,omitempty"`
 	DeviceType string `json:"deviceType,omitempty"`
+	DeviceTypeGroup string `json:"deviceTypeGroup,omitempty"`
 	PowerStatus string `json:"powerStatus,omitempty"`
 	HasCancellation bool `json:"hasCancellation,omitempty"`
 	IsManaged bool `json:"isManaged,omitempty"`

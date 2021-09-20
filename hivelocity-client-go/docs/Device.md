@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **Name** | **string** |  | [default to null]
 **Status** | **string** |  | [optional] [default to null]
 **DeviceType** | **string** |  | [optional] [default to null]
+**DeviceTypeGroup** | **string** |  | [optional] [default to null]
 **PowerStatus** | **string** |  | [optional] [default to null]
 **HasCancellation** | **bool** |  | [optional] [default to null]
 **IsManaged** | **bool** |  | [optional] [default to null]

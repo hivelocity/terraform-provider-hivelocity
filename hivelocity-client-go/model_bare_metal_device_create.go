@@ -10,12 +10,12 @@
 package swagger
 
 type BareMetalDeviceCreate struct {
-	Script string `json:"script,omitempty"`
-	PublicSshKeyId int32 `json:"publicSshKeyId,omitempty"`
-	LocationName string `json:"locationName"`
-	Period string `json:"period,omitempty"`
-	VlanId int32 `json:"vlanId,omitempty"`
 	Hostname string `json:"hostname"`
 	OsName string `json:"osName"`
+	Period string `json:"period,omitempty"`
+	PublicSshKeyId int32 `json:"publicSshKeyId,omitempty"`
+	VlanId int32 `json:"vlanId,omitempty"`
+	LocationName string `json:"locationName"`
+	Script string `json:"script,omitempty"`
 	ProductId int32 `json:"productId"`
 }
