@@ -16,31 +16,46 @@ This document contains instructions and best practices for developing against `t
 You may set `HIVELOCITY_API_URL` to `http://localhost:5065/api/v2` for development.
 You may set `HIVELOCITY_API_KEY` if you'd like.
 
-## Building the most recent hivelocity-client-go
+## Generating the go client sources for local development
 
-If API endpoints have been added to the core, you will want to update the go client.
-To rebuild the client and add it to your project repo:
+The provider uses [swagger-codegen](https://github.com/swagger-api/swagger-codegen) to auto-generate sources for the API's client. A copy of Hivelocity's API swagger file is kept in this repository for use during the build process.
 
-1. Install https://github.com/swagger-api/swagger-codegen
-2. run the following from the folder `terraform-provider-hivelocity`:
+The generate the go client sources:
 
-`java -jar ~/Downloads/swagger-codegen-cli-2.4.15.jar generate -i http://localhost:5065/api/v2/swagger.json?partner=1 -l go -o ./hivelocity-client-go`
+```sh
+$ make client
+```
+
+## Updating the API swagger and client source code
+
+If API endpoints have been added to the core, you will want to update the API swagger file and rebuild the go client. Bear in mind that the updated swagger needs to be checked into the repository.
+
+To fetch an updated version of the swagger file and generate the client:
+
+```sh
+$ make swagger
+$ make client
+```
+
+The swagger file will be fetched from the URL set on HIVELOCITY_API_URL environment variable.
 
 ## Generating the documentation for the registry
 
-The documentation for the Hashicorp registry is composed of the README.md file, along with the files present in the examples and docs folder.
+The documentation for the [Hashicorp registry](https://registry.terraform.io/providers/hivelocity/hivelocity/latest/docs) is auto-generated on build-time and placed into the docs folder. It's composed of the examples, templates and descriptions of fields present on the provider's source code.
 
-If there were changes in the provider, the documentation will have to be updated. This can be accomplished using the following:
+To generate a local version of the docs:
 
-`go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs`
+```sh
+$ make docs
+```
 
 ## Rebuilding the project
 
 Whenever you update the project run the following cmd to add the changes to your Terraform plugins:
 
-`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity`
-
-Watch out for the naming convention (OS and distribution).
+```sh
+$ make
+```
 
 It is recommend you set the environment variable `export TF_LOG=DEBUG` so that you can see and debug API calls while developing new functionality.
 
@@ -50,7 +65,9 @@ All data sources should be added to the `examples/data-sources/` folder for deve
 
 Once you have updated the example, you can test your new data source from the root of the repo:
 
-`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity && cd examples/data-sources/<data-source> && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform apply --auto-approve`
+```sh
+$ make && cd examples/data-sources/<data-source> && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform apply
+```
 
 ## Resources
 
@@ -60,11 +77,15 @@ Once you have updated the example, you can test your new data source from the ro
 
 To Create/Update:
 
-`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity && cd examples/resources/hivelocity_bare_metal_device && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform apply --auto-approve`
+```sh
+$ make && cd examples/resources/<resource> && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform apply
+```
 
 To Delete:
 
-`go build -o ~/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/darwin_amd64/terraform-provider-hivelocity && cd examples/resources/hivelocity_bare_metal_device && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform delete --auto-approve`
+```sh
+$ make && cd examples/resources/<resource> && terraform init -plugin-dir ~/.terraform.d/plugins/ && terraform delete
+```
 
 Testing provider code
 ---------------------------
@@ -89,5 +110,5 @@ Testing the provider with Terraform
 Once you've built the plugin binary (see [Developing the provider](#developing-the-provider) above), it can be incorporated within your Terraform environment using the `-plugin-dir` option. Subsequent runs of Terraform will then use the plugin from your development environment.
 
 ```sh
-$ terraform init -plugin-dir $GOPATH/bin
+$ terraform init -plugin-dir ~/.terraform.d/plugins/
 ```
