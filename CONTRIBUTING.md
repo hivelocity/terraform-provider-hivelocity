@@ -43,11 +43,13 @@ The swagger file will be fetched from the URL set on HIVELOCITY_API_URL environm
 
 The documentation for the [Hashicorp registry](https://registry.terraform.io/providers/hivelocity/hivelocity/latest/docs) is auto-generated on build-time and placed into the docs folder. It's based on the examples and descriptions of fields present on the provider's source code.
 
-To generate a local version of the docs:
+To update the local version of the docs:
 
 ```sh
 $ make docs
 ```
+
+Remember to always run this command after making changes to the examples or the provider sources, then commit the changes to the repository.
 
 ## Rebuilding the project
 
