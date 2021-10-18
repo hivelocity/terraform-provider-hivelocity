@@ -16,6 +16,7 @@ endif
 
 OS_ARCH:=$(GOOS)_$(GOARCH)
 BUILDPATH:=$(HOME)/.terraform.d/plugins/registry.terraform.io/hivelocity/hivelocity/0.1.0/$(OS_ARCH)
+# Beware that changing the version of swagger-codegen may produce an incompatible version of the client
 SWAGGER_CODEGEN_CLI:=https://repo1.maven.org/maven2/io/swagger/swagger-codegen-cli/2.4.15/swagger-codegen-cli-2.4.15.jar
 
 default: build
@@ -41,7 +42,16 @@ swagger:
 	curl -o swagger.json $(HIVELOCITY_API_URL)/swagger.json?partner=1
 
 test:
-	go test github.com/hivelocity/terraform-provider-hivelocity/hivelocity
+	go test github.com/hivelocity/terraform-provider-hivelocity/hivelocity $(TESTARGS)
 
 testacc:
-	TF_ACC=1 go test github.com/hivelocity/terraform-provider-hivelocity/hivelocity
+	TF_ACC=1 go test github.com/hivelocity/terraform-provider-hivelocity/hivelocity -v $(TESTARGS)
+
+example_init: build
+	terraform -chdir=$(EXAMPLE) init -plugin-dir ~/.terraform.d/plugins/
+
+example_apply: example_init
+	terraform -chdir=$(EXAMPLE) apply
+
+example_destroy: example_init
+	terraform -chdir=$(EXAMPLE) destroy
