@@ -1,16 +1,23 @@
 Terraform Provider Hivelocity 
 =============================
 
-- Website: https://www.terraform.io
-- Mailing list: [Google Groups](http://groups.google.com/group/terraform-tool)
+- Terraform Website: https://www.terraform.io
+- Hivelocity Website: https://hivelocity.net
 
-<img src="https://cdn.rawgit.com/hashicorp/terraform-website/master/content/source/assets/images/logo-hashicorp.svg" width="600px">
+<img src="https://cdn.jsdelivr.net/gh/hashicorp/terraform-website@master/content/source/assets/images/logo-terraform-main.svg" width="600px">
 
 Requirements
 ------------
 
 -	[Terraform](https://www.terraform.io/downloads.html) 0.13.x
 -	[Go](https://golang.org/doc/install) 1.15+ (to build the provider plugin)
+
+Official Documentation
+----------------------
+
+For a more comprehensive documentation, including examples for every resource and data-source supported by the provider, please check:
+
+- https://registry.terraform.io/providers/hivelocity/hivelocity/latest/docs
 
 Example Usage
 -------------
@@ -21,8 +28,8 @@ You may set the environment variable `HIVELOCITY_API_KEY` instead of setting it 
 terraform {
   required_providers {
     hivelocity = {
-      versions = ["<VERSION>"]
-      source = "hivelocity/hivelocity"
+      version  = "<VERSION>"
+      source   = "hivelocity/hivelocity"
     }
   }
 }
@@ -51,24 +58,39 @@ data "hivelocity_product" "tampa_product" {
   }
 }
 
-data "hivelocity_ssh_key" "ssh_keys" {
-  first = true
-  
-  filter {
-    name   = "name"
-    values = ["This is my Terraform SSH Key"]
-  }
+// Create a SSH Key
+resource "hivelocity_ssh_key" "my_ssh_key" {
+  name       = "This is my Terraform SSH Key"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDYYGqXPIJ1yQ7pMTSmdB+LrjvnPh2jSJewvinxYwuk/CBvbsUgFxOTBtjzfU0kHIlo5QyIhJ7tjh8PhT8LdJPGB86ItwTg3Lmt1q5UFxbHmZ0kPmmzaDI/9aakOal3P93D14HDCzBnkTHfC8/JZ5JpDxp86XM+gWQ9sFMkLx83ZOwONNu3E8PowTEpsp0jMx2B2aFeSM+T4bLkJJQtA5Cp6lgRAc5AklXaqmpdAil/fIL/+gvRf8kJIccAe/2oVj4flaMK7mgZ39qhzYYUjTEokEYvJf17QbdtFTxxtIQ+hTxzKzwT6p8cMu6DNQLfq6oxzbuBVGTvKD79MR5vjx+RNpaIru8wzIspHTez9eGDzdR0316GWDcxmMwVIDMM+3pjopDJV6DILfs6hVlAuH11yCX8YwwGHYpsdzLLd00FEEaGLGVRDr/hvduZ1caQIvdNln6Gr7k6W51U1VTC3NRq49yoxYSsXxn30PfTe2IxFaZyhQXHunCLaMCF+TrAOc0= someone@somewhere.com"
 }
 
-// Provision the product with CentOS 7.
-resource "hivelocity_bare_metal_device" "tampa_server" {
-    product_id = "${data.hivelocity_product.tampa_product.product_id}"
-    os_name = "CentOS 7.x"
-    location_name = "${data.hivelocity_product.tampa_product.data_center}"
-    hostname = "hivelocity.terraform.test"
-    tags = ["hello", "world"]
-    script = file("${path.module}/cloud_init_example.yaml")
-    public_ssh_key_id = "${data.hivelocity_ssh_key.ssh_keys.ssh_key_id}"
+// Provision your devices with CentOS 7.
+resource "hivelocity_bare_metal_device" "tampa_server_1" {
+  product_id        = data.hivelocity_product.tampa_product.product_id
+  os_name           = "CentOS 7.x"
+  location_name     = data.hivelocity_product.tampa_product.data_center
+  hostname          = "hivelocity1.terraform.test"
+  tags              = ["hello", "world"]
+  script            = file("${path.module}/cloud_init_example.yaml")
+  public_ssh_key_id = hivelocity_ssh_key.my_ssh_key.ssh_key_id
+}
+
+resource "hivelocity_bare_metal_device" "tampa_server_2" {
+  product_id        = data.hivelocity_product.tampa_product.product_id
+  os_name           = "CentOS 7.x"
+  location_name     = data.hivelocity_product.tampa_product.data_center
+  hostname          = "hivelocity2.terraform.test"
+  tags              = ["hello", "world"]
+  script            = file("${path.module}/cloud_init_example.yaml")
+  public_ssh_key_id = hivelocity_ssh_key.my_ssh_key.ssh_key_id
+}
+
+// Create a VLAN connecting servers
+resource "hivelocity_vlan" "private_vlan" {
+  device_ids    = [
+      hivelocity_bare_metal_device.tampa_server_1.device_id,
+      hivelocity_bare_metal_device.tampa_server_2.device_id,
+  ]
 }
 ```
 
