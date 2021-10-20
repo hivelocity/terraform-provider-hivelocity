@@ -48,6 +48,7 @@ testacc:
 	TF_ACC=1 go test github.com/hivelocity/terraform-provider-hivelocity/hivelocity -v $(TESTARGS)
 
 example_init: build
+	rm -f $(EXAMPLE)/.terraform.lock.hcl
 	terraform -chdir=$(EXAMPLE) init -plugin-dir ~/.terraform.d/plugins/
 
 example_apply: example_init
