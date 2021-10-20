@@ -35,6 +35,11 @@ func Provider() *schema.Provider {
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"hivelocity_bare_metal_device": resourceBareMetalDevice(),
+			"hivelocity_dns_domain":        resourceDnsDomain(),
+			"hivelocity_dns_record_a":      resourceDnsRecordA(),
+			"hivelocity_dns_record_aaaa":   resourceDnsRecordAAAA(),
+			"hivelocity_dns_record_mx":     resourceDnsRecordMX(),
+			"hivelocity_dns_record_ptr":    resourceDnsRecordPTR(),
 			"hivelocity_ssh_key":           resourceSSHKey(),
 			"hivelocity_vlan":              resourceVlan(),
 		},
