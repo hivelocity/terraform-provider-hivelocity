@@ -65,21 +65,21 @@ resource "hivelocity_ssh_key" "my_ssh_key" {
 }
 
 // Provision your devices with CentOS 7.
-resource "hivelocity_bare_metal_device" "tampa_server_1" {
+resource "hivelocity_bare_metal_device" "webserver" {
   product_id        = data.hivelocity_product.tampa_product.product_id
   os_name           = "CentOS 7.x"
   location_name     = data.hivelocity_product.tampa_product.data_center
-  hostname          = "hivelocity1.terraform.test"
+  hostname          = "webserver.terraform.test"
   tags              = ["hello", "world"]
   script            = file("${path.module}/cloud_init_example.yaml")
   public_ssh_key_id = hivelocity_ssh_key.my_ssh_key.ssh_key_id
 }
 
-resource "hivelocity_bare_metal_device" "tampa_server_2" {
+resource "hivelocity_bare_metal_device" "database" {
   product_id        = data.hivelocity_product.tampa_product.product_id
   os_name           = "CentOS 7.x"
   location_name     = data.hivelocity_product.tampa_product.data_center
-  hostname          = "hivelocity2.terraform.test"
+  hostname          = "database.terraform.test"
   tags              = ["hello", "world"]
   script            = file("${path.module}/cloud_init_example.yaml")
   public_ssh_key_id = hivelocity_ssh_key.my_ssh_key.ssh_key_id
@@ -88,19 +88,21 @@ resource "hivelocity_bare_metal_device" "tampa_server_2" {
 // Create a VLAN connecting servers
 resource "hivelocity_vlan" "private_vlan" {
   device_ids    = [
-      hivelocity_bare_metal_device.tampa_server_1.device_id,
-      hivelocity_bare_metal_device.tampa_server_2.device_id,
+      hivelocity_bare_metal_device.webserver.device_id,
+      hivelocity_bare_metal_device.database.device_id,
   ]
 }
 ```
 
-The above provider will deploy and provision the first found in stock (`limited` or `available`) device with `16GB` of memory in the `TPA1`.
-It will be provisioned with `CentOS7.x` as the OS and received the tags `hello` and `world`.  The hostname will be set to
-`hivelocitiy.terraform.test`. Will use a cloud-init user-data script to be executed on the device first boot.
+The above provider will deploy and provision 2 units of the first found in stock (`limited` or `available`) device with `16GB` of memory in the `TPA1`.
+They will be provisioned with `CentOS7.x` as the OS and received the tags `hello` and `world`.  The hostname will be set to
+`webserver.terraform.test` for the first device and `database.terraform.test` for the second. Both will use a cloud-init user-data script to be executed on the device first boot.
 
 Cloud-init script start with #cloud-init, must be a valid YAML script.
 Post-install script start with #!/bin/bash.
 Cloud-init or Post-install script just can be used with OS Ubuntu and Centos.
+
+The VLAN resource creates an isolated network connection between devices, and it can be used by the user to establish a private network. The current implementation requires all devices to be located in the same facility.
 
 Note: all these values can be changed from the portal, which could make terraform states get out of sync.  We are working on 
 a solution to help users avoid this issue.
