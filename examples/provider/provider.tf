@@ -34,21 +34,21 @@ resource "hivelocity_ssh_key" "my_ssh_key" {
 }
 
 // Provision your devices with CentOS 7.
-resource "hivelocity_bare_metal_device" "tampa_server_1" {
+resource "hivelocity_bare_metal_device" "webserver" {
   product_id        = data.hivelocity_product.tampa_product.product_id
   os_name           = "CentOS 7.x"
   location_name     = data.hivelocity_product.tampa_product.data_center
-  hostname          = "hivelocity1.terraform.test"
+  hostname          = "webserver.terraform.test"
   tags              = ["hello", "world"]
   script            = file("${path.module}/cloud_init_example.yaml")
   public_ssh_key_id = hivelocity_ssh_key.my_ssh_key.ssh_key_id
 }
 
-resource "hivelocity_bare_metal_device" "tampa_server_2" {
+resource "hivelocity_bare_metal_device" "database" {
   product_id        = data.hivelocity_product.tampa_product.product_id
   os_name           = "CentOS 7.x"
   location_name     = data.hivelocity_product.tampa_product.data_center
-  hostname          = "hivelocity2.terraform.test"
+  hostname          = "database.terraform.test"
   tags              = ["hello", "world"]
   script            = file("${path.module}/cloud_init_example.yaml")
   public_ssh_key_id = hivelocity_ssh_key.my_ssh_key.ssh_key_id
@@ -57,7 +57,7 @@ resource "hivelocity_bare_metal_device" "tampa_server_2" {
 // Create a VLAN connecting servers
 resource "hivelocity_vlan" "private_vlan" {
   device_ids    = [
-      hivelocity_bare_metal_device.tampa_server_1.device_id,
-      hivelocity_bare_metal_device.tampa_server_2.device_id,
+      hivelocity_bare_metal_device.webserver.device_id,
+      hivelocity_bare_metal_device.database.device_id,
   ]
 }
