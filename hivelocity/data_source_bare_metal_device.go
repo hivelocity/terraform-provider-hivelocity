@@ -107,7 +107,7 @@ func dataSourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, 
 
 	bareMetalDeviceInfo, _, err := hv.client.BareMetalDevicesApi.GetBareMetalDeviceResource(hv.auth, nil)
 	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("GET /bare-metal-devices failed! (%s)\n\n %s", err, myErr.Body())
 	}
 

@@ -34,9 +34,10 @@ func Provider() *schema.Provider {
 			"hivelocity_ssh_key":              dataSourceSshKey(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"hivelocity_bare_metal_device": resourceBareMetalDevice(),
+			"hivelocity_bare_metal_device": resourceBareMetalDevice(true),
 			"hivelocity_ssh_key":           resourceSSHKey(),
 			"hivelocity_vlan":              resourceVlan(),
+			"hivelocity_order_group":       resourceOrderGroup(),
 		},
 		ConfigureContextFunc: configureProvider,
 	}

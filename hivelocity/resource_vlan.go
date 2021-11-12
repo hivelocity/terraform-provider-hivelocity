@@ -45,14 +45,14 @@ func resourceVlanCreate(ctx context.Context, d *schema.ResourceData, m interface
 	vlan, _, err := hv.client.VLANApi.PostVlanResource(hv.auth, payload, nil)
 	if err != nil {
 		d.SetId("")
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("POST /vlan failed! (%s)\n\n %s", err, myErr.Body())
 	}
 
 	_, err = waitForVlan(ctx, d, hv, vlan.VlanId, payload.DeviceIds)
 	if err != nil {
 		d.SetId("")
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("Error creating VLAN ID (%d). The Hivelocity team will investigate: (%s)\n\n %s", vlan.VlanId, err, myErr.Body())
 	}
 
@@ -76,12 +76,12 @@ func resourceVlanRead(ctx context.Context, d *schema.ResourceData, m interface{}
 	vlan, response, err := hv.client.VLANApi.GetVlanIdResource(hv.auth, int32(vlanId), nil)
 	if err != nil {
 		// If resource was deleted outside terraform, remove it from state and exit gracefully
-		if response.StatusCode == 404 {
+		if response != nil && response.StatusCode == 404 {
 			log.Printf("[WARN] Vlan ID not found: (%s)", d.Id())
 			d.SetId("")
 			return diags
 		}
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("GET /vlan failed! (%s)\n\n %s", err, myErr.Body())
 	}
 
@@ -105,13 +105,13 @@ func resourceVlanUpdate(ctx context.Context, d *schema.ResourceData, m interface
 
 	_, _, err = hv.client.VLANApi.PutVlanIdResource(hv.auth, int32(vlanId), payload, nil)
 	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("PUT /vlan/%d failed! (%s)\n\n %s", vlanId, err, myErr.Body())
 	}
 
 	_, err = waitForVlan(ctx, d, hv, int32(vlanId), payload.DeviceIds)
 	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("Error updating VLAN ID (%d). The Hivelocity team will investigate: (%s)\n\n %s", vlanId, err, myErr.Body())
 	}
 
@@ -134,18 +134,18 @@ func resourceVlanDelete(ctx context.Context, d *schema.ResourceData, m interface
 	_, response, err := hv.client.VLANApi.DeleteVlanIdResource(hv.auth, int32(vlanId), nil)
 	if err != nil {
 		// If resource was deleted outside terraform, remove it from state and exit gracefully
-		if response.StatusCode == 404 {
+		if response != nil && response.StatusCode == 404 {
 			log.Printf("[WARN] Vlan ID not found: (%s)", d.Id())
 			d.SetId("")
 			return diags
 		}
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("DELETE /vlan/%d failed! (%s)\n\n %s", vlanId, err, myErr.Body())
 	}
 
 	_, err = waitForVlanDeletion(ctx, d, hv, vlanId)
 	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("Error deleting VLAN ID (%d). The Hivelocity team will investigate: (%s)\n\n %s", vlanId, err, myErr.Body())
 	}
 

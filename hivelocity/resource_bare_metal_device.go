@@ -12,133 +12,151 @@ import (
 	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
 
-func resourceBareMetalDevice() *schema.Resource {
+// Timeout for creating/updating devices
+const BareMetalDeviceTimeout = 60 * time.Minute
+
+func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 	return &schema.Resource{
 		Timeouts: &schema.ResourceTimeout{
-			Create: schema.DefaultTimeout(60 * time.Minute),
+			Create: schema.DefaultTimeout(BareMetalDeviceTimeout),
 		},
 		CreateContext: resourceBareMetalDeviceCreate,
 		ReadContext:   resourceBareMetalDeviceRead,
 		UpdateContext: resourceBareMetalDeviceUpdate,
 		DeleteContext: resourceBareMetalDeviceDelete,
 		Schema: map[string]*schema.Schema{
-			"last_updated": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
+			"last_updated": {
+				Description: "Last time this device was updated",
+				Type:        schema.TypeString,
+				Optional:    true,
+				Computed:    true,
 			},
-			"device_id": &schema.Schema{
-				Type:     schema.TypeInt,
-				Computed: true,
-				Optional: true,
+			"device_id": {
+				Description: "Device ID",
+				Type:        schema.TypeInt,
+				Computed:    true,
+				Optional:    true,
 			},
-			"order_id": &schema.Schema{
-				Type:     schema.TypeInt,
-				Computed: true,
-				Optional: true,
+			"order_id": {
+				Description: "Order ID",
+				Type:        schema.TypeInt,
+				Computed:    true,
+				Optional:    true,
 			},
-			"service_id": &schema.Schema{
-				Type:     schema.TypeInt,
-				Computed: true,
-				Optional: true,
+			"service_id": {
+				Description: "Service ID",
+				Type:        schema.TypeInt,
+				Computed:    true,
+				Optional:    true,
 			},
-			"product_id": &schema.Schema{
-				Type:     schema.TypeInt,
-				Required: true,
-				ForceNew: true,
+			"product_id": {
+				Description: "Product ID to pick from the stock",
+				Type:        schema.TypeInt,
+				Required:    true,
+				ForceNew:    forceNew,
 			},
-			"product_name": &schema.Schema{
-				Type:     schema.TypeString,
-				Computed: true,
-				Optional: true,
+			"product_name": {
+				Description: "Product Name",
+				Type:        schema.TypeString,
+				Computed:    true,
+				Optional:    true,
 			},
-			"os_name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
+			"os_name": {
+				Description: "Operating system to install on device",
+				Type:        schema.TypeString,
+				Required:    true,
 			},
-			"location_name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
+			"location_name": {
+				Description: "Deploy device in this location",
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    forceNew,
 			},
-			"hostname": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
+			"hostname": {
+				Description: "Hostname for this device",
+				Type:        schema.TypeString,
+				Required:    true,
 			},
-			"power_status": &schema.Schema{
-				Type:     schema.TypeString,
-				Computed: true,
-				Optional: true,
+			"power_status": {
+				Description: "Power status",
+				Type:        schema.TypeString,
+				Computed:    true,
+				Optional:    true,
 			},
-			"vlan_id": &schema.Schema{
-				Type:     schema.TypeInt,
-				Optional: true,
-				Default:  nil,
+			"vlan_id": {
+				Description: "VLAN ID",
+				Deprecated:  "This field is deprecated. Please use a hivelocity_vlan resource instead.",
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Default:     nil,
 			},
-			"primary_ip": &schema.Schema{
-				Type:     schema.TypeString,
-				Computed: true,
-				Optional: true,
+			"primary_ip": {
+				Description: "Primary IP of device",
+				Type:        schema.TypeString,
+				Computed:    true,
+				Optional:    true,
 			},
-			"tags": &schema.Schema{
-				Type:     schema.TypeList,
-				Optional: true,
+			"tags": {
+				Description: "Tags to apply for device",
+				Type:        schema.TypeList,
+				Optional:    true,
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
 				},
 			},
-			"script": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Default:  nil,
+			"script": {
+				Description: "Post-install script for device",
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     nil,
 			},
-			"period": &schema.Schema{
-				Type:     schema.TypeString,
-				Computed: true,
-				Optional: true,
+			"period": {
+				Description: "Billing period for device",
+				Type:        schema.TypeString,
+				Computed:    true,
+				Optional:    true,
 			},
-			"public_ssh_key_id": &schema.Schema{
-				Type:     schema.TypeInt,
-				Optional: true,
-				Default:  nil,
+			"public_ssh_key_id": {
+				Description: "ID of a SSH Key to apply for device",
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Default:     nil,
 			},
 		},
 	}
 }
 
-// TODO: Test what happens when you change hostname, tags, etc anything that is required.
-
 func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	hv, _ := m.(*Client)
 
-	tags, err := getTags(d)
-	if err != nil {
-		d.SetId("")
-		return diag.FromErr(err)
+	var tags []string
+	for _, tag := range d.Get("tags").([]interface{}) {
+		tags = append(tags, tag.(string))
 	}
 
 	payload := swagger.BareMetalDeviceCreate{
 		ProductId:      int32(d.Get("product_id").(int)),
 		Hostname:       d.Get("hostname").(string),
 		OsName:         d.Get("os_name").(string),
-		VlanId:         int32(d.Get("vlan_id").(int)),
 		LocationName:   d.Get("location_name").(string),
 		Script:         d.Get("script").(string),
 		Period:         d.Get("period").(string),
 		PublicSshKeyId: int32(d.Get("public_ssh_key_id").(int)),
+		Tags:           tags,
 	}
 
 	bareMetalDevice, _, err := hv.client.BareMetalDevicesApi.PostBareMetalDeviceResource(hv.auth, payload, nil)
 	if err != nil {
 		d.SetId("")
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("POST /bare-metal-devices failed! (%s)\n\n %s", err, myErr.Body())
 	}
 
-	_, err = waitForOrder(d, hv, bareMetalDevice.OrderId)
+	timeout := d.Timeout(schema.TimeoutCreate)
+	_, err = waitForOrder(timeout, hv, bareMetalDevice.OrderId)
 	if err != nil {
 		d.SetId("")
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		if strings.Contains(fmt.Sprint(err), "'cancelled'") {
 			return diag.Errorf("Your deployment (order %d) has been 'cancelled'. Please contact Hivelocity support if you believe this is a mistake.\n\n %s",
 				bareMetalDevice.OrderId, myErr.Body())
@@ -147,28 +165,23 @@ func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, 
 			bareMetalDevice.OrderId, err, myErr.Body())
 	}
 
-	device, err := waitForDevice(d, hv, bareMetalDevice.OrderId)
+	newDevice := []swagger.BareMetalDevice{bareMetalDevice}
+	devices, err := waitForDevices(timeout, hv, bareMetalDevice.OrderId, newDevice)
 	if err != nil {
 		d.SetId("")
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("Error finding devices for order %d. The Hivelocity team will investigate:\n\n%s\n\n %s",
 			bareMetalDevice.OrderId, err, myErr.Body())
 	}
 
-	newDeviceId := device.(swagger.BareMetalDevice).DeviceId
-	_, err = updateTagsForCreate(hv, newDeviceId, tags)
-	if err != nil {
-		// TODO: The deployment was successful, so we should throw a warning here that tags failed for some reason.
-	}
+	newDeviceId := devices.([]swagger.BareMetalDevice)[0].DeviceId
 	d.SetId(fmt.Sprint(newDeviceId))
+	d.Set("device_id", newDeviceId)
 
 	return resourceBareMetalDeviceRead(ctx, d, m)
 }
 
 func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	// Warning or errors can be collected in a slice type
-	var diags diag.Diagnostics
-
 	hv, _ := m.(*Client)
 
 	deviceId, err := strconv.Atoi(d.Id())
@@ -176,9 +189,13 @@ func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m 
 		return diag.FromErr(err)
 	}
 
-	deviceResponse, _, err := hv.client.BareMetalDevicesApi.GetBareMetalDeviceIdResource(hv.auth, int32(deviceId), nil)
+	deviceResponse, httpResponse, err := hv.client.BareMetalDevicesApi.GetBareMetalDeviceIdResource(hv.auth, int32(deviceId), nil)
 	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		if httpResponse != nil && httpResponse.StatusCode == 404 {
+			d.SetId("")
+			return nil
+		}
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("GET /bare-metal-devices/%d failed! (%s)\n\n %s", deviceId, err, myErr.Body())
 	}
 
@@ -193,11 +210,10 @@ func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m 
 	d.Set("product_name", deviceResponse.ProductName)
 	d.Set("service_id", deviceResponse.ServiceId)
 	d.Set("tags", deviceResponse.Tags)
-	d.Set("vlan_d", deviceResponse.VlanId)
 	d.Set("public_ssh_key_id", deviceResponse.PublicSshKeyId)
 	d.Set("script", deviceResponse.Script)
 
-	return diags
+	return nil
 }
 
 func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
@@ -211,11 +227,7 @@ func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, 
 	payload := swagger.BareMetalDeviceUpdate{}
 	reload_required := false
 
-	tags, err := getTags(d)
-	if err != nil {
-		return diag.FromErr(err)
-	}
-	payload.Tags = tags
+	payload.Tags = getTags(d, "")
 
 	hostname := d.Get("hostname").(string)
 	payload.Hostname = hostname
@@ -241,22 +253,18 @@ func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, 
 		reload_required = true
 	}
 
-	if d.HasChange("vlan_id") {
-		// TODO: Currently no-op until VLAN IDS deployed
-	}
-
 	// If a reload is required, it's necessary to turn the device off first
 	if reload_required {
 		devicePower, _, err := hv.client.DeviceApi.GetPowerResource(hv.auth, int32(deviceId), nil)
 		if err != nil {
-			myErr := err.(swagger.GenericSwaggerError)
+			myErr, _ := err.(swagger.GenericSwaggerError)
 			return diag.Errorf("GET /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
 		}
 
 		if devicePower.PowerStatus == "ON" {
 			_, _, err = hv.client.DeviceApi.PostPowerResource(hv.auth, int32(deviceId), "shutdown", nil)
 			if err != nil {
-				myErr := err.(swagger.GenericSwaggerError)
+				myErr, _ := err.(swagger.GenericSwaggerError)
 				return diag.Errorf("POST /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
 			}
 
@@ -270,7 +278,7 @@ func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, 
 
 	_, _, err = hv.client.BareMetalDevicesApi.PutBareMetalDeviceIdResource(hv.auth, int32(deviceId), payload, nil)
 	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("PUT /bare-metal-devices/%d failed! (%s)\n\n %s", deviceId, err, myErr.Body())
 	}
 
@@ -296,16 +304,13 @@ func resourceBareMetalDeviceDelete(ctx context.Context, d *schema.ResourceData, 
 		return diag.FromErr(err)
 	}
 
-	// Check device exists still, if not mark as already destroyed.
-	_, _, err = hv.client.BareMetalDevicesApi.GetBareMetalDeviceIdResource(hv.auth, int32(deviceId), nil)
+	response, err := hv.client.BareMetalDevicesApi.DeleteBareMetalDeviceIdResource(hv.auth, int32(deviceId), nil)
 	if err != nil {
-		d.SetId("")
-		return diags
-	}
-
-	_, err = hv.client.BareMetalDevicesApi.DeleteBareMetalDeviceIdResource(hv.auth, int32(deviceId), nil)
-	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		if response != nil && response.StatusCode == 404 {
+			d.SetId("")
+			return diags
+		}
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("DELETE /bare-metal-devices/%d failed! (%s)\n\n %s", deviceId, err, myErr.Body())
 	}
 
