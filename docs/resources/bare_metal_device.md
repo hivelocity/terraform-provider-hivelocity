@@ -41,27 +41,27 @@ output "demo_device" {
 
 ### Required
 
-- **hostname** (String)
-- **location_name** (String)
-- **os_name** (String)
-- **product_id** (Number)
+- **hostname** (String) Hostname for this device
+- **location_name** (String) Deploy device in this location
+- **os_name** (String) Operating system to install on device
+- **product_id** (Number) Product ID to pick from the stock
 
 ### Optional
 
-- **device_id** (Number)
+- **device_id** (Number) Device ID
 - **id** (String) The ID of this resource.
-- **last_updated** (String)
-- **order_id** (Number)
-- **period** (String)
-- **power_status** (String)
-- **primary_ip** (String)
-- **product_name** (String)
-- **public_ssh_key_id** (Number)
-- **script** (String)
-- **service_id** (Number)
-- **tags** (List of String)
+- **last_updated** (String) Last time this device was updated
+- **order_id** (Number) Order ID
+- **period** (String) Billing period for device
+- **power_status** (String) Power status
+- **primary_ip** (String) Primary IP of device
+- **product_name** (String) Product Name
+- **public_ssh_key_id** (Number) ID of a SSH Key to apply for device
+- **script** (String) Post-install script for device
+- **service_id** (Number) Service ID
+- **tags** (List of String) Tags to apply for device
 - **timeouts** (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
-- **vlan_id** (Number)
+- **vlan_id** (Number, Deprecated) VLAN ID
 
 <a id="nestedblock--timeouts"></a>
 ### Nested Schema for `timeouts`

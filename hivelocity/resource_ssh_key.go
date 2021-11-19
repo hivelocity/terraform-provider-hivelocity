@@ -49,7 +49,7 @@ func resourceSSHKeyCreate(ctx context.Context, d *schema.ResourceData, m interfa
 	sshKey, _, err := hv.client.SshKeyApi.PostSshKeyResource(hv.auth, payload, nil)
 	if err != nil {
 		d.SetId("")
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("POST /ssh_key failed! (%s)\n\n %s", err, myErr.Body())
 	}
 
@@ -69,9 +69,13 @@ func resourceSSHKeyRead(ctx context.Context, d *schema.ResourceData, m interface
 		return diag.FromErr(err)
 	}
 
-	SSHKeyResponse, _, err := hv.client.SshKeyApi.GetSshKeyIdResource(hv.auth, int32(SSHKeyID), nil)
+	SSHKeyResponse, httpResponse, err := hv.client.SshKeyApi.GetSshKeyIdResource(hv.auth, int32(SSHKeyID), nil)
 	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		if httpResponse != nil && httpResponse.StatusCode == 404 {
+			d.SetId("")
+			return nil
+		}
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("GET /ssh_key/%d failed! (%s)\n\n %s", SSHKeyID, err, myErr.Body())
 	}
 
@@ -102,7 +106,7 @@ func resourceSSHKeyUpdate(ctx context.Context, d *schema.ResourceData, m interfa
 
 	_, _, err = hv.client.SshKeyApi.PutSshKeyIdResource(hv.auth, int32(SSHKeyID), payload, nil)
 	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("PUT /ssh_key/%s failed! (%s)\n\n %s", fmt.Sprint(SSHKeyID), err, myErr.Body())
 	}
 
@@ -121,16 +125,13 @@ func resourceSSHKeyDelete(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.FromErr(err)
 	}
 
-	// Check ssh key exists still, if not mark as already destroyed.
-	_, _, err = hv.client.SshKeyApi.GetSshKeyIdResource(hv.auth, int32(SSHKeyID), nil)
+	response, err := hv.client.SshKeyApi.DeleteSshKeyIdResource(hv.auth, int32(SSHKeyID))
 	if err != nil {
-		d.SetId("")
-		return diags
-	}
-
-	_, err = hv.client.SshKeyApi.DeleteSshKeyIdResource(hv.auth, int32(SSHKeyID))
-	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		if response != nil && response.StatusCode == 404 {
+			d.SetId("")
+			return diags
+		}
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("DELETE /ssh_key/%s failed! (%s)\n\n %s", fmt.Sprint(SSHKeyID), err, myErr.Body())
 	}
 

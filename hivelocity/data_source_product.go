@@ -59,7 +59,7 @@ func dataSourceProductRead(ctx context.Context, d *schema.ResourceData, m interf
 
 	productInfo, _, err := hv.client.ProductApi.GetProductListResource(hv.auth, nil)
 	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("GET /product/list failed! (%s)\n\n %s", err, myErr.Body())
 	}
 

@@ -41,7 +41,7 @@ func dataSourceSshKeyRead(ctx context.Context, d *schema.ResourceData, m interfa
 
 	sshKeyInfo, _, err := hv.client.SshKeyApi.GetSshKeyResource(hv.auth, nil)
 	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("GET /ssh_key failed! (%s)\n\n %s", err, myErr.Body())
 	}
 

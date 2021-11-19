@@ -51,7 +51,7 @@ func dataSourceDeviceInitialCredsRead(ctx context.Context, d *schema.ResourceDat
 	deviceID := int32(d.Get("device_id").(int))
 	hivelocityInitialCreds, _, err := hv.client.DeviceApi.GetInitialCredsIdResource(hv.auth, deviceID, nil)
 	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("GET /device/%d/initial-creds failed! (%s)\n\n %s", deviceID, err, myErr.Body())
 	}
 

@@ -96,7 +96,7 @@ func dataSourceDeviceRead(ctx context.Context, d *schema.ResourceData, m interfa
 
 	hivelocityDevices, _, err := hv.client.DeviceApi.GetDeviceResource(hv.auth, nil)
 	if err != nil {
-		myErr := err.(swagger.GenericSwaggerError)
+		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("GET /device failed! (%s)\n\n %s", err, myErr.Body())
 	}
 
