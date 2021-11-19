@@ -49,6 +49,7 @@ output "demo_device" {
 ### Optional
 
 - **device_id** (Number) Device ID
+- **force_device_id** (Number) Force deployment of this Device ID (internal use only)
 - **id** (String) The ID of this resource.
 - **last_updated** (String) Last time this device was updated
 - **order_id** (Number) Order ID

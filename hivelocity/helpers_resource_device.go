@@ -191,6 +191,7 @@ func createDevices(hv *Client, orderGroupId int32, devicesToCreate []map[string]
 			Script:         device["script"].(string),
 			Period:         device["period"].(string),
 			PublicSshKeyId: int32(device["public_ssh_key_id"].(int)),
+			ForceDeviceId:  int32(device["force_device_id"].(int)),
 			Tags:           tags,
 		}
 		bareMetalDevicesPayload = append(bareMetalDevicesPayload, bareMetalDeviceCreate)

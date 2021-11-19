@@ -122,6 +122,12 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 				Optional:    true,
 				Default:     nil,
 			},
+			"force_device_id": {
+				Description: "Force deployment of this Device ID (internal use only)",
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Default:     nil,
+			},
 		},
 	}
 }
@@ -142,6 +148,7 @@ func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, 
 		Script:         d.Get("script").(string),
 		Period:         d.Get("period").(string),
 		PublicSshKeyId: int32(d.Get("public_ssh_key_id").(int)),
+		ForceDeviceId:  int32(d.Get("force_device_id").(int)),
 		Tags:           tags,
 	}
 
