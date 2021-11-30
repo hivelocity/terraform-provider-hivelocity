@@ -1,17 +1,17 @@
-ifeq ($(HIVELOCITY_API_URL),)
-	HIVELOCITY_API_URL:=https://core.hivelocity.net/api/v2
+ifndef HIVELOCITY_API_URL
+HIVELOCITY_API_URL:=https://core.hivelocity.net/api/v2
 endif
 
-ifeq ($(GOPATH),)
-	GOPATH:=$(shell go env GOPATH)
+ifndef GOPATH
+GOPATH:=$(shell go env GOPATH)
 endif
 
-ifeq ($(GOOS),)
-	GOOS:=$(shell go env GOHOSTOS)
+ifndef GOOS
+GOOS:=$(shell go env GOHOSTOS)
 endif
 
-ifeq ($(GOARCH),)
-	GOARCH:=$(shell go env GOHOSTARCH)
+ifndef GOARCH
+GOARCH:=$(shell go env GOHOSTARCH)
 endif
 
 OS_ARCH:=$(GOOS)_$(GOARCH)
