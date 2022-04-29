@@ -32,12 +32,14 @@ func Provider() *schema.Provider {
 			"hivelocity_product":              dataSourceProduct(),
 			"hivelocity_device_initial_creds": dataSourceDeviceInitialCreds(),
 			"hivelocity_ssh_key":              dataSourceSshKey(),
+			"hivelocity_ignition":             dataSourceIgnitionConfig(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"hivelocity_bare_metal_device": resourceBareMetalDevice(true),
 			"hivelocity_ssh_key":           resourceSSHKey(),
 			"hivelocity_vlan":              resourceVlan(),
 			"hivelocity_order_group":       resourceOrderGroup(),
+			"hivelocity_ignition":          resourceIgnitionConfig(true),
 		},
 		ConfigureContextFunc: configureProvider,
 	}

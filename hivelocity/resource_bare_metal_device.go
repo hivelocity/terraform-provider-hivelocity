@@ -128,6 +128,14 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 				Optional:    true,
 				Default:     nil,
 			},
+			"ignition_ids": {
+				Description: "IgnitionConfig ids",
+				Type:        schema.TypeList,
+				Optional:    true,
+				Elem: &schema.Schema{
+					Type: schema.TypeInt,
+				},
+			},
 		},
 	}
 }
@@ -236,6 +244,8 @@ func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, 
 
 	payload.Tags = getTags(d, "")
 
+	payload.IgnitionIds = getIgnitionIds(d, "")
+
 	hostname := d.Get("hostname").(string)
 	payload.Hostname = hostname
 	if d.HasChange("hostname") {
@@ -268,7 +278,7 @@ func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, 
 			return diag.Errorf("GET /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
 		}
 
-		if devicePower.PowerStatus == "ON" {
+		if fmt.Sprint(devicePower.PowerStatus) == "ON" {
 			_, _, err = hv.client.DeviceApi.PostPowerResource(hv.auth, int32(deviceId), "shutdown", nil)
 			if err != nil {
 				myErr, _ := err.(swagger.GenericSwaggerError)

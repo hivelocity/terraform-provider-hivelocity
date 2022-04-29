@@ -53,6 +53,7 @@ output "my_bare_metal" {
 - **service_id** (Number)
 - **tags** (List of String)
 - **vlan_id** (Number)
+- **ignition_ids** (List of Int)
 
 <a id="nestedblock--filter"></a>
 ### Nested Schema for `filter`
