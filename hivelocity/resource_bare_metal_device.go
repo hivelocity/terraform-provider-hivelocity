@@ -278,7 +278,7 @@ func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, 
 			return diag.Errorf("GET /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
 		}
 
-		if fmt.Sprint(devicePower.PowerStatus) == "ON" {
+		if devicePower.PowerStatus == "ON" {
 			_, _, err = hv.client.DeviceApi.PostPowerResource(hv.auth, int32(deviceId), "shutdown", nil)
 			if err != nil {
 				myErr, _ := err.(swagger.GenericSwaggerError)

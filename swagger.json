@@ -64,7 +64,7 @@
                 },
                 {
                     "type": "integer",
-                    "default": 1651176167,
+                    "default": 1651685721,
                     "in": "query",
                     "description": "End Time of Custom Time Period (Unix Epoch Time)",
                     "name": "end"
@@ -151,7 +151,7 @@
                 },
                 {
                     "type": "integer",
-                    "default": 1651176167,
+                    "default": 1651685721,
                     "in": "query",
                     "description": "End Time of Custom Time Period (Unix Epoch Time)",
                     "name": "end"
@@ -246,7 +246,7 @@
                 },
                 {
                     "type": "integer",
-                    "default": 1651176167,
+                    "default": 1651685721,
                     "in": "query",
                     "description": "End Time of Custom Time Period (Unix Epoch Time)",
                     "name": "end"
@@ -333,7 +333,7 @@
                 },
                 {
                     "type": "integer",
-                    "default": 1651176167,
+                    "default": 1651685721,
                     "in": "query",
                     "description": "End Time of Custom Time Period (Unix Epoch Time)",
                     "name": "end"
@@ -504,63 +504,6 @@
                     "type": "integer"
                 }
             ],
-            "delete": {
-                "responses": {
-                    "201": {
-                        "description": "Cancellation Started."
-                    },
-                    "204": {
-                        "description": "Device Deleted"
-                    },
-                    "401": {
-                        "description": "Not Allowed"
-                    },
-                    "404": {
-                        "description": "Device Not Found"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Cancel the specified bare metal device",
-                "operationId": "delete_bare_metal_device_id_resource",
-                "tags": [
-                    "Bare Metal Devices"
-                ]
-            },
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Deployment Found",
-                        "schema": {
-                            "$ref": "#/definitions/BareMetalDevice"
-                        }
-                    },
-                    "401": {
-                        "description": "Access to Deployment not Allowed"
-                    },
-                    "404": {
-                        "description": "Deployment Not Found"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Return bare metal device",
-                "operationId": "get_bare_metal_device_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Bare Metal Devices"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -601,9 +544,101 @@
                 "tags": [
                     "Bare Metal Devices"
                 ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Deployment Found",
+                        "schema": {
+                            "$ref": "#/definitions/BareMetalDevice"
+                        }
+                    },
+                    "401": {
+                        "description": "Access to Deployment not Allowed"
+                    },
+                    "404": {
+                        "description": "Deployment Not Found"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Return bare metal device",
+                "operationId": "get_bare_metal_device_id_resource",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Bare Metal Devices"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "201": {
+                        "description": "Cancellation Started."
+                    },
+                    "204": {
+                        "description": "Device Deleted"
+                    },
+                    "401": {
+                        "description": "Not Allowed"
+                    },
+                    "404": {
+                        "description": "Device Not Found"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Cancel the specified bare metal device",
+                "operationId": "delete_bare_metal_device_id_resource",
+                "tags": [
+                    "Bare Metal Devices"
+                ]
             }
         },
         "/billing-info/": {
+            "put": {
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Credit"
+                        }
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Verify credit card with all Billing Info",
+                "operationId": "put_billing_info_resource",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/BillingInfoVerification"
+                        }
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "BillingInfo"
+                ]
+            },
             "get": {
                 "responses": {
                     "200": {
@@ -648,41 +683,6 @@
                 },
                 "summary": "Create verification for credit card with all Billing Info",
                 "operationId": "post_billing_info_resource",
-                "parameters": [
-                    {
-                        "name": "payload",
-                        "required": true,
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/BillingInfoVerification"
-                        }
-                    },
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "BillingInfo"
-                ]
-            },
-            "put": {
-                "responses": {
-                    "201": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/Credit"
-                        }
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Verify credit card with all Billing Info",
-                "operationId": "put_billing_info_resource",
                 "parameters": [
                     {
                         "name": "payload",
@@ -973,31 +973,6 @@
             }
         },
         "/contact/password": {
-            "post": {
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Recieve a request to reset password, and send a link by email with token",
-                "operationId": "post_password_reset",
-                "parameters": [
-                    {
-                        "name": "payload",
-                        "required": true,
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/PasswordRequest"
-                        }
-                    }
-                ],
-                "tags": [
-                    "Contact"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -1022,6 +997,31 @@
                 "tags": [
                     "Contact"
                 ]
+            },
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Recieve a request to reset password, and send a link by email with token",
+                "operationId": "post_password_reset",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PasswordRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Contact"
+                ]
             }
         },
         "/contact/{contactId}": {
@@ -1034,51 +1034,6 @@
                     "type": "integer"
                 }
             ],
-            "delete": {
-                "responses": {
-                    "404": {
-                        "description": "Contact not found."
-                    },
-                    "204": {
-                        "description": "Contact successfully deleted."
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Delete a Contact",
-                "operationId": "delete_contact_id_resource",
-                "tags": [
-                    "Contact"
-                ]
-            },
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/Contact-dump"
-                        }
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Return details of a specific Contact",
-                "operationId": "get_contact_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Contact"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -1113,6 +1068,51 @@
                         "description": "An optional fields mask"
                     }
                 ],
+                "tags": [
+                    "Contact"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Contact-dump"
+                        }
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Return details of a specific Contact",
+                "operationId": "get_contact_id_resource",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Contact"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "Contact not found."
+                    },
+                    "204": {
+                        "description": "Contact successfully deleted."
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Delete a Contact",
+                "operationId": "delete_contact_id_resource",
                 "tags": [
                     "Contact"
                 ]
@@ -1333,91 +1333,6 @@
                     "type": "integer"
                 }
             ],
-            "delete": {
-                "responses": {
-                    "204": {
-                        "description": "Deployment Deleted"
-                    },
-                    "401": {
-                        "description": "Access to this Deployment not Allowed"
-                    },
-                    "404": {
-                        "description": "Deployment Not Found"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Delete the specified deployment",
-                "operationId": "delete_deployment_id_resource",
-                "tags": [
-                    "Deployment"
-                ]
-            },
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Deployment Found",
-                        "schema": {
-                            "$ref": "#/definitions/Deployment"
-                        }
-                    },
-                    "401": {
-                        "description": "Access to Deployment not Allowed"
-                    },
-                    "404": {
-                        "description": "Deployment Not Found"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Return a dictionary with deployment information",
-                "operationId": "get_deployment_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Deployment"
-                ]
-            },
-            "post": {
-                "responses": {
-                    "201": {
-                        "description": "Deployment Started"
-                    },
-                    "401": {
-                        "description": "Access to Deployment not Allowed"
-                    },
-                    "404": {
-                        "description": "Deployment Not Found"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Input a billing info id and script to process and finish a deployment",
-                "operationId": "post_deployment_id_resource",
-                "parameters": [
-                    {
-                        "name": "payload",
-                        "required": true,
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/DeploymentStart"
-                        }
-                    }
-                ],
-                "tags": [
-                    "Deployment"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -1456,6 +1371,91 @@
                         "type": "string",
                         "format": "mask",
                         "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Deployment"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Deployment Found",
+                        "schema": {
+                            "$ref": "#/definitions/Deployment"
+                        }
+                    },
+                    "401": {
+                        "description": "Access to Deployment not Allowed"
+                    },
+                    "404": {
+                        "description": "Deployment Not Found"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Return a dictionary with deployment information",
+                "operationId": "get_deployment_id_resource",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Deployment"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "204": {
+                        "description": "Deployment Deleted"
+                    },
+                    "401": {
+                        "description": "Access to this Deployment not Allowed"
+                    },
+                    "404": {
+                        "description": "Deployment Not Found"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Delete the specified deployment",
+                "operationId": "delete_deployment_id_resource",
+                "tags": [
+                    "Deployment"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Deployment Started"
+                    },
+                    "401": {
+                        "description": "Access to Deployment not Allowed"
+                    },
+                    "404": {
+                        "description": "Deployment Not Found"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Input a billing info id and script to process and finish a deployment",
+                "operationId": "post_deployment_id_resource",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/DeploymentStart"
+                        }
                     }
                 ],
                 "tags": [
@@ -1536,6 +1536,50 @@
                 ]
             }
         },
+        "/device/preview-ignition": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/EffectiveIgnitionResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Error"
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Given an Ignition file and other parameters, output the effective Ignition file used for provisioning",
+                "description": "This is useful for verifying and troubleshooting any ignition-based provisions.\nNote that any injected values not specified by request input are sample values.",
+                "operationId": "post_preview_effective_ignition_resource",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/EffectiveIgnition"
+                        }
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Device"
+                ]
+            }
+        },
         "/device/tags": {
             "get": {
                 "responses": {
@@ -1566,33 +1610,6 @@
             }
         },
         "/device/tags-order": {
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/DeviceTag"
-                        }
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Get device tags order for current user",
-                "operationId": "get_client_device_tag_order_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Device"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -1619,6 +1636,33 @@
                             "$ref": "#/definitions/DeviceTag"
                         }
                     },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Device"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/DeviceTag"
+                        }
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Get device tags order for current user",
+                "operationId": "get_client_device_tag_order_resource",
+                "parameters": [
                     {
                         "name": "X-Fields",
                         "in": "header",
@@ -1671,33 +1715,6 @@
                     "type": "integer"
                 }
             ],
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/Device-dump"
-                        }
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Returns detailed information for a Single Device",
-                "operationId": "get_device_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Device"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -1724,6 +1741,33 @@
                             "$ref": "#/definitions/DeviceUpdate"
                         }
                     },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Device"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Device-dump"
+                        }
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Returns detailed information for a Single Device",
+                "operationId": "get_device_id_resource",
+                "parameters": [
                     {
                         "name": "X-Fields",
                         "in": "header",
@@ -1797,6 +1841,37 @@
                         "description": "An optional fields mask"
                     }
                 ],
+                "tags": [
+                    "Device"
+                ]
+            }
+        },
+        "/device/{deviceId}/ignition": {
+            "parameters": [
+                {
+                    "name": "deviceId",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "200": {
+                        "description": "Success"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Retrieves a client's ignition file for a provisioning device after SPS's changes are injected",
+                "operationId": "get_effective_ignition_id_resource",
                 "tags": [
                     "Device"
                 ]
@@ -2006,36 +2081,6 @@
                     "type": "integer"
                 }
             ],
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Device IPMI Thresholds retrieved.",
-                        "schema": {
-                            "$ref": "#/definitions/DeviceIPMIThresholds"
-                        }
-                    },
-                    "400": {
-                        "description": "Unable to retrieve IPMI Thresholds for this Device."
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Returns IPMI thresholds data",
-                "operationId": "get_ipmi_thresholds_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Device"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -2062,6 +2107,36 @@
                             "$ref": "#/definitions/DeviceIPMIThresholds"
                         }
                     },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Device"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Device IPMI Thresholds retrieved.",
+                        "schema": {
+                            "$ref": "#/definitions/DeviceIPMIThresholds"
+                        }
+                    },
+                    "400": {
+                        "description": "Unable to retrieve IPMI Thresholds for this Device."
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Returns IPMI thresholds data",
+                "operationId": "get_ipmi_thresholds_id_resource",
+                "parameters": [
                     {
                         "name": "X-Fields",
                         "in": "header",
@@ -2239,88 +2314,6 @@
                 ]
             }
         },
-        "/device/{deviceId}/ports/bond": {
-            "parameters": [
-                {
-                    "name": "deviceId",
-                    "in": "path",
-                    "required": true,
-                    "type": "integer"
-                }
-            ],
-            "delete": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/NetworkTask-dump"
-                        }
-                    },
-                    "404": {
-                        "description": "Device not found"
-                    },
-                    "401": {
-                        "description": "Access to this Device is not allowed"
-                    },
-                    "400": {
-                        "description": "Invalid action"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Unbonds public and private ports of a Device",
-                "operationId": "delete_device_bond_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Device"
-                ]
-            },
-            "post": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/NetworkTask-dump"
-                        }
-                    },
-                    "404": {
-                        "description": "Device not found"
-                    },
-                    "401": {
-                        "description": "Access to this Device is not allowed"
-                    },
-                    "400": {
-                        "description": "Invalid action"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Bonds public and private ports of a Device",
-                "operationId": "post_device_bond_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Device"
-                ]
-            }
-        },
         "/device/{deviceId}/power": {
             "parameters": [
                 {
@@ -2336,7 +2329,7 @@
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/DevicePower-dump"
+                            "$ref": "#/definitions/DevicePower"
                         }
                     },
                     "403": {
@@ -2363,7 +2356,7 @@
                     "202": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/DevicePower-dump"
+                            "$ref": "#/definitions/DevicePower"
                         }
                     },
                     "403": {
@@ -2458,33 +2451,6 @@
                     "type": "integer"
                 }
             ],
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/DeviceTag"
-                        }
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Get device tags",
-                "operationId": "get_device_tag_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Device"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -2511,6 +2477,33 @@
                             "$ref": "#/definitions/DeviceTag"
                         }
                     },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Device"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/DeviceTag"
+                        }
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Get device tags",
+                "operationId": "get_device_tag_id_resource",
+                "parameters": [
                     {
                         "name": "X-Fields",
                         "in": "header",
@@ -2641,35 +2634,6 @@
                     "type": "integer"
                 }
             ],
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success.",
-                        "schema": {
-                            "$ref": "#/definitions/PTRRecordReturn"
-                        }
-                    },
-                    "400": {
-                        "description": "Error"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "operationId": "get_ptr_record_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Domains"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -2698,6 +2662,35 @@
                             "$ref": "#/definitions/PTRRecordUpdate"
                         }
                     },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Domains"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success.",
+                        "schema": {
+                            "$ref": "#/definitions/PTRRecordReturn"
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "operationId": "get_ptr_record_id_resource",
+                "parameters": [
                     {
                         "name": "X-Fields",
                         "in": "header",
@@ -2816,60 +2809,6 @@
                     "type": "integer"
                 }
             ],
-            "delete": {
-                "responses": {
-                    "404": {
-                        "description": "Not found"
-                    },
-                    "400": {
-                        "description": "Error"
-                    },
-                    "204": {
-                        "description": "Deleted"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Delete an AAAA Record for given zone",
-                "operationId": "delete_aaaa_record_id_resource",
-                "tags": [
-                    "Domains"
-                ]
-            },
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/AAAARecordReturn"
-                        }
-                    },
-                    "404": {
-                        "description": "Not found"
-                    },
-                    "400": {
-                        "description": "Error"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Return Single AAAA Records found for given id",
-                "operationId": "get_aaaa_record_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Domains"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -2910,6 +2849,60 @@
                         "description": "An optional fields mask"
                     }
                 ],
+                "tags": [
+                    "Domains"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/AAAARecordReturn"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Return Single AAAA Records found for given id",
+                "operationId": "get_aaaa_record_id_resource",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Domains"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "204": {
+                        "description": "Deleted"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Delete an AAAA Record for given zone",
+                "operationId": "delete_aaaa_record_id_resource",
                 "tags": [
                     "Domains"
                 ]
@@ -3020,60 +3013,6 @@
                     "type": "integer"
                 }
             ],
-            "delete": {
-                "responses": {
-                    "404": {
-                        "description": "Not found"
-                    },
-                    "400": {
-                        "description": "Error"
-                    },
-                    "204": {
-                        "description": "Deleted"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Delete an MX Record for given zone",
-                "operationId": "delete_mx_record_id_resource",
-                "tags": [
-                    "Domains"
-                ]
-            },
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/MXRecordReturn"
-                        }
-                    },
-                    "404": {
-                        "description": "Not found"
-                    },
-                    "400": {
-                        "description": "Error"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Return Single MX Records found for given id",
-                "operationId": "get_mx_record_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Domains"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -3117,6 +3056,60 @@
                 "tags": [
                     "Domains"
                 ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/MXRecordReturn"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Return Single MX Records found for given id",
+                "operationId": "get_mx_record_id_resource",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Domains"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "204": {
+                        "description": "Deleted"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Delete an MX Record for given zone",
+                "operationId": "delete_mx_record_id_resource",
+                "tags": [
+                    "Domains"
+                ]
             }
         },
         "/domains/{domainId}": {
@@ -3128,27 +3121,6 @@
                     "type": "integer"
                 }
             ],
-            "delete": {
-                "responses": {
-                    "500": {
-                        "description": "Error."
-                    },
-                    "404": {
-                        "description": "Domain not found."
-                    },
-                    "204": {
-                        "description": "Deleted."
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Delete domain for given id",
-                "operationId": "delete_domain_id_resource",
-                "tags": [
-                    "Domains"
-                ]
-            },
             "get": {
                 "responses": {
                     "200": {
@@ -3175,6 +3147,27 @@
                         "description": "An optional fields mask"
                     }
                 ],
+                "tags": [
+                    "Domains"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "500": {
+                        "description": "Error."
+                    },
+                    "404": {
+                        "description": "Domain not found."
+                    },
+                    "204": {
+                        "description": "Deleted."
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Delete domain for given id",
+                "operationId": "delete_domain_id_resource",
                 "tags": [
                     "Domains"
                 ]
@@ -3288,60 +3281,6 @@
                     "type": "string"
                 }
             ],
-            "delete": {
-                "responses": {
-                    "404": {
-                        "description": "Not found"
-                    },
-                    "400": {
-                        "description": "Error"
-                    },
-                    "204": {
-                        "description": "Deleted"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Delete a single A Record value for given zone",
-                "operationId": "delete_a_record_id_resource",
-                "tags": [
-                    "Domains"
-                ]
-            },
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/ARecord"
-                        }
-                    },
-                    "404": {
-                        "description": "Not found"
-                    },
-                    "400": {
-                        "description": "Error"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Return Single A Records found for given domain name",
-                "operationId": "get_a_record_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Domains"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -3382,6 +3321,60 @@
                         "description": "An optional fields mask"
                     }
                 ],
+                "tags": [
+                    "Domains"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/ARecord"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Return Single A Records found for given domain name",
+                "operationId": "get_a_record_id_resource",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Domains"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "204": {
+                        "description": "Deleted"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Delete a single A Record value for given zone",
+                "operationId": "delete_a_record_id_resource",
                 "tags": [
                     "Domains"
                 ]
@@ -3469,35 +3462,6 @@
                     "type": "integer"
                 }
             ],
-            "delete": {
-                "responses": {
-                    "200": {
-                        "description": "Successfully returned ignition configs"
-                    },
-                    "400": {
-                        "description": "Unable to delete ignition configs"
-                    },
-                    "404": {
-                        "description": "Not found"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "operationId": "delete_ignition_resource_id",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Ignition"
-                ]
-            },
             "get": {
                 "responses": {
                     "200": {
@@ -3517,6 +3481,35 @@
                     }
                 },
                 "operationId": "get_ignition_resource_id",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Ignition"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Successfully returned ignition configs"
+                    },
+                    "400": {
+                        "description": "Unable to delete ignition configs"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "operationId": "delete_ignition_resource_id",
                 "parameters": [
                     {
                         "name": "X-Fields",
@@ -4078,60 +4071,6 @@
                     "type": "integer"
                 }
             ],
-            "delete": {
-                "responses": {
-                    "404": {
-                        "description": "IP assignment not found"
-                    },
-                    "401": {
-                        "description": "Access to this IP Assignment is not allowed"
-                    },
-                    "400": {
-                        "description": "Invalid action"
-                    },
-                    "204": {
-                        "description": "Success"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Deletes an existing IP Assignment",
-                "operationId": "delete_ip_assignment_id_resource",
-                "tags": [
-                    "IPAssignment"
-                ]
-            },
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/IPAssignment"
-                        }
-                    },
-                    "404": {
-                        "description": "IP Assignment Not Found"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Return a Single IP Assignment by the Unique IP Assignment ID",
-                "operationId": "get_ip_assignment_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "IPAssignment"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -4172,6 +4111,60 @@
                         "description": "An optional fields mask"
                     }
                 ],
+                "tags": [
+                    "IPAssignment"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/IPAssignment"
+                        }
+                    },
+                    "404": {
+                        "description": "IP Assignment Not Found"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Return a Single IP Assignment by the Unique IP Assignment ID",
+                "operationId": "get_ip_assignment_id_resource",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "IPAssignment"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "IP assignment not found"
+                    },
+                    "401": {
+                        "description": "Access to this IP Assignment is not allowed"
+                    },
+                    "400": {
+                        "description": "Invalid action"
+                    },
+                    "204": {
+                        "description": "Success"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Deletes an existing IP Assignment",
+                "operationId": "delete_ip_assignment_id_resource",
                 "tags": [
                     "IPAssignment"
                 ]
@@ -4514,60 +4507,6 @@
                     "type": "integer"
                 }
             ],
-            "delete": {
-                "responses": {
-                    "204": {
-                        "description": "Order Group Deleted"
-                    },
-                    "401": {
-                        "description": "Access to Order Group not Allowed."
-                    },
-                    "404": {
-                        "description": "Order Group Not Found"
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Delete the specified Order Group",
-                "operationId": "delete_order_group_id_resource",
-                "tags": [
-                    "Order Groups"
-                ]
-            },
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Order Group Found.",
-                        "schema": {
-                            "$ref": "#/definitions/OrderGroup"
-                        }
-                    },
-                    "401": {
-                        "description": "Access to Order Group not Allowed."
-                    },
-                    "404": {
-                        "description": "Order Group Not Found."
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Return an Order Group",
-                "operationId": "get_order_group_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Order Groups"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -4605,6 +4544,60 @@
                         "description": "An optional fields mask"
                     }
                 ],
+                "tags": [
+                    "Order Groups"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Order Group Found.",
+                        "schema": {
+                            "$ref": "#/definitions/OrderGroup"
+                        }
+                    },
+                    "401": {
+                        "description": "Access to Order Group not Allowed."
+                    },
+                    "404": {
+                        "description": "Order Group Not Found."
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Return an Order Group",
+                "operationId": "get_order_group_id_resource",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Order Groups"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "204": {
+                        "description": "Order Group Deleted"
+                    },
+                    "401": {
+                        "description": "Access to Order Group not Allowed."
+                    },
+                    "404": {
+                        "description": "Order Group Not Found"
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Delete the specified Order Group",
+                "operationId": "delete_order_group_id_resource",
                 "tags": [
                     "Order Groups"
                 ]
@@ -4964,34 +4957,6 @@
                     "type": "string"
                 }
             ],
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/Profile"
-                        }
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Get Profile of current user or a contact with id",
-                "description": "The id is optional and if it is necessary must be sent as URL param.",
-                "operationId": "get_profile_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Profile"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -5019,6 +4984,34 @@
                             "$ref": "#/definitions/ProfileUpdate"
                         }
                     },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Profile"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Profile"
+                        }
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Get Profile of current user or a contact with id",
+                "description": "The id is optional and if it is necessary must be sent as URL param.",
+                "operationId": "get_profile_resource",
+                "parameters": [
                     {
                         "name": "X-Fields",
                         "in": "header",
@@ -5324,54 +5317,6 @@
                     "type": "integer"
                 }
             ],
-            "delete": {
-                "responses": {
-                    "404": {
-                        "description": "Public ssh key not found."
-                    },
-                    "200": {
-                        "description": "Public ssh key successfully removed."
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Removes public ssh key",
-                "operationId": "delete_ssh_key_id_resource",
-                "tags": [
-                    "SshKey"
-                ]
-            },
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Public ssh key successfully retrieved.",
-                        "schema": {
-                            "$ref": "#/definitions/SshKeyResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Public ssh key not found."
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Get public ssh key",
-                "operationId": "get_ssh_key_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "SshKey"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -5409,6 +5354,54 @@
                         "description": "An optional fields mask"
                     }
                 ],
+                "tags": [
+                    "SshKey"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Public ssh key successfully retrieved.",
+                        "schema": {
+                            "$ref": "#/definitions/SshKeyResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Public ssh key not found."
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Get public ssh key",
+                "operationId": "get_ssh_key_id_resource",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "SshKey"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "Public ssh key not found."
+                    },
+                    "200": {
+                        "description": "Public ssh key successfully removed."
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Removes public ssh key",
+                "operationId": "delete_ssh_key_id_resource",
                 "tags": [
                     "SshKey"
                 ]
@@ -5546,36 +5539,6 @@
                     "type": "integer"
                 }
             ],
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "The ticket retrieved.",
-                        "schema": {
-                            "$ref": "#/definitions/Ticket"
-                        }
-                    },
-                    "404": {
-                        "description": "The ticket id not found."
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Returns details of a specific ticket",
-                "operationId": "get_ticket_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Ticket"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -5602,6 +5565,36 @@
                             "$ref": "#/definitions/TicketPut"
                         }
                     },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Ticket"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "The ticket retrieved.",
+                        "schema": {
+                            "$ref": "#/definitions/Ticket"
+                        }
+                    },
+                    "404": {
+                        "description": "The ticket id not found."
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Returns details of a specific ticket",
+                "operationId": "get_ticket_id_resource",
+                "parameters": [
                     {
                         "name": "X-Fields",
                         "in": "header",
@@ -5780,54 +5773,6 @@
                     "type": "string"
                 }
             ],
-            "delete": {
-                "responses": {
-                    "400": {
-                        "description": "Unable to remove the Public API Token."
-                    },
-                    "201": {
-                        "description": "Public API Token successfully removed."
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Deletes the Public API Token",
-                "operationId": "delete_token_id_resource",
-                "tags": [
-                    "Token"
-                ]
-            },
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Public API Token retrieved.",
-                        "schema": {
-                            "$ref": "#/definitions/PublicApiToken-dump"
-                        }
-                    },
-                    "400": {
-                        "description": "Unable to retrieve Public API Token."
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Returns Public API Token",
-                "operationId": "get_token_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Token"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -5862,6 +5807,54 @@
                         "description": "An optional fields mask"
                     }
                 ],
+                "tags": [
+                    "Token"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Public API Token retrieved.",
+                        "schema": {
+                            "$ref": "#/definitions/PublicApiToken-dump"
+                        }
+                    },
+                    "400": {
+                        "description": "Unable to retrieve Public API Token."
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Returns Public API Token",
+                "operationId": "get_token_id_resource",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Token"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "400": {
+                        "description": "Unable to remove the Public API Token."
+                    },
+                    "201": {
+                        "description": "Public API Token successfully removed."
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Deletes the Public API Token",
+                "operationId": "delete_token_id_resource",
                 "tags": [
                     "Token"
                 ]
@@ -5950,7 +5943,7 @@
                     "type": "integer"
                 }
             ],
-            "delete": {
+            "put": {
                 "responses": {
                     "200": {
                         "description": "Success.",
@@ -5965,9 +5958,17 @@
                         "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
                     }
                 },
-                "summary": "Remove an existing Private VLAN",
-                "operationId": "delete_vlan_id_resource",
+                "summary": "Update an existing Private VLAN, including adding and/or removing devices from it",
+                "operationId": "put_vlan_id_resource",
                 "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/VlanCreate"
+                        }
+                    },
                     {
                         "name": "X-Fields",
                         "in": "header",
@@ -6013,7 +6014,7 @@
                     "VLAN"
                 ]
             },
-            "put": {
+            "delete": {
                 "responses": {
                     "200": {
                         "description": "Success.",
@@ -6028,17 +6029,9 @@
                         "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
                     }
                 },
-                "summary": "Update an existing Private VLAN, including adding and/or removing devices from it",
-                "operationId": "put_vlan_id_resource",
+                "summary": "Remove an existing Private VLAN",
+                "operationId": "delete_vlan_id_resource",
                 "parameters": [
-                    {
-                        "name": "payload",
-                        "required": true,
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/VlanCreate"
-                        }
-                    },
                     {
                         "name": "X-Fields",
                         "in": "header",
@@ -6189,48 +6182,6 @@
                     "type": "integer"
                 }
             ],
-            "delete": {
-                "responses": {
-                    "204": {
-                        "description": "Webhook was deleted."
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Deletes a single webhook",
-                "operationId": "delete_webhook_id_resource",
-                "tags": [
-                    "Webhook"
-                ]
-            },
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/Webhook"
-                        }
-                    },
-                    "403": {
-                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
-                    }
-                },
-                "summary": "Returns detailed information for a Single Webhook",
-                "operationId": "get_webhook_id_resource",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Webhook"
-                ]
-            },
             "put": {
                 "responses": {
                     "200": {
@@ -6265,6 +6216,48 @@
                         "description": "An optional fields mask"
                     }
                 ],
+                "tags": [
+                    "Webhook"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Webhook"
+                        }
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Returns detailed information for a Single Webhook",
+                "operationId": "get_webhook_id_resource",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Webhook"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "204": {
+                        "description": "Webhook was deleted."
+                    },
+                    "403": {
+                        "description": "You have not been granted permission to complete this action. Please contact your account manager to grant the proper permission."
+                    }
+                },
+                "summary": "Deletes a single webhook",
+                "operationId": "delete_webhook_id_resource",
                 "tags": [
                     "Webhook"
                 ]
@@ -6442,13 +6435,11 @@
                 "productId"
             ],
             "properties": {
-                "vlanId": {
-                    "type": "integer"
+                "osName": {
+                    "type": "string"
                 },
-                "period": {
-                    "type": "string",
-                    "default": "hourly",
-                    "example": "hourly"
+                "forceDeviceId": {
+                    "type": "integer"
                 },
                 "tags": {
                     "type": "array",
@@ -6458,46 +6449,66 @@
                         "type": "string"
                     }
                 },
-                "forceDeviceId": {
-                    "type": "integer"
-                },
-                "productId": {
-                    "type": "integer"
+                "hostname": {
+                    "type": "string"
                 },
                 "script": {
                     "type": "string"
                 },
-                "hostname": {
-                    "type": "string"
+                "vlanId": {
+                    "type": "integer"
                 },
-                "bondingSupport": {
-                    "type": "boolean"
+                "period": {
+                    "type": "string",
+                    "default": "hourly",
+                    "example": "hourly"
+                },
+                "productId": {
+                    "type": "integer"
+                },
+                "locationName": {
+                    "type": "string"
                 },
                 "publicSshKeyId": {
                     "type": "integer"
                 },
-                "osName": {
-                    "type": "string"
-                },
-                "locationName": {
-                    "type": "string"
+                "bondingSupport": {
+                    "type": "boolean"
                 }
             },
             "type": "object"
         },
         "BareMetalDevice": {
             "properties": {
-                "productName": {
+                "osName": {
                     "type": "string"
                 },
-                "vlanId": {
+                "deviceId": {
                     "type": "integer"
+                },
+                "primaryIp": {
+                    "type": "string"
+                },
+                "orderId": {
+                    "type": "integer"
+                },
+                "powerStatus": {
+                    "type": "string"
                 },
                 "tags": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
+                },
+                "hostname": {
+                    "type": "string"
+                },
+                "script": {
+                    "type": "string"
+                },
+                "vlanId": {
+                    "type": "integer"
                 },
                 "period": {
                     "type": "string",
@@ -6506,35 +6517,17 @@
                 "productId": {
                     "type": "integer"
                 },
-                "powerStatus": {
+                "productName": {
                     "type": "string"
                 },
-                "script": {
-                    "type": "string"
-                },
-                "serviceId": {
-                    "type": "integer"
-                },
-                "deviceId": {
-                    "type": "integer"
-                },
-                "orderId": {
-                    "type": "integer"
-                },
-                "hostname": {
+                "locationName": {
                     "type": "string"
                 },
                 "publicSshKeyId": {
                     "type": "integer"
                 },
-                "primaryIp": {
-                    "type": "string"
-                },
-                "osName": {
-                    "type": "string"
-                },
-                "locationName": {
-                    "type": "string"
+                "serviceId": {
+                    "type": "integer"
                 }
             },
             "type": "object"
@@ -6545,11 +6538,8 @@
                 "osName"
             ],
             "properties": {
-                "tags": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                "osName": {
+                    "type": "string"
                 },
                 "ignitionIds": {
                     "type": "array",
@@ -6560,45 +6550,48 @@
                         "type": "integer"
                     }
                 },
-                "script": {
-                    "type": "string"
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "hostname": {
                     "type": "string"
                 },
+                "script": {
+                    "type": "string"
+                },
                 "publicSshKeyId": {
                     "type": "integer"
-                },
-                "osName": {
-                    "type": "string"
                 }
             },
             "type": "object"
         },
         "BareMetalDeviceBatchCreate": {
             "properties": {
+                "orderGroupId": {
+                    "type": "integer"
+                },
                 "devices": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/BareMetalDeviceCreate"
                     }
-                },
-                "orderGroupId": {
-                    "type": "integer"
                 }
             },
             "type": "object"
         },
         "BareMetalDeviceBatch": {
             "properties": {
+                "orderGroupId": {
+                    "type": "integer"
+                },
                 "devices": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/BareMetalDevice"
                     }
-                },
-                "orderGroupId": {
-                    "type": "integer"
                 }
             },
             "type": "object"
@@ -6616,80 +6609,6 @@
                 },
                 "id": {
                     "type": "integer"
-                }
-            },
-            "type": "object"
-        },
-        "BillingInfo": {
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "last": {
-                    "type": "string"
-                },
-                "ccExpire": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "clientId": {
-                    "type": "integer"
-                },
-                "achType": {
-                    "type": "string"
-                },
-                "achBank": {
-                    "type": "string"
-                },
-                "state": {
-                    "type": "string"
-                },
-                "zip": {
-                    "type": "string"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "isCCVerified": {
-                    "type": "boolean"
-                },
-                "achAba": {
-                    "type": "string"
-                },
-                "achAccount": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string"
-                },
-                "paymentType": {
-                    "type": "string"
-                },
-                "ccNum": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                },
-                "ccType": {
-                    "type": "string"
-                },
-                "company": {
-                    "type": "string"
-                },
-                "pendingVerification": {
-                    "type": "boolean"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "first": {
-                    "type": "string"
                 }
             },
             "type": "object"
@@ -6726,6 +6645,80 @@
             },
             "type": "object"
         },
+        "BillingInfo": {
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "ccNum": {
+                    "type": "string"
+                },
+                "ccType": {
+                    "type": "string"
+                },
+                "isCCVerified": {
+                    "type": "boolean"
+                },
+                "first": {
+                    "type": "string"
+                },
+                "clientId": {
+                    "type": "integer"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "ccExpire": {
+                    "type": "string"
+                },
+                "company": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "pendingVerification": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "achBank": {
+                    "type": "string"
+                },
+                "achType": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "paymentType": {
+                    "type": "string"
+                },
+                "achAccount": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                },
+                "achAba": {
+                    "type": "string"
+                },
+                "last": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "CancellationCreate": {
             "required": [
                 "deviceId",
@@ -6733,16 +6726,16 @@
                 "serviceId"
             ],
             "properties": {
-                "deviceId": {
+                "serviceId": {
                     "type": "integer"
-                },
-                "comments": {
-                    "type": "string"
                 },
                 "reason": {
                     "type": "string"
                 },
-                "serviceId": {
+                "comments": {
+                    "type": "string"
+                },
+                "deviceId": {
                     "type": "integer"
                 }
             },
@@ -6750,43 +6743,43 @@
         },
         "Cancellation": {
             "properties": {
-                "planId": {
+                "id": {
                     "type": "integer"
                 },
-                "activeMonths": {
+                "deletedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "monthlyPayment": {
                     "type": "integer"
                 },
                 "requestDate": {
                     "type": "string",
                     "format": "date-time"
                 },
-                "cancelled": {
-                    "type": "boolean"
+                "planId": {
+                    "type": "integer"
                 },
-                "deletedAt": {
-                    "type": "string",
-                    "format": "date-time"
+                "activeMonths": {
+                    "type": "integer"
                 },
                 "clientId": {
                     "type": "integer"
                 },
-                "id": {
+                "serviceId": {
                     "type": "integer"
+                },
+                "cancelled": {
+                    "type": "boolean"
                 },
                 "startDate": {
                     "type": "string",
                     "format": "date-time"
                 },
-                "deviceId": {
-                    "type": "integer"
-                },
                 "name": {
                     "type": "string"
                 },
-                "serviceId": {
-                    "type": "integer"
-                },
-                "monthlyPayment": {
+                "deviceId": {
                     "type": "integer"
                 }
             },
@@ -6802,18 +6795,18 @@
                 "phone": {
                     "type": "string"
                 },
+                "email": {
+                    "type": "string"
+                },
                 "active": {
                     "type": "integer"
-                },
-                "password": {
-                    "type": "string",
-                    "default": "572df11eb0fc457bf882da9e5196bb1e"
                 },
                 "description": {
                     "type": "string"
                 },
-                "email": {
-                    "type": "string"
+                "password": {
+                    "type": "string",
+                    "default": "ef6c255d170bb79f6b609be5086a14c6"
                 },
                 "fullName": {
                     "type": "string"
@@ -6828,13 +6821,16 @@
                 "fullName"
             ],
             "properties": {
+                "contactId": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
                 "phone": {
                     "type": "string"
                 },
                 "active": {
-                    "type": "integer"
-                },
-                "contactId": {
                     "type": "integer"
                 },
                 "description": {
@@ -6842,9 +6838,6 @@
                 },
                 "clientId": {
                     "type": "integer"
-                },
-                "email": {
-                    "type": "string"
                 },
                 "fullName": {
                     "type": "string"
@@ -6860,13 +6853,13 @@
                 "phone": {
                     "type": "string"
                 },
+                "email": {
+                    "type": "string"
+                },
                 "active": {
                     "type": "integer"
                 },
                 "description": {
-                    "type": "string"
-                },
-                "email": {
                     "type": "string"
                 },
                 "fullName": {
@@ -6890,6 +6883,21 @@
             },
             "type": "object"
         },
+        "PasswordResponse": {
+            "required": [
+                "password",
+                "token"
+            ],
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "PasswordRequest": {
             "required": [
                 "email"
@@ -6901,28 +6909,13 @@
             },
             "type": "object"
         },
-        "PasswordResponse": {
-            "required": [
-                "password",
-                "token"
-            ],
-            "properties": {
-                "password": {
-                    "type": "string"
-                },
-                "token": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
         "CreateCredit": {
             "properties": {
-                "amount": {
-                    "type": "number"
-                },
                 "billingInfoId": {
                     "type": "integer"
+                },
+                "amount": {
+                    "type": "number"
                 }
             },
             "type": "object"
@@ -7043,10 +7036,13 @@
             },
             "type": "object"
         },
-        "DevicePower-dump": {
+        "DevicePower": {
+            "required": [
+                "powerStatus"
+            ],
             "properties": {
                 "powerStatus": {
-                    "type": "object"
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -7118,34 +7114,28 @@
         },
         "IPMIInfo": {
             "properties": {
-                "firmwareRevision": {
+                "ipmbEventReceiver": {
                     "type": "string"
                 },
-                "sensorDevice": {
-                    "type": "string"
-                },
-                "sdrRepositoryDevice": {
+                "bridge": {
                     "type": "string"
                 },
                 "manufacturerId": {
                     "type": "string"
                 },
-                "deviceAvailable": {
+                "sensorDevice": {
                     "type": "string"
                 },
-                "fruInventoryDevice": {
-                    "type": "string"
-                },
-                "deviceRevision": {
+                "deviceId": {
                     "type": "string"
                 },
                 "productId": {
                     "type": "string"
                 },
-                "selDevice": {
+                "ipmiVersion": {
                     "type": "string"
                 },
-                "ipmbEventReceiver": {
+                "deviceRevision": {
                     "type": "string"
                 },
                 "chassisDevice": {
@@ -7154,16 +7144,22 @@
                 "auxFirmwareRevInfo": {
                     "type": "string"
                 },
-                "deviceId": {
+                "selDevice": {
+                    "type": "string"
+                },
+                "sdrRepositoryDevice": {
+                    "type": "string"
+                },
+                "fruInventoryDevice": {
                     "type": "string"
                 },
                 "ipmbEventGenerator": {
                     "type": "string"
                 },
-                "bridge": {
+                "firmwareRevision": {
                     "type": "string"
                 },
-                "ipmiVersion": {
+                "deviceAvailable": {
                     "type": "string"
                 },
                 "deviceSDRs": {
@@ -7174,22 +7170,22 @@
         },
         "IPMISensor": {
             "properties": {
+                "sensorId": {
+                    "type": "string"
+                },
                 "status": {
                     "type": "boolean"
-                },
-                "reading": {
-                    "type": "number"
                 },
                 "units": {
                     "type": "string"
                 },
-                "sensorId": {
+                "reading": {
+                    "type": "number"
+                },
+                "group": {
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                },
-                "group": {
                     "type": "string"
                 }
             },
@@ -7203,10 +7199,10 @@
                 "username": {
                     "type": "string"
                 },
-                "host": {
+                "password": {
                     "type": "string"
                 },
-                "password": {
+                "host": {
                     "type": "string"
                 }
             },
@@ -7242,10 +7238,10 @@
                 "passwordReturnsUntil": {
                     "type": "integer"
                 },
-                "user": {
+                "password": {
                     "type": "string"
                 },
-                "password": {
+                "user": {
                     "type": "string"
                 },
                 "lockerUrl": {
@@ -7267,11 +7263,11 @@
         },
         "DeviceEvent": {
             "properties": {
-                "time": {
-                    "type": "integer"
-                },
                 "action": {
                     "type": "string"
+                },
+                "time": {
+                    "type": "integer"
                 }
             },
             "type": "object"
@@ -7281,25 +7277,25 @@
                 "operatingSystemId"
             ],
             "properties": {
-                "body": {
-                    "type": "string"
-                },
-                "ignitionId": {
-                    "type": "integer"
-                },
-                "operatingSystemId": {
-                    "type": "integer"
-                },
                 "publicSshKeyIds": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
+                "controlPanelId": {
+                    "type": "integer"
+                },
                 "script": {
                     "type": "string"
                 },
-                "controlPanelId": {
+                "ignitionId": {
+                    "type": "integer"
+                },
+                "body": {
+                    "type": "string"
+                },
+                "operatingSystemId": {
                     "type": "integer"
                 }
             },
@@ -7330,11 +7326,8 @@
         },
         "IPAssignment": {
             "properties": {
-                "assignmentId": {
+                "portId": {
                     "type": "integer"
-                },
-                "netmask": {
-                    "type": "string"
                 },
                 "usableIps": {
                     "type": "array",
@@ -7350,16 +7343,19 @@
                     "type": "integer",
                     "example": 0
                 },
-                "vlanId": {
-                    "type": "integer"
-                },
-                "deviceId": {
-                    "type": "integer"
+                "netmask": {
+                    "type": "string"
                 },
                 "subnet": {
                     "type": "string"
                 },
-                "portId": {
+                "assignmentId": {
+                    "type": "integer"
+                },
+                "vlanId": {
+                    "type": "integer"
+                },
+                "deviceId": {
                     "type": "integer"
                 }
             },
@@ -7367,17 +7363,20 @@
         },
         "DevicePort": {
             "properties": {
-                "type": {
-                    "type": "string"
+                "portId": {
+                    "type": "integer"
                 },
-                "status": {
+                "mode": {
                     "type": "string"
                 },
                 "mtu": {
                     "type": "integer"
                 },
-                "mode": {
+                "status": {
                     "type": "string"
+                },
+                "nativeVlanId": {
+                    "type": "integer"
                 },
                 "vlanIds": {
                     "type": "array",
@@ -7390,43 +7389,94 @@
                     "type": "integer",
                     "example": 0
                 },
-                "deviceId": {
-                    "type": "integer"
+                "type": {
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"
                 },
-                "portId": {
-                    "type": "integer"
-                },
-                "nativeVlanId": {
+                "deviceId": {
                     "type": "integer"
                 }
             },
             "type": "object"
         },
-        "NetworkTask-dump": {
+        "EffectiveIgnition": {
+            "required": [
+                "ignition"
+            ],
             "properties": {
-                "taskCreated": {
-                    "type": "object"
-                },
-                "taskId": {
+                "hostname": {
                     "type": "string"
                 },
-                "taskUpdated": {
+                "ignition": {
                     "type": "object"
                 },
-                "clientId": {
-                    "type": "integer"
+                "publicKeys": {
+                    "type": "array",
+                    "default": [],
+                    "example": [],
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "password": {
+                    "type": "string"
+                },
+                "primaryInterface": {
+                    "$ref": "#/definitions/PrimaryInterface"
+                }
+            },
+            "type": "object"
+        },
+        "PrimaryInterface": {
+            "properties": {
+                "ip": {
+                    "type": "string"
+                },
+                "subnet": {
+                    "type": "string"
+                },
+                "dnsServers": {
+                    "type": "array",
+                    "example": [],
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "gateway": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "EffectiveIgnitionResponse": {
+            "properties": {
+                "modifications": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Modification"
+                    }
                 },
                 "result": {
+                    "type": "object"
+                },
+                "original": {
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
+        "Modification": {
+            "properties": {
+                "contents": {
+                    "type": "object"
+                },
+                "reason": {
                     "type": "string"
                 },
-                "metaData": {
+                "path": {
                     "type": "string"
-                },
-                "deviceId": {
-                    "type": "integer"
                 }
             },
             "type": "object"
@@ -7449,17 +7499,17 @@
                 "name"
             ],
             "properties": {
-                "directsTo": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
                 "summary": {
                     "type": "object"
                 },
                 "domainId": {
                     "type": "integer"
+                },
+                "directsTo": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -7470,9 +7520,6 @@
                 "ttl"
             ],
             "properties": {
-                "name": {
-                    "type": "string"
-                },
                 "addresses": {
                     "type": "array",
                     "items": {
@@ -7481,6 +7528,9 @@
                 },
                 "ttl": {
                     "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -7495,11 +7545,11 @@
                 "address": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string"
-                },
                 "ttl": {
                     "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -7512,23 +7562,23 @@
                 "type"
             ],
             "properties": {
-                "type": {
-                    "type": "string"
+                "id": {
+                    "type": "integer"
                 },
                 "address": {
+                    "type": "string"
+                },
+                "domainId": {
+                    "type": "integer"
+                },
+                "type": {
                     "type": "string"
                 },
                 "ttl": {
                     "type": "integer"
                 },
-                "id": {
-                    "type": "integer"
-                },
                 "name": {
                     "type": "string"
-                },
-                "domainId": {
-                    "type": "integer"
                 }
             },
             "type": "object"
@@ -7538,11 +7588,11 @@
                 "address": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string"
-                },
                 "ttl": {
                     "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -7555,14 +7605,14 @@
                 "ttl"
             ],
             "properties": {
-                "name": {
-                    "type": "string"
-                },
                 "exchange": {
                     "type": "string"
                 },
                 "ttl": {
                     "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 },
                 "preference": {
                     "type": "integer"
@@ -7581,26 +7631,26 @@
                 "type"
             ],
             "properties": {
-                "type": {
-                    "type": "string"
-                },
                 "exchange": {
                     "type": "string"
-                },
-                "preference": {
-                    "type": "integer"
-                },
-                "ttl": {
-                    "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
-                "name": {
-                    "type": "string"
-                },
                 "domainId": {
                     "type": "integer"
+                },
+                "preference": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "ttl": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -7611,14 +7661,14 @@
                 "preference"
             ],
             "properties": {
-                "name": {
-                    "type": "string"
-                },
                 "exchange": {
                     "type": "string"
                 },
                 "ttl": {
                     "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 },
                 "preference": {
                     "type": "integer"
@@ -7628,26 +7678,26 @@
         },
         "PTRRecordReturn": {
             "properties": {
-                "type": {
-                    "type": "string"
+                "id": {
+                    "type": "integer"
                 },
                 "address": {
                     "type": "string"
                 },
+                "domainId": {
+                    "type": "integer"
+                },
                 "disabled": {
                     "type": "boolean"
+                },
+                "type": {
+                    "type": "string"
                 },
                 "ttl": {
                     "type": "integer"
                 },
-                "id": {
-                    "type": "integer"
-                },
                 "name": {
                     "type": "string"
-                },
-                "domainId": {
-                    "type": "integer"
                 }
             },
             "type": "object"
@@ -7657,21 +7707,21 @@
                 "name"
             ],
             "properties": {
-                "name": {
-                    "type": "string"
-                },
                 "ttl": {
                     "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             },
             "type": "object"
         },
         "CreateIgnition": {
             "properties": {
-                "name": {
+                "contents": {
                     "type": "string"
                 },
-                "contents": {
+                "name": {
                     "type": "string"
                 }
             },
@@ -7682,11 +7732,11 @@
                 "contents": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -7702,73 +7752,28 @@
         },
         "Stock": {
             "properties": {
-                "annually_location_premium": {
-                    "type": "number"
-                },
-                "product_cpu": {
-                    "type": "string"
-                },
-                "product_gpu": {
-                    "type": "string"
-                },
-                "hourly_location_premium": {
-                    "type": "number"
-                },
-                "product_bandwidth": {
-                    "type": "string"
-                },
-                "triennial_location_premium": {
-                    "type": "number"
-                },
-                "product_hourly_price": {
-                    "type": "number"
-                },
-                "product_drive": {
-                    "type": "string"
-                },
-                "product_id": {
-                    "type": "integer"
-                },
-                "product_display_price": {
-                    "type": "number"
-                },
-                "product_original_price": {
-                    "type": "number"
-                },
-                "data_center": {
-                    "type": "string"
-                },
-                "biennial_location_premium": {
-                    "type": "number"
-                },
-                "product_name": {
-                    "type": "string"
-                },
-                "product_on_sale": {
+                "edge": {
                     "type": "boolean"
                 },
                 "product_annually_price": {
                     "type": "number"
                 },
-                "product_cpu_cores": {
-                    "type": "string"
-                },
-                "stock": {
-                    "type": "string"
-                },
-                "semi_annually_location_premium": {
-                    "type": "number"
-                },
-                "product_triennial_price": {
-                    "type": "number"
-                },
                 "product_monthly_price": {
                     "type": "number"
+                },
+                "product_biennial_price": {
+                    "type": "number"
+                },
+                "product_gpu": {
+                    "type": "string"
                 },
                 "monthly_location_premium": {
                     "type": "number"
                 },
-                "product_semi_annually_price": {
+                "product_memory": {
+                    "type": "string"
+                },
+                "product_original_price": {
                     "type": "number"
                 },
                 "product_disabled_billing_periods": {
@@ -7777,40 +7782,85 @@
                         "type": "string"
                     }
                 },
-                "quarterly_location_premium": {
+                "product_hourly_price": {
                     "type": "number"
                 },
-                "product_memory": {
+                "product_display_price": {
+                    "type": "number"
+                },
+                "triennial_location_premium": {
+                    "type": "number"
+                },
+                "product_semi_annually_price": {
+                    "type": "number"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "product_cpu_cores": {
                     "type": "string"
                 },
-                "edge": {
-                    "type": "boolean"
+                "product_cpu": {
+                    "type": "string"
+                },
+                "product_bandwidth": {
+                    "type": "string"
                 },
                 "core": {
+                    "type": "boolean"
+                },
+                "semi_annually_location_premium": {
+                    "type": "number"
+                },
+                "biennial_location_premium": {
+                    "type": "number"
+                },
+                "product_on_sale": {
                     "type": "boolean"
                 },
                 "product_quarterly_price": {
                     "type": "number"
                 },
-                "product_biennial_price": {
+                "product_name": {
+                    "type": "string"
+                },
+                "annually_location_premium": {
                     "type": "number"
+                },
+                "quarterly_location_premium": {
+                    "type": "number"
+                },
+                "product_drive": {
+                    "type": "string"
+                },
+                "product_triennial_price": {
+                    "type": "number"
+                },
+                "stock": {
+                    "type": "string"
+                },
+                "hourly_location_premium": {
+                    "type": "number"
+                },
+                "data_center": {
+                    "type": "string"
                 }
             },
             "type": "object"
         },
         "Location": {
             "properties": {
-                "title": {
-                    "type": "string"
-                },
-                "core": {
-                    "type": "boolean"
-                },
                 "edge": {
                     "type": "boolean"
                 },
                 "code": {
                     "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "core": {
+                    "type": "boolean"
                 },
                 "location": {
                     "$ref": "#/definitions/CityStateCountry"
@@ -7820,13 +7870,13 @@
         },
         "CityStateCountry": {
             "properties": {
+                "state": {
+                    "type": "string"
+                },
                 "city": {
                     "type": "string"
                 },
                 "country": {
-                    "type": "string"
-                },
-                "state": {
                     "type": "string"
                 }
             },
@@ -7952,14 +8002,14 @@
                 "unitPrice": {
                     "type": "number"
                 },
+                "dateRange": {
+                    "type": "object"
+                },
                 "description": {
                     "type": "string"
                 },
                 "quantity": {
                     "type": "integer"
-                },
-                "dateRange": {
-                    "type": "object"
                 },
                 "serviceId": {
                     "type": "integer"
@@ -7969,11 +8019,17 @@
         },
         "InvoiceSeachResult": {
             "properties": {
-                "prevPage": {
+                "pages": {
                     "type": "integer"
                 },
-                "total": {
+                "perPage": {
                     "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "hasNext": {
+                    "type": "boolean"
                 },
                 "hasPrev": {
                     "type": "boolean"
@@ -7981,20 +8037,14 @@
                 "nextPage": {
                     "type": "integer"
                 },
-                "pages": {
+                "prevPage": {
                     "type": "integer"
                 },
-                "page": {
+                "total": {
                     "type": "integer"
                 },
                 "items": {
                     "$ref": "#/definitions/Invoice"
-                },
-                "hasNext": {
-                    "type": "boolean"
-                },
-                "perPage": {
-                    "type": "integer"
                 }
             },
             "type": "object"
@@ -8032,6 +8082,32 @@
             },
             "type": "object"
         },
+        "NetworkTask-dump": {
+            "properties": {
+                "metaData": {
+                    "type": "string"
+                },
+                "taskId": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "string"
+                },
+                "taskUpdated": {
+                    "type": "object"
+                },
+                "clientId": {
+                    "type": "integer"
+                },
+                "taskCreated": {
+                    "type": "object"
+                },
+                "deviceId": {
+                    "type": "integer"
+                }
+            },
+            "type": "object"
+        },
         "DetailedNullIP": {
             "required": [
                 "ip"
@@ -8055,14 +8131,14 @@
                 "status": {
                     "type": "string"
                 },
-                "owner": {
-                    "type": "string"
+                "total": {
+                    "type": "number"
                 },
                 "orderId": {
                     "type": "integer"
                 },
-                "total": {
-                    "type": "number"
+                "owner": {
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -8084,9 +8160,6 @@
         },
         "OrderGroup": {
             "properties": {
-                "name": {
-                    "type": "string"
-                },
                 "device_ids": {
                     "type": "array",
                     "items": {
@@ -8095,6 +8168,9 @@
                 },
                 "id": {
                     "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 },
                 "same_rack": {
                     "type": "boolean"
@@ -8119,14 +8195,14 @@
                 "userId"
             ],
             "properties": {
-                "userId": {
-                    "type": "integer"
-                },
                 "permissions": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
+                },
+                "userId": {
+                    "type": "integer"
                 }
             },
             "type": "object"
@@ -8141,73 +8217,28 @@
         },
         "ProductInfo": {
             "properties": {
-                "annually_location_premium": {
-                    "type": "number"
-                },
-                "product_cpu": {
-                    "type": "string"
-                },
-                "product_gpu": {
-                    "type": "string"
-                },
-                "hourly_location_premium": {
-                    "type": "number"
-                },
-                "product_bandwidth": {
-                    "type": "string"
-                },
-                "triennial_location_premium": {
-                    "type": "number"
-                },
-                "product_hourly_price": {
-                    "type": "number"
-                },
-                "product_drive": {
-                    "type": "string"
-                },
-                "product_id": {
-                    "type": "integer"
-                },
-                "product_display_price": {
-                    "type": "number"
-                },
-                "product_original_price": {
-                    "type": "number"
-                },
-                "data_center": {
-                    "type": "string"
-                },
-                "biennial_location_premium": {
-                    "type": "number"
-                },
-                "product_name": {
-                    "type": "string"
-                },
-                "product_on_sale": {
+                "edge": {
                     "type": "boolean"
                 },
                 "product_annually_price": {
                     "type": "number"
                 },
-                "product_cpu_cores": {
-                    "type": "string"
-                },
-                "stock": {
-                    "type": "string"
-                },
-                "semi_annually_location_premium": {
-                    "type": "number"
-                },
-                "product_triennial_price": {
-                    "type": "number"
-                },
                 "product_monthly_price": {
                     "type": "number"
+                },
+                "product_biennial_price": {
+                    "type": "number"
+                },
+                "product_gpu": {
+                    "type": "string"
                 },
                 "monthly_location_premium": {
                     "type": "number"
                 },
-                "product_semi_annually_price": {
+                "product_memory": {
+                    "type": "string"
+                },
+                "product_original_price": {
                     "type": "number"
                 },
                 "product_disabled_billing_periods": {
@@ -8216,23 +8247,68 @@
                         "type": "string"
                     }
                 },
-                "quarterly_location_premium": {
+                "product_hourly_price": {
                     "type": "number"
                 },
-                "product_memory": {
+                "product_display_price": {
+                    "type": "number"
+                },
+                "triennial_location_premium": {
+                    "type": "number"
+                },
+                "product_semi_annually_price": {
+                    "type": "number"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "product_cpu_cores": {
                     "type": "string"
                 },
-                "edge": {
-                    "type": "boolean"
+                "product_cpu": {
+                    "type": "string"
+                },
+                "product_bandwidth": {
+                    "type": "string"
                 },
                 "core": {
+                    "type": "boolean"
+                },
+                "semi_annually_location_premium": {
+                    "type": "number"
+                },
+                "biennial_location_premium": {
+                    "type": "number"
+                },
+                "product_on_sale": {
                     "type": "boolean"
                 },
                 "product_quarterly_price": {
                     "type": "number"
                 },
-                "product_biennial_price": {
+                "product_name": {
+                    "type": "string"
+                },
+                "annually_location_premium": {
                     "type": "number"
+                },
+                "quarterly_location_premium": {
+                    "type": "number"
+                },
+                "product_drive": {
+                    "type": "string"
+                },
+                "product_triennial_price": {
+                    "type": "number"
+                },
+                "stock": {
+                    "type": "string"
+                },
+                "hourly_location_premium": {
+                    "type": "number"
+                },
+                "data_center": {
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -8248,25 +8324,25 @@
         },
         "Option": {
             "properties": {
-                "currency": {
-                    "type": "string"
-                },
-                "operatingSystemFeatures": {
-                    "$ref": "#/definitions/OperatingSystem"
+                "id": {
+                    "type": "integer"
                 },
                 "monthlyPrice": {
                     "type": "number"
                 },
-                "id": {
-                    "type": "integer"
-                },
-                "expressions": {
+                "tags": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
                 },
-                "tags": {
+                "operatingSystemFeatures": {
+                    "$ref": "#/definitions/OperatingSystem"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "expressions": {
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -8280,13 +8356,13 @@
         },
         "OperatingSystem": {
             "properties": {
+                "postInstall": {
+                    "type": "boolean"
+                },
                 "cloudInit": {
                     "type": "boolean"
                 },
                 "sshKey": {
-                    "type": "boolean"
-                },
-                "postInstall": {
                     "type": "boolean"
                 }
             },
@@ -8308,19 +8384,22 @@
         },
         "ProfileUpdate": {
             "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
                 "address": {
+                    "type": "string"
+                },
+                "country": {
                     "type": "string"
                 },
                 "company": {
                     "type": "string"
                 },
-                "last": {
-                    "type": "string"
-                },
                 "phone": {
-                    "type": "string"
-                },
-                "city": {
                     "type": "string"
                 },
                 "requirePayPalOauthLogin": {
@@ -8329,25 +8408,22 @@
                 "password": {
                     "type": "string"
                 },
-                "email": {
-                    "type": "string"
-                },
-                "fullName": {
-                    "type": "string"
-                },
-                "state": {
+                "zip": {
                     "type": "string"
                 },
                 "first": {
                     "type": "string"
                 },
-                "zip": {
-                    "type": "string"
-                },
-                "country": {
+                "state": {
                     "type": "string"
                 },
                 "requireOauthLogin": {
+                    "type": "string"
+                },
+                "last": {
+                    "type": "string"
+                },
+                "fullName": {
                     "type": "string"
                 }
             },
@@ -8355,16 +8431,25 @@
         },
         "Profile": {
             "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "country": {
+                    "type": "object"
+                },
+                "city": {
+                    "type": "object"
+                },
                 "company": {
                     "type": "object"
                 },
-                "address": {
+                "metaData": {
                     "type": "object"
                 },
-                "last": {
-                    "type": "string"
-                },
-                "metaData": {
+                "address": {
                     "type": "object"
                 },
                 "created": {
@@ -8373,100 +8458,82 @@
                 "phone": {
                     "type": "string"
                 },
-                "city": {
-                    "type": "object"
+                "isClient": {
+                    "type": "boolean"
                 },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "fullName": {
-                    "type": "object"
-                },
-                "state": {
+                "zip": {
                     "type": "object"
                 },
                 "first": {
                     "type": "string"
                 },
-                "fax": {
+                "state": {
                     "type": "object"
-                },
-                "zip": {
-                    "type": "object"
-                },
-                "country": {
-                    "type": "object"
-                },
-                "isClient": {
-                    "type": "boolean"
                 },
                 "login": {
                     "type": "string"
+                },
+                "fax": {
+                    "type": "object"
+                },
+                "last": {
+                    "type": "string"
+                },
+                "fullName": {
+                    "type": "object"
                 }
             },
             "type": "object"
         },
         "BasicProfile": {
             "properties": {
-                "company": {
-                    "type": "object"
-                },
-                "last": {
-                    "type": "string"
-                },
-                "metaData": {
-                    "type": "object"
-                },
-                "city": {
-                    "type": "object"
-                },
                 "email": {
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
                 },
-                "fullName": {
-                    "type": "object"
-                },
-                "state": {
-                    "type": "object"
-                },
-                "first": {
-                    "type": "string"
-                },
-                "zip": {
-                    "type": "object"
-                },
                 "country": {
+                    "type": "object"
+                },
+                "city": {
+                    "type": "object"
+                },
+                "company": {
+                    "type": "object"
+                },
+                "metaData": {
                     "type": "object"
                 },
                 "isClient": {
                     "type": "boolean"
                 },
+                "zip": {
+                    "type": "object"
+                },
+                "first": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "object"
+                },
                 "login": {
                     "type": "string"
+                },
+                "last": {
+                    "type": "string"
+                },
+                "fullName": {
+                    "type": "object"
                 }
             },
             "type": "object"
         },
         "Deployment": {
             "properties": {
-                "deploymentName": {
-                    "type": "string"
-                },
                 "orderNumber": {
                     "type": "string",
                     "example": ""
-                },
-                "startedProvisioning": {
-                    "type": "boolean"
-                },
-                "empty": {
-                    "type": "boolean"
                 },
                 "deploymentConfiguration": {
                     "type": "array",
@@ -8474,11 +8541,90 @@
                         "type": "object"
                     }
                 },
-                "price": {
-                    "type": "number"
+                "deploymentName": {
+                    "type": "string"
+                },
+                "empty": {
+                    "type": "boolean"
+                },
+                "startedProvisioning": {
+                    "type": "boolean"
                 },
                 "deploymentId": {
                     "type": "integer"
+                },
+                "price": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "DeploymentCustomization": {
+            "required": [
+                "hostnames",
+                "operatingSystem",
+                "productId"
+            ],
+            "properties": {
+                "options": {
+                    "type": "array",
+                    "default": [],
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "locationCode": {
+                    "type": "string",
+                    "default": ""
+                },
+                "operatingSystem": {
+                    "type": "string",
+                    "description": "Operating System's Name or ID"
+                },
+                "ignitionIds": {
+                    "type": "array",
+                    "description": "Specify Ignition file ID for CoreOS/Flatcar provisions",
+                    "default": [],
+                    "example": [],
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "billingPeriod": {
+                    "type": "string",
+                    "description": "must be one of ['monthly', 'quarterly', 'semi-annually', 'annually', 'biennial', 'triennial', 'hourly']",
+                    "default": "monthly"
+                },
+                "productId": {
+                    "type": "integer"
+                },
+                "forceDeviceIds": {
+                    "type": "array",
+                    "description": "Either deploy these Device IDs or fail",
+                    "default": [],
+                    "example": [],
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "quantity": {
+                    "type": "integer",
+                    "default": 1
+                },
+                "additionalNotes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "publicSshKeyId": {
+                    "type": "integer"
+                },
+                "hostnames": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             },
             "type": "object"
@@ -8493,76 +8639,6 @@
                 },
                 "script": {
                     "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "DeploymentCustomization": {
-            "required": [
-                "hostnames",
-                "operatingSystem",
-                "productId"
-            ],
-            "properties": {
-                "forceDeviceIds": {
-                    "type": "array",
-                    "description": "Either deploy these Device IDs or fail",
-                    "default": [],
-                    "example": [],
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "ignitionIds": {
-                    "type": "array",
-                    "description": "Specify Ignition file ID for CoreOS/Flatcar provisions",
-                    "default": [],
-                    "example": [],
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "hostnames": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "publicSshKeyId": {
-                    "type": "integer"
-                },
-                "productId": {
-                    "type": "integer"
-                },
-                "additionalNotes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "quantity": {
-                    "type": "integer",
-                    "default": 1
-                },
-                "options": {
-                    "type": "array",
-                    "default": [],
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "billingPeriod": {
-                    "type": "string",
-                    "description": "must be one of ['monthly', 'quarterly', 'semi-annually', 'annually', 'biennial', 'triennial', 'hourly']",
-                    "default": "monthly"
-                },
-                "locationCode": {
-                    "type": "string",
-                    "default": ""
-                },
-                "operatingSystem": {
-                    "type": "string",
-                    "description": "Operating System's Name or ID"
                 }
             },
             "type": "object"
@@ -8711,10 +8787,10 @@
                 "publicKey"
             ],
             "properties": {
-                "name": {
+                "publicKey": {
                     "type": "string"
                 },
-                "publicKey": {
+                "name": {
                     "type": "string"
                 }
             },
@@ -8722,13 +8798,13 @@
         },
         "SshKeyResponse": {
             "properties": {
-                "name": {
+                "publicKey": {
                     "type": "string"
                 },
                 "sshKeyId": {
                     "type": "integer"
                 },
-                "publicKey": {
+                "name": {
                     "type": "string"
                 }
             },
@@ -8736,10 +8812,10 @@
         },
         "SshKeyUpdate": {
             "properties": {
-                "name": {
+                "publicKey": {
                     "type": "string"
                 },
-                "publicKey": {
+                "name": {
                     "type": "string"
                 }
             },
@@ -8751,15 +8827,14 @@
                 "subject"
             ],
             "properties": {
-                "body": {
-                    "type": "string",
-                    "example": ""
+                "queue": {
+                    "type": "string"
                 },
                 "status": {
                     "type": "string",
                     "example": "open"
                 },
-                "source": {
+                "assignment": {
                     "type": "number",
                     "example": 0
                 },
@@ -8770,12 +8845,13 @@
                     "type": "number",
                     "example": 0
                 },
-                "queue": {
-                    "type": "string"
-                },
-                "assignment": {
+                "source": {
                     "type": "number",
                     "example": 0
+                },
+                "body": {
+                    "type": "string",
+                    "example": ""
                 }
             },
             "type": "object"
@@ -8800,7 +8876,7 @@
                 },
                 "opened": {
                     "type": "number",
-                    "example": 1651176192
+                    "example": 1651685723
                 },
                 "serviceId": {
                     "type": "number",
@@ -8855,17 +8931,9 @@
         },
         "Client": {
             "properties": {
-                "company": {
-                    "type": "string"
-                },
-                "isClient": {
-                    "type": "boolean"
-                },
-                "last": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string"
+                "metaData": {
+                    "type": "object",
+                    "example": {}
                 },
                 "email": {
                     "type": "string"
@@ -8873,26 +8941,34 @@
                 "id": {
                     "type": "number"
                 },
-                "state": {
-                    "type": "string"
-                },
-                "first": {
-                    "type": "string"
-                },
-                "metaData": {
-                    "type": "object",
-                    "example": {}
-                },
-                "zip": {
-                    "type": "string"
-                },
-                "fullName": {
+                "city": {
                     "type": "string"
                 },
                 "country": {
                     "type": "string"
                 },
+                "company": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                },
+                "first": {
+                    "type": "string"
+                },
+                "fullName": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "isClient": {
+                    "type": "boolean"
+                },
                 "login": {
+                    "type": "string"
+                },
+                "last": {
                     "type": "string"
                 }
             },
@@ -8900,12 +8976,8 @@
         },
         "TicketPost": {
             "properties": {
-                "attachments": {
+                "ticketId": {
                     "type": "number"
-                },
-                "body": {
-                    "type": "string",
-                    "example": ""
                 },
                 "date": {
                     "type": "number"
@@ -8913,28 +8985,8 @@
                 "contactId": {
                     "type": "number"
                 },
-                "subject": {
-                    "type": "string",
-                    "example": ""
-                },
-                "hidden": {
-                    "type": "number"
-                },
-                "fromAdmin": {
-                    "type": "boolean"
-                },
-                "clientId": {
-                    "type": "number"
-                },
                 "id": {
                     "type": "number"
-                },
-                "adminId": {
-                    "type": "number"
-                },
-                "from": {
-                    "type": "object",
-                    "example": {}
                 },
                 "ubersmith_attached_files": {
                     "type": "array",
@@ -8942,31 +8994,61 @@
                         "$ref": "#/definitions/TicketAttach"
                     }
                 },
-                "ticketId": {
+                "from": {
+                    "type": "object",
+                    "example": {}
+                },
+                "fromAdmin": {
+                    "type": "boolean"
+                },
+                "subject": {
+                    "type": "string",
+                    "example": ""
+                },
+                "attachments": {
                     "type": "number"
+                },
+                "hidden": {
+                    "type": "number"
+                },
+                "clientId": {
+                    "type": "number"
+                },
+                "adminId": {
+                    "type": "number"
+                },
+                "body": {
+                    "type": "string",
+                    "example": ""
                 }
             },
             "type": "object"
         },
         "TicketAttach": {
             "properties": {
+                "id": {
+                    "type": "number"
+                },
                 "name": {
                     "type": "string",
                     "example": ""
-                },
-                "id": {
-                    "type": "number"
                 }
             },
             "type": "object"
         },
         "TicketSeachResult": {
             "properties": {
-                "prevPage": {
+                "pages": {
                     "type": "integer"
                 },
-                "total": {
+                "perPage": {
                     "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "hasNext": {
+                    "type": "boolean"
                 },
                 "hasPrev": {
                     "type": "boolean"
@@ -8974,20 +9056,14 @@
                 "nextPage": {
                     "type": "integer"
                 },
-                "pages": {
+                "prevPage": {
                     "type": "integer"
                 },
-                "page": {
+                "total": {
                     "type": "integer"
                 },
                 "items": {
                     "$ref": "#/definitions/TicketPost"
-                },
-                "hasNext": {
-                    "type": "boolean"
-                },
-                "perPage": {
-                    "type": "integer"
                 }
             },
             "type": "object"
@@ -9006,8 +9082,29 @@
                 "body"
             ],
             "properties": {
-                "type": {
+                "encrypted": {
+                    "type": "string"
+                },
+                "contactId": {
                     "type": "number"
+                },
+                "recipient": {
+                    "type": "string"
+                },
+                "replyTo": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "number"
+                },
+                "headers": {
+                    "type": "string"
+                },
+                "cc": {
+                    "type": "string"
+                },
+                "subject": {
+                    "type": "string"
                 },
                 "attachments": {
                     "type": "array",
@@ -9021,34 +9118,13 @@
                         "type": "object"
                     }
                 },
-                "body": {
-                    "type": "string"
-                },
-                "date": {
-                    "type": "number"
-                },
-                "contactId": {
-                    "type": "number"
-                },
-                "subject": {
-                    "type": "string"
-                },
                 "hidden": {
                     "type": "number"
                 },
-                "recipient": {
-                    "type": "string"
+                "type": {
+                    "type": "number"
                 },
-                "cc": {
-                    "type": "string"
-                },
-                "encrypted": {
-                    "type": "string"
-                },
-                "replyTo": {
-                    "type": "string"
-                },
-                "headers": {
+                "body": {
                     "type": "string"
                 }
             },
@@ -9070,14 +9146,14 @@
                 "ips"
             ],
             "properties": {
-                "name": {
-                    "type": "string"
-                },
                 "ips": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
+                },
+                "name": {
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -9087,10 +9163,10 @@
                 "token"
             ],
             "properties": {
-                "name": {
+                "token": {
                     "type": "string"
                 },
-                "token": {
+                "name": {
                     "type": "string"
                 },
                 "ipAddresses": {
@@ -9115,22 +9191,19 @@
         },
         "Vlan": {
             "properties": {
-                "vlanNum": {
-                    "type": "integer"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "vlanTag": {
-                    "type": "integer"
-                },
                 "pendingDevices": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
-                "vlanId": {
+                "facilityCode": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "vlanTag": {
                     "type": "integer"
                 },
                 "deviceIds": {
@@ -9139,8 +9212,11 @@
                         "type": "integer"
                     }
                 },
-                "facilityCode": {
-                    "type": "string"
+                "vlanId": {
+                    "type": "integer"
+                },
+                "vlanNum": {
+                    "type": "integer"
                 }
             },
             "type": "object"
