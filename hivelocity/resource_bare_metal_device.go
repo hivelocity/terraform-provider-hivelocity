@@ -128,13 +128,10 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 				Optional:    true,
 				Default:     nil,
 			},
-			"ignition_ids": {
-				Description: "IgnitionConfig ids",
-				Type:        schema.TypeList,
+			"ignition_id": {
+				Description: "IgnitionConfig ID",
+				Type:        schema.TypeInt,
 				Optional:    true,
-				Elem: &schema.Schema{
-					Type: schema.TypeInt,
-				},
 			},
 		},
 	}
@@ -157,6 +154,7 @@ func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, 
 		Period:         d.Get("period").(string),
 		PublicSshKeyId: int32(d.Get("public_ssh_key_id").(int)),
 		ForceDeviceId:  int32(d.Get("force_device_id").(int)),
+		IgnitionId:     int32(d.Get("ignition_id").(int)),
 		Tags:           tags,
 	}
 
@@ -244,7 +242,11 @@ func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, 
 
 	payload.Tags = getTags(d, "")
 
-	payload.IgnitionIds = getIgnitionIds(d, "")
+	ignitionId := d.Get("ignition_id").(int32)
+	payload.IgnitionId = ignitionId
+	if d.HasChange("ignition_id") {
+		reload_required = true
+	}
 
 	hostname := d.Get("hostname").(string)
 	payload.Hostname = hostname
