@@ -312,7 +312,7 @@ func updateDevice(hv *Client, d *schema.ResourceData, deviceKey string, skipRelo
 			return fmt.Errorf("GET /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
 		}
 
-		if fmt.Sprint(devicePower.PowerStatus) == "ON" {
+		if devicePower.PowerStatus == "ON" {
 			if _, _, err := hv.client.DeviceApi.PostPowerResource(hv.auth, int32(deviceId), "shutdown", nil); err != nil {
 				myErr, _ := err.(swagger.GenericSwaggerError)
 				return fmt.Errorf("POST /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
