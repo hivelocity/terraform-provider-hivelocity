@@ -1,9 +1,11 @@
 package hivelocity
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/prometheus/common/log"
 	"reflect"
 )
 
@@ -67,42 +69,39 @@ func buildFilters(set *schema.Set) ([]filter, error) {
 	return filters, nil
 }
 
-func filterArrayIntersection(filter filter, arrayV []interface{}) bool {
-	for _, filterValue := range filter.values {
-		for _, itemValue := range arrayV {
-			if filterValue == itemValue {
+func matches(filterValues []string, searchValues []interface{}) bool {
+	// match each element, recursively matches on more arrays
+	for _, searchValue := range searchValues {
+		// recurse when search value is an array
+		rt := reflect.TypeOf(searchValue)
+		if rt.Kind() == reflect.Array {
+			if matches(filterValues, searchValue.([]interface{})) {
 				return true
+			}
+		} else {
+			stringSearchValue := fmt.Sprint(searchValue)
+			for _, filterValue := range filterValues {
+				if filterValue == stringSearchValue {
+					return true
+				}
 			}
 		}
 	}
-	return false
-}
 
-func matches(filter filter, m map[string]interface{}) bool {
-	v, ok := m[filter.name]
-	if !ok {
-		return false
-	}
-
-	rt := reflect.TypeOf(v)
-	if reflect.Array == rt.Kind() {
-		arrayV, fail := v.([]interface{})
-		if !fail {
-			return filterArrayIntersection(filter, arrayV)
-		}
-	}
-
-	for _, value := range filter.values {
-		if v == value {
-			return true
-		}
-	}
 	return false
 }
 
 func matchFilters(filters []filter, m map[string]interface{}) bool {
 	for _, filter := range filters {
-		if !matches(filter, m) {
+		filterValues := make([]interface{}, 1)
+		searchValue, ok := m[filter.name]
+		if !ok {
+			return false
+		}
+
+		filterValues[0] = searchValue
+
+		if !matches(filter.values, filterValues) {
 			return false
 		}
 	}
@@ -114,23 +113,33 @@ func doFiltering(
 	items []map[string]interface{},
 	defaultFilters []filter,
 ) (map[string]interface{}, error) {
+	var filter_params []filter
+	var filteredItems []map[string]interface{}
+
 	if len(items) == 0 {
 		return nil, errors.New("no items to filter on")
 	}
 
-	filters, filtersOk := d.GetOk("filter")
-	var filteredItems []map[string]interface{}
-	if filtersOk {
-		f, err := buildFilters(filters.(*schema.Set))
+	if filters, filtersOk := d.GetOk("filter"); filtersOk {
+		filter_params_, err := buildFilters(filters.(*schema.Set))
 		if err != nil {
 			return nil, err
 		}
-		if len(f) == 0 {
-			f = defaultFilters
-		}
-		for _, product := range items {
-			if matchFilters(f, product) {
-				filteredItems = append(filteredItems, product)
+		filter_params = filter_params_
+	}
+
+	// Fallback to defualt filters if any
+	if len(filter_params) == 0 && len(defaultFilters) > 0 {
+		filter_params = defaultFilters
+	}
+
+	if len(filter_params) > 0 {
+		out, _ := json.Marshal(filter_params)
+		log.Infof("Filtering on %v", out)
+
+		for _, item := range items {
+			if matchFilters(filter_params, item) {
+				filteredItems = append(filteredItems, item)
 			}
 		}
 	} else {

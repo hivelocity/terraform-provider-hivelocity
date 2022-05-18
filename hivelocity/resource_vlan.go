@@ -59,22 +59,24 @@ func resourceVlanCreate(ctx context.Context, d *schema.ResourceData, m interface
 	}
 
 	// Update ports
-	diags = append(diags, _updateVlanPorts(ctx, hv, d, vlan.VlanId)...)
+	diags = append(diags, _updateVlanPorts(ctx, hv, d, vlan.Id)...)
 
 	// If any errors happened, delete VLAN
 	if diags.HasError() {
-		d.SetId("")
 		diags = append(diags, diag.Errorf("PUT /vlan failed! (%s)\n\n", err)...)
 
+		// Set ID for delete to run
+		d.SetId(fmt.Sprint(vlan.Id))
 		for _, d := range resourceVlanDelete(ctx, d, m) {
 			diags = append(diags, d)
 		}
+		d.SetId("")
 
 		return diags
 	}
 
-	log.Printf("[INFO] Created VLAN ID: %d", vlan.VlanId)
-	d.SetId(fmt.Sprint(vlan.VlanId))
+	log.Printf("[INFO] Created VLAN ID: %d", vlan.Id)
+	d.SetId(fmt.Sprint(vlan.Id))
 
 	return diags
 }

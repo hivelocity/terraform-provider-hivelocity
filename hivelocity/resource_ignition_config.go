@@ -114,7 +114,7 @@ func resourceIgnitionRead(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.Errorf("GET /ignition/%d failed! (%s)\n\n %s", IgnitionConfigID, err, myErr.Body())
 	}
 
-	d.SetId(fmt.Sprintf("%v", IgnitionConfigResponse.Id))
+	d.SetId(fmt.Sprint(IgnitionConfigResponse.Id))
 
 	return _resourceIgnitionReadFromResponse(d, IgnitionConfigID, IgnitionConfigResponse)
 }

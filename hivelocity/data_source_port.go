@@ -7,7 +7,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 	"sort"
-	"strconv"
 	"strings"
 )
 
@@ -48,11 +47,7 @@ func dataSourceDevicePort() *schema.Resource {
 
 func dataSourceDevicePortRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	hv, _ := m.(*Client)
-
-	deviceId, err := strconv.Atoi(d.Id())
-	if err != nil {
-		return diag.FromErr(err)
-	}
+	deviceId := d.Get("device_id").(int)
 
 	ports, _, err := hv.client.DeviceApi.GetDevicePortResource(hv.auth, int32(deviceId), nil)
 	if err != nil {
@@ -90,7 +85,7 @@ func dataSourceDevicePortRead(ctx context.Context, d *schema.ResourceData, m int
 	})
 
 	// Set "is_primary" on first
-	filterablePorts[0]["is_primary"] = "true"
+	filterablePorts[0]["is_primary"] = true
 
 	matchedPort, err := doFiltering(d, filterablePorts, []filter{
 		{"is_primary", []string{"true"}},
@@ -105,7 +100,7 @@ func dataSourceDevicePortRead(ctx context.Context, d *schema.ResourceData, m int
 		}
 	}
 
-	d.SetId(fmt.Sprintf("%v", matchedPort["port_id"]))
+	d.SetId(fmt.Sprint(matchedPort["port_id"]))
 
 	return nil
 }
