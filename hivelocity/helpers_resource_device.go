@@ -23,19 +23,6 @@ func getTags(d *schema.ResourceData, deviceKey string) []string {
 	return tags
 }
 
-// Return device ignition ids
-func getIgnitionIds(d *schema.ResourceData, deviceKey string) []int32 {
-	key := fmt.Sprintf("%signition_ids", deviceKey)
-	var ignition_ids []int32
-
-	for _, v := range d.Get(key).([]interface{}) {
-		ignition_ids = append(ignition_ids, v.(int32))
-	}
-
-	return ignition_ids
-}
-
-
 func waitForDevices(timeout time.Duration, hv *Client, orderId int32, newDevices []swagger.BareMetalDevice) (interface{}, error) {
 	waitForDevice := &resource.StateChangeConf{
 		Pending: []string{
@@ -312,7 +299,7 @@ func updateDevice(hv *Client, d *schema.ResourceData, deviceKey string, skipRelo
 			return fmt.Errorf("GET /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
 		}
 
-		if devicePower.PowerStatus == "ON" {
+		if fmt.Sprint(devicePower.PowerStatus) == "ON" {
 			if _, _, err := hv.client.DeviceApi.PostPowerResource(hv.auth, int32(deviceId), "shutdown", nil); err != nil {
 				myErr, _ := err.(swagger.GenericSwaggerError)
 				return fmt.Errorf("POST /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())

@@ -1,6 +1,7 @@
 package hivelocity
 
 import (
+	"errors"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"reflect"
@@ -41,20 +42,29 @@ type filter struct {
 	values []string
 }
 
-func buildFilters(set *schema.Set) []filter {
+// TODO: Find way to access `map[string]*schema.Schema` so we can validate fields
+func buildFilters(set *schema.Set) ([]filter, error) {
 	var filters []filter
+
 	for _, v := range set.List() {
 		m := v.(map[string]interface{})
 		var values []string
 		for _, value := range m["values"].([]interface{}) {
 			values = append(values, value.(string))
 		}
+
+		name := m["name"].(string)
+
+		if name == "filter" {
+			return nil, errors.New(fmt.Sprintf("Cannot filter on %v"))
+		}
+
 		filters = append(filters, filter{
-			name:   m["name"].(string),
+			name:   name,
 			values: values,
 		})
 	}
-	return filters
+	return filters, nil
 }
 
 func filterArrayIntersection(filter filter, arrayV []interface{}) bool {
@@ -84,8 +94,8 @@ func matches(filter filter, m map[string]interface{}) bool {
 
 	for _, value := range filter.values {
 		if v == value {
-				  return true
-				  }
+			return true
+		}
 	}
 	return false
 }
@@ -99,15 +109,25 @@ func matchFilters(filters []filter, m map[string]interface{}) bool {
 	return true
 }
 
-func doFiltering(d *schema.ResourceData, items []map[string]interface{}) (map[string]interface{}, error) {
+func doFiltering(
+	d *schema.ResourceData,
+	items []map[string]interface{},
+	defaultFilters []filter,
+) (map[string]interface{}, error) {
 	if len(items) == 0 {
-		return nil, nil
+		return nil, errors.New("no items to filter on")
 	}
 
 	filters, filtersOk := d.GetOk("filter")
 	var filteredItems []map[string]interface{}
 	if filtersOk {
-		f := buildFilters(filters.(*schema.Set))
+		f, err := buildFilters(filters.(*schema.Set))
+		if err != nil {
+			return nil, err
+		}
+		if len(f) == 0 {
+			f = defaultFilters
+		}
 		for _, product := range items {
 			if matchFilters(f, product) {
 				filteredItems = append(filteredItems, product)

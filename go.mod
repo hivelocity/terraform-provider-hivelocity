@@ -41,3 +41,5 @@ require (
 	google.golang.org/api v0.56.0 // indirect
 	google.golang.org/genproto v0.0.0-20210909211513-a8c4777a87af // indirect
 )
+
+replace github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go => ./hivelocity-client-go

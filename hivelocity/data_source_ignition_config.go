@@ -12,20 +12,20 @@ import (
 
 func ignitionConfigSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
-	        "filter": dataSourceFiltersSchema(),
-		    "first":  dataSourceFilterFirstSchema(),
-			"id": &schema.Schema{
-				Type:     schema.TypeInt,
-				Computed: true,
-			},
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Computed: true,
-			},
-			"contents": &schema.Schema{
-				Type:     schema.TypeString,
-				Computed: true,
-			},
+		"filter": dataSourceFiltersSchema(),
+		"first":  dataSourceFilterFirstSchema(),
+		"id": &schema.Schema{
+			Type:     schema.TypeInt,
+			Computed: true,
+		},
+		"name": &schema.Schema{
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"contents": &schema.Schema{
+			Type:     schema.TypeString,
+			Computed: true,
+		},
 	}
 }
 
@@ -39,26 +39,34 @@ func dataSourceIgnitionConfig() *schema.Resource {
 func dataSourceIgnitionConfigRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	hv, _ := m.(*Client)
 
-	ignitionConfigInfo, _, err := hv.client.IgnitionApi.GetIgnitionResource(hv.auth, nil)
+	ignitionConfigInfoList, _, err := hv.client.IgnitionApi.GetIgnitionResource(hv.auth, nil)
 	if err != nil {
 		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("GET /ignition failed! (%s)\n\n %s", err, myErr.Body())
 	}
 
-	jsonIgnitionConfigInfo, err := json.Marshal(ignitionConfigInfo)
+	// Normalize json string
+	for i, item := range ignitionConfigInfoList {
+		normStr, err := normalizeJsonString(item.Contents)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+		ignitionConfigInfoList[i].Contents = normStr
+	}
+
+	jsonIgnitionConfigInfo, err := json.Marshal(ignitionConfigInfoList)
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
 	ignitionConfigs := make([]map[string]interface{}, 0)
-	err = json.Unmarshal(jsonIgnitionConfigInfo, &ignitionConfigs)
-	if err != nil {
+	if err = json.Unmarshal(jsonIgnitionConfigInfo, &ignitionConfigs); err != nil {
 		return diag.FromErr(err)
 	}
 
 	ignitionConfigs = convertKeysOfList(ignitionConfigs)
 
-	ignitionConfig, err := doFiltering(d, ignitionConfigs)
+	ignitionConfig, err := doFiltering(d, ignitionConfigs, nil)
 	if err != nil {
 		return diag.FromErr(err)
 	}

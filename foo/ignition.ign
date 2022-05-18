@@ -1,0 +1,13 @@
+{
+    "ignition": {
+        "version": "2.4.0"
+    },
+    "networkd": {
+        "units": [
+            {
+                "name": "primary_yo.network",
+                "contents": "[Match]\nName={COREOS_CUSTOM_PRIMARY_NIC}\n[Network]\nAddress=192.168.1.10/24\nDNS=8.8.8.8\nDNS=8.8.4.4"
+            }
+        ]
+    }
+}

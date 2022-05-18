@@ -2,6 +2,7 @@ package hivelocity
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"time"
@@ -19,6 +20,7 @@ func resourceIgnitionConfig(forceNew bool) *schema.Resource {
 		CreateContext: resourceIgnitionCreate,
 		ReadContext:   resourceIgnitionRead,
 		DeleteContext: resourceIgnitionDelete,
+		UpdateContext: resourceIgnitionUpdate,
 		Schema: map[string]*schema.Schema{
 			"id": &schema.Schema{
 				Type:     schema.TypeString,
@@ -33,7 +35,23 @@ func resourceIgnitionConfig(forceNew bool) *schema.Resource {
 			"contents": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: forceNew,
+				ForceNew: false,
+				ValidateFunc: func(i interface{}, s string) ([]string, []error) {
+					var dest interface{}
+					warnings := make([]string, 0)
+					errors := make([]error, 0)
+					if err := json.Unmarshal([]byte(i.(string)), &dest); err != nil {
+						errors = append(errors, err)
+					}
+					return warnings, errors
+				},
+				StateFunc: func(i interface{}) string {
+					normStr, err := normalizeJsonString(i.(string))
+					if err != nil {
+						panic(err)
+					}
+					return normStr
+				},
 			},
 		},
 	}
@@ -43,8 +61,8 @@ func resourceIgnitionCreate(ctx context.Context, d *schema.ResourceData, m inter
 	hv, _ := m.(*Client)
 
 	payload := swagger.CreateIgnition{
-		Name:       d.Get("name").(string),
-		Contents:   d.Get("contents").(string),
+		Name:     d.Get("name").(string),
+		Contents: d.Get("contents").(string),
 	}
 
 	ignitionConfig, _, err := hv.client.IgnitionApi.PostIgnitionResource(hv.auth, payload, nil)
@@ -59,10 +77,26 @@ func resourceIgnitionCreate(ctx context.Context, d *schema.ResourceData, m inter
 	return resourceIgnitionRead(ctx, d, m)
 }
 
-func resourceIgnitionRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	// Warning or errors can be collected in a slice type
-	var diags diag.Diagnostics
+func _resourceIgnitionReadFromResponse(d *schema.ResourceData, ignitionId int, resp swagger.IgnitionResponse) diag.Diagnostics {
+	normStr, err := normalizeJsonString(resp.Contents)
+	if err != nil {
+		return diag.FromErr(err)
+	}
 
+	values := map[string]interface{}{
+		"name":     resp.Name,
+		"contents": normStr,
+	}
+
+	for k, v := range values {
+		if err := d.Set(k, v); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+	return nil
+}
+
+func resourceIgnitionRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	hv, _ := m.(*Client)
 
 	IgnitionConfigID, err := strconv.Atoi(d.Id())
@@ -80,11 +114,9 @@ func resourceIgnitionRead(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.Errorf("GET /ignition/%d failed! (%s)\n\n %s", IgnitionConfigID, err, myErr.Body())
 	}
 
-	d.Set("id", IgnitionConfigResponse.Id)
-	d.Set("name", IgnitionConfigResponse.Name)
-	d.Set("contents", IgnitionConfigResponse.Contents)
+	d.SetId(fmt.Sprintf("%v", IgnitionConfigResponse.Id))
 
-	return diags
+	return _resourceIgnitionReadFromResponse(d, IgnitionConfigID, IgnitionConfigResponse)
 }
 
 func resourceIgnitionDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
@@ -111,4 +143,29 @@ func resourceIgnitionDelete(ctx context.Context, d *schema.ResourceData, m inter
 	d.SetId("")
 
 	return diags
+}
+
+func resourceIgnitionUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	hv, _ := m.(*Client)
+
+	IgnitionConfigID, err := strconv.Atoi(d.Id())
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	payload := swagger.UpdateIgnition{
+		Contents: d.Get("contents").(string),
+	}
+
+	ignitionResponse, response, err := hv.client.IgnitionApi.PutIgnitionResourceId(hv.auth, int32(IgnitionConfigID), payload, nil)
+	if err != nil {
+		if response != nil && response.StatusCode == 404 {
+			d.SetId("")
+			return diag.FromErr(err)
+		}
+		myErr, _ := err.(swagger.GenericSwaggerError)
+		return diag.Errorf("PUT /ignition/%s failed! (%s)\n\n %s", fmt.Sprint(IgnitionConfigID), err, myErr.Body())
+	}
+
+	return _resourceIgnitionReadFromResponse(d, IgnitionConfigID, ignitionResponse)
 }

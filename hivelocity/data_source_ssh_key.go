@@ -58,7 +58,7 @@ func dataSourceSshKeyRead(ctx context.Context, d *schema.ResourceData, m interfa
 
 	sshKeys = convertKeysOfList(sshKeys)
 
-	sshKey, err := doFiltering(d, sshKeys)
+	sshKey, err := doFiltering(d, sshKeys, nil)
 	if err != nil {
 		return diag.FromErr(err)
 	}

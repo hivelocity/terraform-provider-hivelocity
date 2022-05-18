@@ -12,7 +12,7 @@ import (
 	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
 
-// Timeout for creating/updating devices
+// BareMetalDeviceTimeout is the timeout for creating/updating devices
 const BareMetalDeviceTimeout = 60 * time.Minute
 
 func resourceBareMetalDevice(forceNew bool) *schema.Resource {
