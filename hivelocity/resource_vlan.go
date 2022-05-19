@@ -59,12 +59,12 @@ func resourceVlanCreate(ctx context.Context, d *schema.ResourceData, m interface
 	}
 
 	// Update ports
-	diags = append(diags, _updateVlanPorts(ctx, hv, d, vlan.Id)...)
+	if len(vlan.PortIds) > 0 {
+		diags = append(diags, _updateVlanPorts(ctx, hv, d, vlan.Id)...)
+	}
 
 	// If any errors happened, delete VLAN
 	if diags.HasError() {
-		diags = append(diags, diag.Errorf("PUT /vlan failed! (%s)\n\n", err)...)
-
 		// Set ID for delete to run
 		d.SetId(fmt.Sprint(vlan.Id))
 		for _, d := range resourceVlanDelete(ctx, d, m) {
@@ -78,7 +78,7 @@ func resourceVlanCreate(ctx context.Context, d *schema.ResourceData, m interface
 	log.Printf("[INFO] Created VLAN ID: %d", vlan.Id)
 	d.SetId(fmt.Sprint(vlan.Id))
 
-	return diags
+	return resourceVlanRead(ctx, d, m)
 }
 
 func resourceVlanRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
@@ -135,7 +135,7 @@ func _updateVlanPorts(
 	}
 
 	// Wait for task to finish
-	_, err = waitForNetworkTaskByClient(ctx, d.Timeout(schema.TimeoutCreate), hv, task.TaskId)
+	_, err = waitForNetworkTaskByClient(hv.auth, d.Timeout(schema.TimeoutCreate), hv, task.TaskId)
 	if err != nil {
 		return diag.Errorf("Waiting for vlan update failed! (%s)", err)
 	}
@@ -218,9 +218,14 @@ func SetFromInt32List(items []int32) *schema.Set {
 }
 
 func makeUpdatePayload(d *schema.ResourceData) swagger.VlanUpdate {
-	portIdList := Int32ListFromSet(d.Get("port_ids").(*schema.Set))
+	portIds := make([]int32, 0)
+
+	if portIdSet, ok := d.GetOk("port_ids"); ok {
+		portIds = Int32ListFromSet(portIdSet.(*schema.Set))
+	}
+
 	return swagger.VlanUpdate{
-		PortIds: portIdList,
+		PortIds: portIds,
 	}
 }
 
@@ -231,7 +236,7 @@ func waitForNetworkTaskByClient(
 	taskId string,
 ) (*swagger.NetworkTaskDump, error) {
 	stateChangeConf := &resource.StateChangeConf{
-		Pending: []string{""},
+		Pending: []string{"Pending", ""},
 		Target:  []string{"Success"},
 		Refresh: func() (interface{}, string, error) {
 			var matchedTask *swagger.NetworkTaskDump
@@ -250,7 +255,7 @@ func waitForNetworkTaskByClient(
 				return nil, "Failed", errors.New("could not find network task")
 			}
 
-			return matchedTask, "Success", nil
+			return matchedTask, matchedTask.Result, nil
 		},
 		Timeout:                   timeout,
 		Delay:                     30 * time.Second,

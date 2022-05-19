@@ -12,19 +12,14 @@ import (
 
 // dataSourceDevicePort is a resource for retrieving a device's port.
 // Because there is more than one port per device, the filter used must match down to one port, or error otherwise. If
-// the filter is omitted entirely, the ports are automatically filtered to the primary interface.
-// If this resource is used to setup VLANs, you mostly likely will just want to omit the filter attribute to default
-// to the primary port.
+// the filter is omitted entirely, the ports are automatically filtered to the private interface which is typically
+// used to apply private VLANs.
 func dataSourceDevicePort() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataSourceDevicePortRead,
 		Schema: map[string]*schema.Schema{
 			"filter": dataSourceFiltersSchema(),
-			// Primary is computed by sorting port names ascending ("bond*" first if any) and picking the first one
-			"is_primary": &schema.Schema{
-				Type:     schema.TypeBool,
-				Computed: true,
-			},
+			"first":  dataSourceFilterFirstSchema(),
 			"private": &schema.Schema{
 				Type:     schema.TypeBool,
 				Computed: true,
@@ -40,6 +35,10 @@ func dataSourceDevicePort() *schema.Resource {
 			"device_id": &schema.Schema{
 				Type:     schema.TypeInt,
 				Required: true,
+			},
+			"is_bond": &schema.Schema{
+				Type:     schema.TypeBool,
+				Computed: true,
 			},
 		},
 	}
@@ -60,18 +59,23 @@ func dataSourceDevicePortRead(ctx context.Context, d *schema.ResourceData, m int
 	}
 
 	filterablePorts := make([]map[string]interface{}, len(ports))
+	hasBonds := false
 
 	for i, p := range ports {
+		isBond := strings.HasPrefix(p.Name, "bond")
 		filterablePorts[i] = map[string]interface{}{
-			"is_primary": false,
-			"private":    p.Private,
-			"name":       p.Name,
-			"port_id":    p.PortId,
-			"device_id":  p.DeviceId,
+			"private":   p.Private,
+			"name":      p.Name,
+			"port_id":   p.PortId,
+			"device_id": p.DeviceId,
+			"is_bond":   isBond,
+		}
+		if isBond {
+			hasBonds = true
 		}
 	}
 
-	// Sort ports by name, preferring bonds first
+	// Sort ports by name, in case user uses a filter and a device with more than 2 ports
 	sort.SliceStable(filterablePorts, func(i, j int) bool {
 		a, b := filterablePorts[i]["name"].(string), filterablePorts[j]["name"].(string)
 		if strings.HasPrefix(a, "bond") {
@@ -84,14 +88,24 @@ func dataSourceDevicePortRead(ctx context.Context, d *schema.ResourceData, m int
 		return a < b
 	})
 
-	// Set "is_primary" on first
-	filterablePorts[0]["is_primary"] = true
+	// Select default filter based on
+	var defaultFilter []filter
+	if hasBonds {
+		defaultFilter = []filter{{name: "is_bond", values: []string{"true"}}}
+	} else {
+		defaultFilter = []filter{
+			{name: "private", values: []string{"true"}},
+			{name: "name", values: []string{"eth1"}},
+		}
+	}
 
-	matchedPort, err := doFiltering(d, filterablePorts, []filter{
-		{"is_primary", []string{"true"}},
-	})
+	matchedPort, err := doFiltering(d, filterablePorts, defaultFilter)
 	if err != nil {
 		return diag.FromErr(err)
+	}
+
+	if matchedPort == nil {
+		return diag.Errorf("No ports found with given filters")
 	}
 
 	for k, v := range matchedPort {

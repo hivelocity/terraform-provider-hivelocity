@@ -134,8 +134,10 @@ func doFiltering(
 	}
 
 	if len(filter_params) > 0 {
-		out, _ := json.Marshal(filter_params)
-		log.Infof("Filtering on %v", out)
+		for _, f := range filter_params {
+			out, _ := json.Marshal(f.values)
+			log.Infof("Filtering on name %v with values %v", f.name, string(out))
+		}
 
 		for _, item := range items {
 			if matchFilters(filter_params, item) {
@@ -143,14 +145,18 @@ func doFiltering(
 			}
 		}
 	} else {
+		log.Infof("No filtering is done")
 		filteredItems = items
 	}
+
+	log.Infof("Filter result count %v", len(filteredItems))
 
 	first := d.Get("first")
 	if (first == nil || !d.Get("first").(bool)) && len(filteredItems) != 1 {
 		return nil, fmt.Errorf("found %s matches. set first = true or modify your filters", fmt.Sprint(len(filteredItems)))
 	}
-	if len(filteredItems) < 1 {
+
+	if len(filteredItems) == 0 {
 		return nil, nil
 	}
 
