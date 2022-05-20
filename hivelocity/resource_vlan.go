@@ -256,7 +256,7 @@ func waitForNetworkTaskByClient(
 			return matchedTask, matchedTask.Result, nil
 		},
 		Timeout:                   timeout,
-		Delay:                     30 * time.Second,
+		Delay:                     10 * time.Second,
 		MinTimeout:                30 * time.Second,
 		ContinuousTargetOccurence: 1,
 	}
