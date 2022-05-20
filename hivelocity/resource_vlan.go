@@ -169,12 +169,29 @@ func resourceVlanDelete(ctx context.Context, d *schema.ResourceData, m interface
 
 	log.Printf("[INFO] Deleting VLAN ID: %s", d.Id())
 
-	vlanId, err := strconv.Atoi(d.Id())
-	if err != nil {
+	var vlanId int32
+	if vlanId_, err := strconv.Atoi(d.Id()); err != nil {
 		return diag.FromErr(err)
+	} else {
+		vlanId = int32(vlanId_)
 	}
 
-	_, response, err := hv.client.VLANApi.DeleteVlanIdResource(hv.auth, int32(vlanId), nil)
+	// Remove ports if need be
+	if len(makeUpdatePayload(d).PortIds) > 0 {
+		log.Printf("Removing ports before deleting vlan")
+
+		if err := d.Set("port_ids", SetFromInt32List([]int32{})); err != nil {
+			return diag.FromErr(err)
+		}
+
+		diags = append(diags, _updateVlanPorts(ctx, hv, d, vlanId)...)
+
+		if diags.HasError() {
+			return diags
+		}
+	}
+
+	_, response, err := hv.client.VLANApi.DeleteVlanIdResource(hv.auth, vlanId, nil)
 	if err != nil {
 		// If resource was deleted outside terraform, remove it from state and exit gracefully
 		if response != nil && response.StatusCode == 404 {
