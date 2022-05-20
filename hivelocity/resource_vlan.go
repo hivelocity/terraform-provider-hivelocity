@@ -59,7 +59,7 @@ func resourceVlanCreate(ctx context.Context, d *schema.ResourceData, m interface
 	}
 
 	// Update ports
-	if len(vlan.PortIds) > 0 {
+	if len(makeUpdatePayload(d).PortIds) > 0 {
 		diags = append(diags, _updateVlanPorts(ctx, hv, d, vlan.Id)...)
 	}
 
@@ -193,12 +193,10 @@ func resourceVlanDelete(ctx context.Context, d *schema.ResourceData, m interface
 }
 
 func makeVlanCreatePayload(d *schema.ResourceData) swagger.VlanCreate {
-	payload := swagger.VlanCreate{
+	return swagger.VlanCreate{
 		FacilityCode:          d.Get("facility_code").(string),
 		PrivateNetworkingOnly: d.Get("private_networking_only").(bool),
 	}
-
-	return payload
 }
 
 func Int32ListFromSet(s *schema.Set) []int32 {
