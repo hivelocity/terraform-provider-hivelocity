@@ -133,6 +133,11 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 				Type:        schema.TypeInt,
 				Optional:    true,
 			},
+			// "private_network": {
+			// 	Description: "Private network and IP of device in CIDR notation",
+			// 	Type:        schema.TypeString,
+			// 	Optional:    true,
+			// },
 		},
 	}
 }
@@ -155,7 +160,8 @@ func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, 
 		PublicSshKeyId: int32(d.Get("public_ssh_key_id").(int)),
 		ForceDeviceId:  int32(d.Get("force_device_id").(int)),
 		IgnitionId:     int32(d.Get("ignition_id").(int)),
-		Tags:           tags,
+		// PrivateNetwork: d.Get("private_network").(string),
+		Tags: tags,
 	}
 
 	bareMetalDevice, _, err := hv.client.BareMetalDevicesApi.PostBareMetalDeviceResource(hv.auth, payload, nil)
@@ -225,6 +231,7 @@ func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m 
 	d.Set("tags", deviceResponse.Tags)
 	d.Set("public_ssh_key_id", deviceResponse.PublicSshKeyId)
 	d.Set("script", deviceResponse.Script)
+	// d.Set("private_network", deviceResponse.PrivateNetwork)
 
 	return nil
 }
@@ -232,80 +239,16 @@ func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m 
 func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	hv, _ := m.(*Client)
 
-	deviceId, err := strconv.Atoi(d.Id())
-	if err != nil {
+	var deviceId int32
+	if deviceId_, err := strconv.Atoi(d.Id()); err == nil {
+		deviceId = int32(deviceId_)
+	} else {
 		return diag.FromErr(err)
 	}
 
-	payload := swagger.BareMetalDeviceUpdate{}
-	reload_required := false
-
-	payload.Tags = getTags(d, "")
-
-	ignitionId := d.Get("ignition_id").(int32)
-	payload.IgnitionId = ignitionId
-	if d.HasChange("ignition_id") {
-		reload_required = true
-	}
-
-	hostname := d.Get("hostname").(string)
-	payload.Hostname = hostname
-	if d.HasChange("hostname") {
-		reload_required = true
-	}
-
-	osName := d.Get("os_name").(string)
-	payload.OsName = osName
-	if d.HasChange("os_name") {
-		reload_required = true
-	}
-
-	publicSshKeyId := d.Get("public_ssh_key_id").(int)
-	payload.PublicSshKeyId = int32(publicSshKeyId)
-	if d.HasChange("public_ssh_key_id") {
-		reload_required = true
-	}
-
-	script := d.Get("script").(string)
-	payload.Script = script
-	if d.HasChange("script") {
-		reload_required = true
-	}
-
-	// If a reload is required, it's necessary to turn the device off first
-	if reload_required {
-		devicePower, _, err := hv.client.DeviceApi.GetPowerResource(hv.auth, int32(deviceId), nil)
-		if err != nil {
-			myErr, _ := err.(swagger.GenericSwaggerError)
-			return diag.Errorf("GET /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
-		}
-
-		if devicePower.PowerStatus == "ON" {
-			_, _, err = hv.client.DeviceApi.PostPowerResource(hv.auth, int32(deviceId), "shutdown", nil)
-			if err != nil {
-				myErr, _ := err.(swagger.GenericSwaggerError)
-				return diag.Errorf("POST /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
-			}
-
-			// Power status will transition to PENDING, then OFF
-			_, err := waitForDevicePowerOff(d, hv, int32(deviceId))
-			if err != nil {
-				return diag.Errorf("error powering off device %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(deviceId), err)
-			}
-		}
-	}
-
-	_, _, err = hv.client.BareMetalDevicesApi.PutBareMetalDeviceIdResource(hv.auth, int32(deviceId), payload, nil)
-	if err != nil {
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("PUT /bare-metal-devices/%d failed! (%s)\n\n %s", deviceId, err, myErr.Body())
-	}
-
-	if reload_required {
-		_, err := waitForDeviceReload(d, hv, int32(deviceId))
-		if err != nil {
-			return diag.Errorf("error reloading device %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(deviceId), err)
-		}
+	updatePayload := getBareMetalUpdatePayload(d)
+	if err := hv._updateDevice(deviceId, updatePayload, d); err != nil {
+		return diag.FromErr(err)
 	}
 
 	d.Set("last_updated", time.Now().Format(time.RFC850))

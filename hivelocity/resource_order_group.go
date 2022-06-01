@@ -197,8 +197,10 @@ func resourceOrderGroupUpdate(ctx context.Context, d *schema.ResourceData, m int
 		if deviceId, ok := device["device_id"]; ok && deviceId.(int) > 0 {
 			// Update/Reload existing device
 			deviceKey := fmt.Sprintf("bare_metal_device.%d.", i)
+			deviceId := int32(fieldGet("device_id", d, deviceKey).(int))
+			updatePayload := getBareMetalUpdatePayloadFromGroup(d, deviceKey)
 
-			if err := updateDevice(hv, d, deviceKey, false); err == nil {
+			if err := hv._updateDevice(deviceId, updatePayload, d); err == nil {
 				diags = append(diags, diag.Diagnostic{
 					Severity: diag.Warning,
 					Summary:  fmt.Sprintf("Device updated (%d)", deviceId),

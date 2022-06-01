@@ -20,7 +20,7 @@ func resourceVlan() *schema.Resource {
 		},
 		CreateContext: resourceVlanCreate,
 		ReadContext:   resourceVlanRead,
-		UpdateContext: resourceVlanUpdate,
+		// UpdateContext: resourceVlanUpdate,
 		DeleteContext: resourceVlanDelete,
 		Schema: map[string]*schema.Schema{
 			"facility_code": &schema.Schema{
@@ -39,7 +39,12 @@ func resourceVlan() *schema.Resource {
 				Elem: &schema.Schema{
 					Type: schema.TypeInt,
 				},
-				Required: true,
+				Computed: true,
+			},
+			"tag_id": &schema.Schema{
+				Description: "Tag ID of VLAN",
+				Type:        schema.TypeInt,
+				Computed:    true,
 			},
 		},
 	}
@@ -54,12 +59,11 @@ func resourceVlanCreate(ctx context.Context, d *schema.ResourceData, m interface
 	vlan, _, err := hv.client.VLANApi.PostVlanResource(hv.auth, payload, nil)
 	if err != nil {
 		d.SetId("")
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("POST /vlan failed! (%s)\n\n %s", err, myErr.Body())
+		return diag.FromErr(formatSwaggerError(err, "POST /vlan"))
 	}
 
 	// Update ports
-	if len(makeUpdatePayload(d).PortIds) > 0 {
+	if len(makeUpdateVlanPayload(d).PortIds) > 0 {
 		diags = append(diags, _updateVlanPorts(ctx, hv, d, vlan.Id)...)
 	}
 
@@ -67,9 +71,7 @@ func resourceVlanCreate(ctx context.Context, d *schema.ResourceData, m interface
 	if diags.HasError() {
 		// Set ID for delete to run
 		d.SetId(fmt.Sprint(vlan.Id))
-		for _, d := range resourceVlanDelete(ctx, d, m) {
-			diags = append(diags, d)
-		}
+		diags = append(diags, resourceVlanDelete(ctx, d, m)...)
 		d.SetId("")
 
 		return diags
@@ -99,14 +101,14 @@ func resourceVlanRead(ctx context.Context, d *schema.ResourceData, m interface{}
 			d.SetId("")
 			return diags
 		}
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("GET /vlan failed! (%s)\n\n %s", err, myErr.Body())
+		return diag.FromErr(formatSwaggerError(err, "GET /vlan/%d", vlanId))
 	}
 
 	valuesToSet := map[string]interface{}{
 		"port_ids":                SetFromInt32List(vlan.PortIds),
 		"facility_code":           vlan.FacilityCode,
 		"private_networking_only": vlan.PrivateNetworkingOnly,
+		"tag_id":                  vlan.VlanId,
 	}
 
 	for k, v := range valuesToSet {
@@ -118,6 +120,25 @@ func resourceVlanRead(ctx context.Context, d *schema.ResourceData, m interface{}
 	return diags
 }
 
+func (hv *Client) updateVlanPorts(
+	payload swagger.VlanUpdate,
+	timeout time.Duration,
+	vlanId int32,
+) error {
+	// Update ports
+	task, _, err := hv.client.VLANApi.PutVlanIdResource(hv.auth, vlanId, payload, nil)
+	if err != nil {
+		return formatSwaggerError(err, "PUT /vlan/%d", vlanId)
+	}
+
+	// Wait for task to finish
+	if _, err := waitForNetworkTaskByClient(hv.auth, timeout, hv, task.TaskId); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func _updateVlanPorts(
 	ctx context.Context,
 	hv *Client,
@@ -125,22 +146,12 @@ func _updateVlanPorts(
 	vlanId int32,
 ) diag.Diagnostics {
 	// Update ports
-	updatePayload := makeUpdatePayload(d)
-	task, _, err := hv.client.VLANApi.PutVlanIdResource(hv.auth, vlanId, updatePayload, nil)
+	updatePayload := makeUpdateVlanPayload(d)
 
-	// Append errors if PUT or network task fails
-	if err != nil {
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("PUT /vlan failed! (%s)\n\n %s", err, myErr.Body())
+	if err := hv.updateVlanPorts(updatePayload, d.Timeout(schema.TimeoutCreate), vlanId); err != nil {
+		return diag.FromErr(err)
 	}
-
-	// Wait for task to finish
-	_, err = waitForNetworkTaskByClient(hv.auth, d.Timeout(schema.TimeoutCreate), hv, task.TaskId)
-	if err != nil {
-		return diag.Errorf("Waiting for vlan update failed! (%s)", err)
-	}
-
-	return diag.Diagnostics{}
+	return nil
 }
 
 func resourceVlanUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
@@ -177,7 +188,7 @@ func resourceVlanDelete(ctx context.Context, d *schema.ResourceData, m interface
 	}
 
 	// Remove ports if need be
-	if len(makeUpdatePayload(d).PortIds) > 0 {
+	if len(makeUpdateVlanPayload(d).PortIds) > 0 {
 		log.Printf("Removing ports before deleting vlan")
 
 		if err := d.Set("port_ids", SetFromInt32List([]int32{})); err != nil {
@@ -199,8 +210,7 @@ func resourceVlanDelete(ctx context.Context, d *schema.ResourceData, m interface
 			d.SetId("")
 			return diags
 		}
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("DELETE /vlan/%d failed! (%s)\n\n %s", vlanId, err, myErr.Body())
+		return diag.FromErr(formatSwaggerError(err, "DELETE /vlan/%d", vlanId))
 	}
 
 	// Delete resource from state
@@ -232,7 +242,7 @@ func SetFromInt32List(items []int32) *schema.Set {
 	return schema.NewSet(schema.HashInt, intList)
 }
 
-func makeUpdatePayload(d *schema.ResourceData) swagger.VlanUpdate {
+func makeUpdateVlanPayload(d *schema.ResourceData) swagger.VlanUpdate {
 	portIds := make([]int32, 0)
 
 	if portIdSet, ok := d.GetOk("port_ids"); ok {
@@ -257,7 +267,7 @@ func waitForNetworkTaskByClient(
 			var matchedTask *swagger.NetworkTaskDump
 			tasks, _, err := hv.client.NetworkApi.GetNetworkTaskClientResource(ctx, nil)
 			if err != nil {
-				return nil, "", err
+				return nil, "", formatSwaggerError(err, "network/status (taskId %s)", taskId)
 			}
 
 			for _, task := range tasks {
@@ -267,7 +277,7 @@ func waitForNetworkTaskByClient(
 			}
 
 			if matchedTask == nil {
-				return nil, "Failed", errors.New("could not find network task")
+				return nil, "Failed", errors.New(fmt.Sprintf("could not find network task %s", taskId))
 			}
 
 			return matchedTask, matchedTask.Result, nil

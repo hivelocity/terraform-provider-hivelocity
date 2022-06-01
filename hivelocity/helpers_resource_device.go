@@ -11,6 +11,15 @@ import (
 	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
 
+type DeviceMetadata struct {
+	isReloadFlag bool
+	spsStatus    string
+}
+
+func (m *DeviceMetadata) isReload() bool {
+	return m.isReloadFlag || m.spsStatus == "Reloading"
+}
+
 // Return device tags
 func getTags(d *schema.ResourceData, deviceKey string) []string {
 	key := fmt.Sprintf("%stags", deviceKey)
@@ -112,24 +121,23 @@ func waitForDevicePowerOff(d *schema.ResourceData, hv *Client, deviceId int32) (
 	return waitForDevice.WaitForState()
 }
 
-func waitForDeviceReload(d *schema.ResourceData, hv *Client, deviceId int32) (interface{}, error) {
+func (hv *Client) waitForDeviceReload(deviceId int32, d *schema.ResourceData) (string, error) {
 	waitForDevice := &resource.StateChangeConf{
 		Pending: []string{"waiting"},
 		Target:  []string{"ok"},
 		Refresh: func() (interface{}, string, error) {
-			device, _, err := hv.client.DeviceApi.GetDeviceIdResource(hv.auth, deviceId, nil)
+			metadata, err := hv.getDeviceMetadata(deviceId)
 			if err != nil {
-				return 0, "", err
+				return nil, "", err
 			}
-			if device.Metadata != nil {
-				metadataValue := *(device.Metadata)
-				metadata := metadataValue.(map[string]interface{})
-				spsStatus, ok := metadata["sps_status"]
-				if ok && spsStatus == "InUse" {
-					return device, "ok", nil
-				}
+			switch metadata.spsStatus {
+			case "Failed":
+				return metadata, "failed", nil
+			case "InUse":
+				return metadata, "ok", nil
+			default:
+				return metadata, "waiting", nil
 			}
-			return nil, "waiting", nil
 		},
 		Timeout:                   d.Timeout(schema.TimeoutCreate),
 		Delay:                     30 * time.Second,
@@ -137,7 +145,13 @@ func waitForDeviceReload(d *schema.ResourceData, hv *Client, deviceId int32) (in
 		ContinuousTargetOccurence: 1,
 		NotFoundChecks:            360, // 1h timeout / 10s delay between requests
 	}
-	return waitForDevice.WaitForState()
+	ret, err := waitForDevice.WaitForState()
+	if err != nil {
+		return "", err
+	}
+	metadata := ret.(*DeviceMetadata)
+
+	return metadata.spsStatus, nil
 }
 
 // Returns true if deviceId is contained in newDevices list
@@ -256,70 +270,268 @@ func fieldHasChange(fieldName string, d *schema.ResourceData, deviceKey string) 
 	return d.HasChange(key)
 }
 
-// Update/Reload a device
-func updateDevice(hv *Client, d *schema.ResourceData, deviceKey string, skipReload bool) error {
-	deviceId := int32(fieldGet("device_id", d, deviceKey).(int))
+func isPowerOffError(err error) bool {
+	if formattedErr, ok := err.(FormattedSwaggerError); ok {
+		err = formattedErr.origError
+	}
 
-	payload := swagger.BareMetalDeviceUpdate{
+	if err, ok := err.(swagger.GenericSwaggerError); ok {
+		contents := string(err.Body())
+		return strings.Contains(strings.ToLower(contents), "power off device")
+	}
+	return false
+}
+
+func (hv *Client) doPowerOff(deviceId int32, d *schema.ResourceData) error {
+	devicePower, _, err := hv.client.DeviceApi.GetPowerResource(hv.auth, int32(deviceId), nil)
+	if err != nil {
+		myErr, _ := err.(swagger.GenericSwaggerError)
+		return fmt.Errorf("GET /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
+	}
+
+	if fmt.Sprint(devicePower.PowerStatus) == "ON" {
+		if _, _, err := hv.client.DeviceApi.PostPowerResource(hv.auth, int32(deviceId), "shutdown", nil); err != nil {
+			myErr, _ := err.(swagger.GenericSwaggerError)
+			return fmt.Errorf("POST /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
+		}
+
+		// Power status will transition to PENDING, then OFF
+		if _, err := waitForDevicePowerOff(d, hv, int32(deviceId)); err != nil {
+			return fmt.Errorf("error powering off device %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(deviceId), err)
+		}
+	}
+	return nil
+}
+
+type FormattedSwaggerError struct {
+	origError error
+	msg       string
+}
+
+func (e FormattedSwaggerError) Error() string {
+	return e.msg
+}
+
+// formatSwaggerError takes an error that could be a swagger error and formats appropriately. This is used for
+// error handling around direct swagger client calls, so helper functions that may use the swagger client can continue
+// to return `error` without juggling `diag.Diagnostics` that may or may not be needed.
+func formatSwaggerError(err error, msg string, a ...interface{}) FormattedSwaggerError {
+	fmtStr := fmt.Sprintf("%s (%s)", fmt.Sprintf(msg, a...), err)
+
+	if swagError, ok := err.(swagger.GenericSwaggerError); ok {
+		fmtStr += "\n" + string(swagError.Body())
+	}
+
+	return FormattedSwaggerError{
+		origError: err,
+		msg:       fmtStr,
+	}
+}
+
+func isMetadataValueTruthyString(value string) bool {
+	switch value {
+	case "":
+	case "0":
+	case "false":
+		return false
+	}
+	return true
+}
+
+func (hv *Client) getDeviceMetadata(deviceId int32) (*DeviceMetadata, error) {
+	deviceDump, _, err := hv.client.DeviceApi.GetDeviceIdResource(hv.auth, deviceId, nil)
+	if err != nil {
+		return nil, formatSwaggerError(err, "GET /device/%d", deviceId)
+	}
+
+	m := (*deviceDump.Metadata).(map[string]interface{})
+
+	reloadStr := m["is_reload"].(string)
+
+	return &DeviceMetadata{
+		isReloadFlag: isMetadataValueTruthyString(reloadStr),
+		spsStatus:    m["sps_status"].(string),
+	}, nil
+}
+
+func getBareMetalUpdatePayloadFromGroup(d *schema.ResourceData, deviceKey string) swagger.BareMetalDeviceUpdate {
+	return swagger.BareMetalDeviceUpdate{
 		Hostname:       fieldGet("hostname", d, deviceKey).(string),
 		OsName:         fieldGet("os_name", d, deviceKey).(string),
 		Script:         fieldGet("script", d, deviceKey).(string),
+		IgnitionId:     int32(fieldGet("ignition_id", d, deviceKey).(int)),
+		PrivateNetwork: fieldGet("private_network", d, deviceKey).(string),
 		PublicSshKeyId: int32(fieldGet("public_ssh_key_id", d, deviceKey).(int)),
 		Tags:           getTags(d, deviceKey),
 	}
+}
 
-	reloadRequired := false
+func getBareMetalUpdatePayload(d *schema.ResourceData) swagger.BareMetalDeviceUpdate {
+	return getBareMetalUpdatePayloadFromGroup(d, "")
+}
 
-	if fieldHasChange("hostname", d, deviceKey) {
-		reloadRequired = true
+// VlanPorts describes a VLAN and ports for a specific device
+type VlanPorts struct {
+	deviceId int32
+	vlan     *swagger.Vlan
+	ports    map[int32]*swagger.DevicePort
+}
+
+func (vp *VlanPorts) getPortIdListWithoutDevicePorts() []int32 {
+	newList := make([]int32, 0, len(vp.vlan.PortIds))
+	for _, portId := range vp.vlan.PortIds {
+		if _, ok := vp.ports[portId]; !ok {
+			newList = append(newList, portId)
+		}
+	}
+	return newList
+}
+
+// removeVlanPorts removes all ports from designated VLANs in vlanPorts
+func (hv *Client) removeVlanPorts(
+	vlanPorts *map[int32]VlanPorts,
+	timeout time.Duration,
+) error {
+	for _, entry := range *vlanPorts {
+		newPortIds := entry.getPortIdListWithoutDevicePorts()
+
+		payload := swagger.VlanUpdate{PortIds: newPortIds}
+
+		if err := hv.updateVlanPorts(payload, timeout, entry.vlan.Id); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// restoreVlanPorts restores ports that were removed with removeVlanPorts
+func (hv *Client) restoreVlanPorts(
+	vlanPorts *map[int32]VlanPorts,
+	timeout time.Duration,
+) error {
+	for _, entry := range *vlanPorts {
+		payload := swagger.VlanUpdate{PortIds: entry.vlan.PortIds}
+
+		if err := hv.updateVlanPorts(payload, timeout, entry.vlan.Id); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// getVlanIdToVlanPortMap returns a list of VLANs and ports that belong to one specific device rather than all devices
+// for the client.
+func (hv *Client) getVlanIdToVlanPortMap(deviceId int32) (map[int32]VlanPorts, error) {
+	vlanIdToPorts := make(map[int32]VlanPorts)
+
+	// Grab all ports for device
+	portMap := make(map[int32]*swagger.DevicePort)
+	ports, _, err := hv.client.DeviceApi.GetDevicePortResource(hv.auth, deviceId, nil)
+	if err != nil {
+		return nil, formatSwaggerError(err, "GET /device/%d/ports", deviceId)
 	}
 
-	if fieldHasChange("os_name", d, deviceKey) {
-		reloadRequired = true
+	// Map ports by their ID
+	for _, port := range ports {
+		portMap[port.PortId] = &port
 	}
 
-	if fieldHasChange("public_ssh_key_id", d, deviceKey) {
-		reloadRequired = true
+	// Get all vlans for client
+	vlans, _, err := hv.client.VLANApi.GetVlanResource(hv.auth, nil)
+	if err != nil {
+		return nil, formatSwaggerError(err, "GET /vlan")
 	}
 
-	if fieldHasChange("script", d, deviceKey) {
-		reloadRequired = true
+	// Record ports for every matching port ID
+	for _, vlan := range vlans {
+		for _, portId := range vlan.PortIds {
+			if port, ok := portMap[portId]; ok {
+				if _, ok := vlanIdToPorts[vlan.Id]; !ok {
+					vlanIdToPorts[vlan.Id] = VlanPorts{
+						deviceId: deviceId,
+						vlan:     &vlan,
+						ports:    make(map[int32]*swagger.DevicePort),
+					}
+				}
+
+				vlanIdToPorts[vlan.Id].ports[portId] = port
+			}
+		}
 	}
 
-	// Used when updating just the tags after device creation
-	if skipReload {
-		reloadRequired = false
+	return vlanIdToPorts, nil
+}
+
+// Update/Reload a device, making sure to remove device ports from any VLAN and turning off device if necessary
+func (hv *Client) _updateDevice(
+	deviceId int32,
+	updatePayload swagger.BareMetalDeviceUpdate,
+	d *schema.ResourceData,
+) error {
+	_internalUpdateDevice := func() error {
+		if _, _, err := hv.client.BareMetalDevicesApi.PutBareMetalDeviceIdResource(
+			hv.auth,
+			deviceId,
+			updatePayload,
+			nil,
+		); err != nil {
+			return formatSwaggerError(err, "PUT /bare-metal-devices/%d", deviceId)
+		}
+		return nil
+	}
+	requiresPowerOff := false
+
+	// Check if device has ports in any VLANs
+	vlanPortResults, err := hv.getVlanIdToVlanPortMap(deviceId)
+	if err != nil {
+		return err
+	}
+
+	// Remove device's ports from all assigned vlans
+	if len(vlanPortResults) > 0 {
+		if err := hv.removeVlanPorts(&vlanPortResults, d.Timeout(schema.TimeoutDelete)); err != nil {
+			return err
+		}
+	}
+
+	// Attempt update, if it errors due to power on, then power off first
+	if err := _internalUpdateDevice(); err != nil {
+		if !isPowerOffError(err) {
+			return err
+		} else {
+			requiresPowerOff = true
+		}
 	}
 
 	// If a reload is required, it's necessary to turn the device off first
-	if reloadRequired {
-		devicePower, _, err := hv.client.DeviceApi.GetPowerResource(hv.auth, int32(deviceId), nil)
-		if err != nil {
-			myErr, _ := err.(swagger.GenericSwaggerError)
-			return fmt.Errorf("GET /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
+	if requiresPowerOff {
+		if err := hv.doPowerOff(deviceId, d); err != nil {
+			return err
 		}
 
-		if fmt.Sprint(devicePower.PowerStatus) == "ON" {
-			if _, _, err := hv.client.DeviceApi.PostPowerResource(hv.auth, int32(deviceId), "shutdown", nil); err != nil {
-				myErr, _ := err.(swagger.GenericSwaggerError)
-				return fmt.Errorf("POST /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
-			}
-
-			// Power status will transition to PENDING, then OFF
-			if _, err := waitForDevicePowerOff(d, hv, int32(deviceId)); err != nil {
-				return fmt.Errorf("error powering off device %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(deviceId), err)
-			}
+		// Try update again
+		if err := _internalUpdateDevice(); err != nil {
+			return err
 		}
 	}
 
-	if _, _, err := hv.client.BareMetalDevicesApi.PutBareMetalDeviceIdResource(hv.auth, int32(deviceId), payload, nil); err != nil {
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return fmt.Errorf("PUT /bare-metal-devices/%d failed! (%s)\n\n %s", deviceId, err, myErr.Body())
+	// Query if device is reloading, if so then wait for reload
+	metadata, err := hv.getDeviceMetadata(deviceId)
+	if err != nil {
+		return err
 	}
 
-	if reloadRequired {
-		if _, err := waitForDeviceReload(d, hv, int32(deviceId)); err != nil {
+	// If device metadata indicates a reload is taking place, then wait
+	if metadata.isReload() {
+		if _, err := hv.waitForDeviceReload(deviceId, d); err != nil {
 			return fmt.Errorf("error reloading device %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(deviceId), err)
+		}
+	}
+
+	// Restore VLAN ports if any
+	if len(vlanPortResults) > 0 {
+		if err := hv.restoreVlanPorts(&vlanPortResults, d.Timeout(schema.TimeoutDelete)); err != nil {
+			return err
 		}
 	}
 
