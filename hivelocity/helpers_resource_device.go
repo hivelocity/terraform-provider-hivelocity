@@ -43,7 +43,7 @@ func waitForDevices(timeout time.Duration, hv *Client, orderId int32, newDevices
 		Refresh: func() (interface{}, string, error) {
 			devices, _, err := hv.client.BareMetalDevicesApi.GetBareMetalDeviceResource(hv.auth, nil)
 			if err != nil {
-				return 0, "", err
+				return 0, "", formatSwaggerError(err, "GET /bare-metal-devices/")
 			}
 
 			// Look for the number of devices specified
@@ -66,7 +66,7 @@ func waitForDevices(timeout time.Duration, hv *Client, orderId int32, newDevices
 	return waitForDevice.WaitForState()
 }
 
-func waitForOrder(timeout time.Duration, hv *Client, orderId int32) (interface{}, error) {
+func waitForOrder(timeout time.Duration, hv *Client, orderId int32) (string, error) {
 	waitForOrder := &resource.StateChangeConf{
 		Pending: []string{
 			"verification",
@@ -80,7 +80,7 @@ func waitForOrder(timeout time.Duration, hv *Client, orderId int32) (interface{}
 		Refresh: func() (interface{}, string, error) {
 			resp, _, err := hv.client.OrderApi.GetOrderIdResource(hv.auth, orderId, nil)
 			if err != nil {
-				return 0, "", err
+				return "", "", formatSwaggerError(err, "/order/%d", orderId)
 			}
 			return resp, resp.Status, nil
 		},
@@ -89,7 +89,11 @@ func waitForOrder(timeout time.Duration, hv *Client, orderId int32) (interface{}
 		MinTimeout:                5 * time.Second,
 		ContinuousTargetOccurence: 1,
 	}
-	return waitForOrder.WaitForState()
+	status, err := waitForOrder.WaitForState()
+	if statusStr, ok := status.(string); ok {
+		return statusStr, err
+	}
+	return "", err
 }
 
 func waitForDevicePowerOff(d *schema.ResourceData, hv *Client, deviceId int32) (interface{}, error) {
@@ -121,7 +125,7 @@ func waitForDevicePowerOff(d *schema.ResourceData, hv *Client, deviceId int32) (
 	return waitForDevice.WaitForState()
 }
 
-func (hv *Client) waitForDeviceReload(deviceId int32, d *schema.ResourceData) (string, error) {
+func (hv *Client) waitForDevice(deviceId int32, timeout time.Duration) (string, error) {
 	waitForDevice := &resource.StateChangeConf{
 		Pending: []string{"waiting"},
 		Target:  []string{"ok"},
@@ -139,7 +143,7 @@ func (hv *Client) waitForDeviceReload(deviceId int32, d *schema.ResourceData) (s
 				return metadata, "waiting", nil
 			}
 		},
-		Timeout:                   d.Timeout(schema.TimeoutCreate),
+		Timeout:                   timeout,
 		Delay:                     30 * time.Second,
 		MinTimeout:                10 * time.Second,
 		ContinuousTargetOccurence: 1,
@@ -239,14 +243,13 @@ func createDevices(hv *Client, orderGroupId int32, devicesToCreate []map[string]
 
 	// Wait for for order to start provisioning
 	orderId := bareMetalDeviceResponse.Devices[0].OrderId
-	if _, err := waitForOrder(BareMetalDeviceTimeout, hv, orderId); err != nil {
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		if strings.Contains(fmt.Sprint(err), "'cancelled'") {
-			return fmt.Errorf("your deployment (order %d) has been 'cancelled'. Please contact Hivelocity support if you believe this is a mistake.\n\n %s",
-				orderId, myErr.Body())
+	if status, err := waitForOrder(BareMetalDeviceTimeout, hv, orderId); err != nil {
+		if status == "cancelled" {
+			return fmt.Errorf("your deployment (order %d) has been 'cancelled'. Please contact Hivelocity"+
+				" support if you believe this is a mistake.\n\n %s",
+				orderId, err)
 		}
-		return fmt.Errorf("error provisioning order %d. The Hivelocity team will investigate:\n\n%s\n\n %s",
-			orderId, err, myErr.Body())
+		return err
 	}
 
 	// Wait for devices to finish provisioning
@@ -338,13 +341,21 @@ func isMetadataValueTruthyString(value string) bool {
 	return true
 }
 
-func (hv *Client) getDeviceMetadata(deviceId int32) (*DeviceMetadata, error) {
+func (hv *Client) getDevice(deviceId int32) (*swagger.DeviceDump, error) {
 	deviceDump, _, err := hv.client.DeviceApi.GetDeviceIdResource(hv.auth, deviceId, nil)
 	if err != nil {
 		return nil, formatSwaggerError(err, "GET /device/%d", deviceId)
 	}
+	return &deviceDump, nil
+}
 
-	m := (*deviceDump.Metadata).(map[string]interface{})
+func (hv *Client) getDeviceMetadata(deviceId int32) (*DeviceMetadata, error) {
+	var m map[string]interface{}
+
+	if deviceDump_, err := hv.getDevice(deviceId); err != nil {
+		m = (*deviceDump_.Metadata).(map[string]interface{})
+		return nil, err
+	}
 
 	reloadStr := m["is_reload"].(string)
 
@@ -523,7 +534,7 @@ func (hv *Client) _updateDevice(
 
 	// If device metadata indicates a reload is taking place, then wait
 	if metadata.isReload() {
-		if _, err := hv.waitForDeviceReload(deviceId, d); err != nil {
+		if _, err := hv.waitForDevice(deviceId, d.Timeout(schema.TimeoutUpdate)); err != nil {
 			return fmt.Errorf("error reloading device %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(deviceId), err)
 		}
 	}

@@ -3,13 +3,12 @@ package hivelocity
 import (
 	"context"
 	"fmt"
-	"strconv"
-	"strings"
-	"time"
-
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
+	"strconv"
+	"time"
 )
 
 // BareMetalDeviceTimeout is the timeout for creating/updating devices
@@ -144,58 +143,76 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 
 func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	hv, _ := m.(*Client)
-
 	var tags []string
 	for _, tag := range d.Get("tags").([]interface{}) {
 		tags = append(tags, tag.(string))
 	}
 
-	payload := swagger.BareMetalDeviceCreate{
-		ProductId:      int32(d.Get("product_id").(int)),
-		Hostname:       d.Get("hostname").(string),
-		OsName:         d.Get("os_name").(string),
-		LocationName:   d.Get("location_name").(string),
-		Script:         d.Get("script").(string),
-		Period:         d.Get("period").(string),
-		PublicSshKeyId: int32(d.Get("public_ssh_key_id").(int)),
-		ForceDeviceId:  int32(d.Get("force_device_id").(int)),
-		IgnitionId:     int32(d.Get("ignition_id").(int)),
-		// PrivateNetwork: d.Get("private_network").(string),
-		Tags: tags,
-	}
+	// Load existing deviceId if any
+	var deviceId, orderId int32
+	if d.Id() != "" && d.Get("order_id") != "" {
+		deviceId_, deviceErr := strconv.Atoi(d.Id())
+		orderId_, orderErr := strconv.Atoi(d.Get("order_id").(string))
 
-	bareMetalDevice, _, err := hv.client.BareMetalDevicesApi.PostBareMetalDeviceResource(hv.auth, payload, nil)
-	if err != nil {
-		d.SetId("")
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("POST /bare-metal-devices failed! (%s)\n\n %s", err, myErr.Body())
-	}
-
-	timeout := d.Timeout(schema.TimeoutCreate)
-	_, err = waitForOrder(timeout, hv, bareMetalDevice.OrderId)
-	if err != nil {
-		d.SetId("")
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		if strings.Contains(fmt.Sprint(err), "'cancelled'") {
-			return diag.Errorf("Your deployment (order %d) has been 'cancelled'. Please contact Hivelocity support if you believe this is a mistake.\n\n %s",
-				bareMetalDevice.OrderId, myErr.Body())
+		if deviceErr == nil && orderErr == nil {
+			deviceId = int32(deviceId_)
+			orderId = int32(orderId_)
+			tflog.Warn(ctx, "Device was tainted and may have failed after deployment")
+		} else {
+			tflog.Error(ctx, "Invalid device ID or order ID from tainted device")
+			d.SetId("")
 		}
-		return diag.Errorf("Error provisioning order %d. The Hivelocity team will investigate:\n\n%s\n\n %s",
-			bareMetalDevice.OrderId, err, myErr.Body())
+	} else {
+		tflog.Info(ctx, "Creating new device device resource")
 	}
 
-	newDevice := []swagger.BareMetalDevice{bareMetalDevice}
-	devices, err := waitForDevices(timeout, hv, bareMetalDevice.OrderId, newDevice)
-	if err != nil {
-		d.SetId("")
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("Error finding devices for order %d. The Hivelocity team will investigate:\n\n%s\n\n %s",
-			bareMetalDevice.OrderId, err, myErr.Body())
+	if deviceId == 0 {
+		// Create if no existing ID
+		payload := swagger.BareMetalDeviceCreate{
+			ProductId:      int32(d.Get("product_id").(int)),
+			Hostname:       d.Get("hostname").(string),
+			OsName:         d.Get("os_name").(string),
+			LocationName:   d.Get("location_name").(string),
+			Script:         d.Get("script").(string),
+			Period:         d.Get("period").(string),
+			PublicSshKeyId: int32(d.Get("public_ssh_key_id").(int)),
+			ForceDeviceId:  int32(d.Get("force_device_id").(int)),
+			IgnitionId:     int32(d.Get("ignition_id").(int)),
+			// PrivateNetwork: d.Get("private_network").(string),
+			Tags: tags,
+		}
+
+		bareMetalDevice, _, err := hv.client.BareMetalDevicesApi.PostBareMetalDeviceResource(hv.auth, payload, nil)
+		if err != nil {
+			d.SetId("")
+			err = formatSwaggerError(err, "POST /bare-metal-devices")
+			return diag.FromErr(err)
+		}
+		deviceId = bareMetalDevice.DeviceId
+		orderId = bareMetalDevice.OrderId
+
+		// Set device ID and order ID after creation so any errors before the function completes will mark it as
+		// "tainted" so we can wait on the device again. Though this does not work at the moment because of device
+		// statuses being inaccessible for new devices
+		d.SetId(fmt.Sprintf("%d", deviceId))
+		d.Set("order_id", orderId)
 	}
 
-	newDeviceId := devices.([]swagger.BareMetalDevice)[0].DeviceId
-	d.SetId(fmt.Sprint(newDeviceId))
-	d.Set("device_id", newDeviceId)
+	// Wait for order if not complete
+	timeout := d.Timeout(schema.TimeoutCreate)
+	if status, err := waitForOrder(timeout, hv, orderId); err != nil {
+		if status == "cancelled" {
+			return diag.Errorf("Your deployment (order %d) has been 'cancelled'. Please contact Hivelocity"+
+				"support if you believe this is a mistake.\n\n%s",
+				orderId, err)
+		}
+		return diag.FromErr(err)
+	}
+
+	// Wait for device, if not provisioned
+	if _, err := hv.waitForDevice(deviceId, timeout); err != nil {
+		return diag.FromErr(err)
+	}
 
 	return resourceBareMetalDeviceRead(ctx, d, m)
 }

@@ -202,7 +202,7 @@ func resourceVlanDelete(ctx context.Context, d *schema.ResourceData, m interface
 		}
 	}
 
-	_, response, err := hv.client.VLANApi.DeleteVlanIdResource(hv.auth, vlanId, nil)
+	response, err := hv.client.VLANApi.DeleteVlanIdResource(hv.auth, vlanId)
 	if err != nil {
 		// If resource was deleted outside terraform, remove it from state and exit gracefully
 		if response != nil && response.StatusCode == 404 {
