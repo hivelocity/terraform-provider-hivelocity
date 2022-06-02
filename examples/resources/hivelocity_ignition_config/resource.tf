@@ -13,7 +13,7 @@ provider "hivelocity" {
 
 resource "hivelocity_ignition" "demo" {
   name     = "This is my Terraform Ignition Config"
-  contents = jsonencode({"ignition": {"version": "2.4.0"},"systemd": {"units": [{"name": "example.service","enabled": true,"contents": "[Service]\nType=oneshot\nExecStart=/usr/bin/echo Hello World\n\n[Install]\nWantedBy=multi-user.target"}]}})
+  contents = file("${path.module}/ignition.json")
 }
 
 output "demo_ignition" {

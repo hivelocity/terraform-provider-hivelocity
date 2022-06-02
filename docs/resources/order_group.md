@@ -58,40 +58,44 @@ output "output_order_group" {
 
 ### Required
 
-- **bare_metal_device** (Block List, Min: 1) A list of Bare Metal Devices to deploy (see [below for nested schema](#nestedblock--bare_metal_device))
-- **name** (String) Name of this Order Group
-- **same_rack** (Boolean) Devices will be placed in the same rack
+- `bare_metal_device` (Block List, Min: 1) A list of Bare Metal Devices to deploy (see [below for nested schema](#nestedblock--bare_metal_device))
+- `name` (String) Name of this Order Group
+- `same_rack` (Boolean) Devices will be placed in the same rack
 
 ### Optional
 
-- **id** (String) The ID of this resource.
-- **timeouts** (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
+- `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
+
+### Read-Only
+
+- `id` (String) The ID of this resource.
 
 <a id="nestedblock--bare_metal_device"></a>
 ### Nested Schema for `bare_metal_device`
 
 Required:
 
-- **hostname** (String) Hostname for this device
-- **location_name** (String) Deploy device in this location
-- **os_name** (String) Operating system to install on device
-- **product_id** (Number) Product ID to pick from the stock
+- `hostname` (String) Hostname for this device
+- `location_name` (String) Deploy device in this location
+- `os_name` (String) Operating system to install on device
+- `product_id` (Number) Product ID to pick from the stock
 
 Optional:
 
-- **device_id** (Number) Device ID
-- **force_device_id** (Number) Force deployment of this Device ID (internal use only)
-- **last_updated** (String) Last time this device was updated
-- **order_id** (Number) Order ID
-- **period** (String) Billing period for device
-- **power_status** (String) Power status
-- **primary_ip** (String) Primary IP of device
-- **product_name** (String) Product Name
-- **public_ssh_key_id** (Number) ID of a SSH Key to apply for device
-- **script** (String) Post-install script for device
-- **service_id** (Number) Service ID
-- **tags** (List of String) Tags to apply for device
-- **vlan_id** (Number, Deprecated) VLAN ID
+- `device_id` (Number) Device ID
+- `force_device_id` (Number) Force deployment of this Device ID (internal use only)
+- `ignition_id` (Number) IgnitionConfig ID
+- `last_updated` (String) Last time this device was updated
+- `order_id` (Number) Order ID
+- `period` (String) Billing period for device
+- `power_status` (String) Power status
+- `primary_ip` (String) Primary IP of device
+- `product_name` (String) Product Name
+- `public_ssh_key_id` (Number) ID of a SSH Key to apply for device
+- `script` (String) Post-install script for device
+- `service_id` (Number) Service ID
+- `tags` (List of String) Tags to apply for device
+- `vlan_id` (Number, Deprecated) VLAN ID
 
 
 <a id="nestedblock--timeouts"></a>
@@ -99,6 +103,6 @@ Optional:
 
 Optional:
 
-- **create** (String)
+- `create` (String)
 
 

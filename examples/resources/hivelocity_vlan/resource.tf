@@ -22,10 +22,6 @@ resource "hivelocity_bare_metal_device" "database" {
 }
 
 resource "hivelocity_vlan" "demo" {
-  device_ids    = [
-      hivelocity_bare_metal_device.webserver.device_id,
-      hivelocity_bare_metal_device.database.device_id,
-  ]
 }
 
 output "demo_vlan" {

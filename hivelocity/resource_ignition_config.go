@@ -14,6 +14,8 @@ import (
 
 func resourceIgnitionConfig(forceNew bool) *schema.Resource {
 	return &schema.Resource{
+		Description: "`hivelocity_ignition_config` holds the contents of an CoreOS ignition file used for CoreOS/Flatcar" +
+			" installs.",
 		Timeouts: &schema.ResourceTimeout{
 			Create: schema.DefaultTimeout(1 * time.Minute),
 		},
@@ -28,9 +30,10 @@ func resourceIgnitionConfig(forceNew bool) *schema.Resource {
 				Optional: true,
 			},
 			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: forceNew,
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    forceNew,
+				Description: "Name of ignition file resource",
 			},
 			"contents": &schema.Schema{
 				Type:     schema.TypeString,
@@ -52,6 +55,7 @@ func resourceIgnitionConfig(forceNew bool) *schema.Resource {
 					}
 					return normStr
 				},
+				Description: "String of the JSON contents of the ignition file",
 			},
 		},
 	}

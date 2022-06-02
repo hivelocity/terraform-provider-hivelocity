@@ -36,17 +36,14 @@ output "initial_creds" {
 
 ### Required
 
-- **device_id** (Number)
-
-### Optional
-
-- **id** (String) The ID of this resource.
+- `device_id` (Number)
 
 ### Read-Only
 
-- **locker_url** (String)
-- **password** (String)
-- **port** (Number)
-- **user** (String)
+- `id` (String) The ID of this resource.
+- `locker_url` (String)
+- `password` (String)
+- `port` (Number)
+- `user` (String)
 
 

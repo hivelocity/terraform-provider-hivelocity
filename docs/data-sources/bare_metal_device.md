@@ -34,33 +34,35 @@ output "my_bare_metal" {
 
 ### Optional
 
-- **device_id** (Number)
-- **filter** (Block Set) (see [below for nested schema](#nestedblock--filter))
-- **first** (Boolean)
-- **hostname** (String)
-- **id** (String) The ID of this resource.
-- **last_updated** (String)
-- **location_name** (String)
-- **order_id** (Number)
-- **os_name** (String)
-- **period** (String)
-- **power_status** (String)
-- **primary_ip** (String)
-- **product_id** (Number)
-- **product_name** (String)
-- **public_ssh_key_id** (Number)
-- **script** (String)
-- **service_id** (Number)
-- **tags** (List of String)
-- **vlan_id** (Number)
-- **ignition_ids** (List of Int)
+- `device_id` (Number)
+- `filter` (Block Set) (see [below for nested schema](#nestedblock--filter))
+- `first` (Boolean)
+- `hostname` (String)
+- `last_updated` (String)
+- `location_name` (String)
+- `order_id` (Number)
+- `os_name` (String)
+- `period` (String)
+- `power_status` (String)
+- `primary_ip` (String)
+- `product_id` (Number)
+- `product_name` (String)
+- `public_ssh_key_id` (Number)
+- `script` (String)
+- `service_id` (Number)
+- `tags` (List of String)
+- `vlan_id` (Number)
+
+### Read-Only
+
+- `id` (String) The ID of this resource.
 
 <a id="nestedblock--filter"></a>
 ### Nested Schema for `filter`
 
 Required:
 
-- **name** (String)
-- **values** (List of String)
+- `name` (String)
+- `values` (List of String)
 
 
