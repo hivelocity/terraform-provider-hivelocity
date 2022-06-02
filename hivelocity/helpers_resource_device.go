@@ -268,11 +268,6 @@ func fieldGet(fieldName string, d *schema.ResourceData, deviceKey string) interf
 	return d.Get(key)
 }
 
-func fieldHasChange(fieldName string, d *schema.ResourceData, deviceKey string) bool {
-	key := fmt.Sprintf("%s%s", deviceKey, fieldName)
-	return d.HasChange(key)
-}
-
 func isPowerOffError(err error) bool {
 	if formattedErr, ok := err.(FormattedSwaggerError); ok {
 		err = formattedErr.origError
@@ -408,7 +403,7 @@ func (hv *Client) removeVlanPorts(
 
 		payload := swagger.VlanUpdate{PortIds: newPortIds}
 
-		if err := hv.updateVlanPorts(payload, timeout, entry.vlan.Id); err != nil {
+		if err := hv.updateVlanPorts(payload, timeout, entry.vlan.VlanId); err != nil {
 			return err
 		}
 	}
@@ -423,7 +418,7 @@ func (hv *Client) restoreVlanPorts(
 	for _, entry := range *vlanPorts {
 		payload := swagger.VlanUpdate{PortIds: entry.vlan.PortIds}
 
-		if err := hv.updateVlanPorts(payload, timeout, entry.vlan.Id); err != nil {
+		if err := hv.updateVlanPorts(payload, timeout, entry.vlan.VlanId); err != nil {
 			return err
 		}
 	}
@@ -457,15 +452,15 @@ func (hv *Client) getVlanIdToVlanPortMap(deviceId int32) (map[int32]VlanPorts, e
 	for _, vlan := range vlans {
 		for _, portId := range vlan.PortIds {
 			if port, ok := portMap[portId]; ok {
-				if _, ok := vlanIdToPorts[vlan.Id]; !ok {
-					vlanIdToPorts[vlan.Id] = VlanPorts{
+				if _, ok := vlanIdToPorts[vlan.VlanId]; !ok {
+					vlanIdToPorts[vlan.VlanId] = VlanPorts{
 						deviceId: deviceId,
 						vlan:     &vlan,
 						ports:    make(map[int32]*swagger.DevicePort),
 					}
 				}
 
-				vlanIdToPorts[vlan.Id].ports[portId] = port
+				vlanIdToPorts[vlan.VlanId].ports[portId] = port
 			}
 		}
 	}

@@ -64,21 +64,21 @@ func resourceVlanCreate(ctx context.Context, d *schema.ResourceData, m interface
 
 	// Update ports
 	if len(makeUpdateVlanPayload(d).PortIds) > 0 {
-		diags = append(diags, _updateVlanPorts(ctx, hv, d, vlan.Id)...)
+		diags = append(diags, _updateVlanPorts(ctx, hv, d, vlan.VlanId)...)
 	}
 
 	// If any errors happened, delete VLAN
 	if diags.HasError() {
 		// Set ID for delete to run
-		d.SetId(fmt.Sprint(vlan.Id))
+		d.SetId(fmt.Sprint(vlan.VlanId))
 		diags = append(diags, resourceVlanDelete(ctx, d, m)...)
 		d.SetId("")
 
 		return diags
 	}
 
-	log.Printf("[INFO] Created VLAN ID: %d", vlan.Id)
-	d.SetId(fmt.Sprint(vlan.Id))
+	log.Printf("[INFO] Created VLAN ID: %d", vlan.VlanId)
+	d.SetId(fmt.Sprint(vlan.VlanId))
 
 	return resourceVlanRead(ctx, d, m)
 }
@@ -108,7 +108,7 @@ func resourceVlanRead(ctx context.Context, d *schema.ResourceData, m interface{}
 		"port_ids":                SetFromInt32List(vlan.PortIds),
 		"facility_code":           vlan.FacilityCode,
 		"private_networking_only": vlan.PrivateNetworkingOnly,
-		"tag_id":                  vlan.VlanId,
+		"tag_id":                  vlan.VlanTag,
 	}
 
 	for k, v := range valuesToSet {
