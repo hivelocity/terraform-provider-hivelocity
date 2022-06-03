@@ -347,8 +347,9 @@ func (hv *Client) getDevice(deviceId int32) (*swagger.DeviceDump, error) {
 func (hv *Client) getDeviceMetadata(deviceId int32) (*DeviceMetadata, error) {
 	var m map[string]interface{}
 
-	if deviceDump_, err := hv.getDevice(deviceId); err != nil {
+	if deviceDump_, err := hv.getDevice(deviceId); err == nil {
 		m = (*deviceDump_.Metadata).(map[string]interface{})
+	} else {
 		return nil, err
 	}
 
