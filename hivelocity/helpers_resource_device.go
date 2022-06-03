@@ -352,11 +352,20 @@ func (hv *Client) getDeviceMetadata(deviceId int32) (*DeviceMetadata, error) {
 		return nil, err
 	}
 
-	reloadStr := m["is_reload"].(string)
+	isReloadFlag := false
+	spsStatus := ""
+
+	if reloadStr, ok := m["is_reload"].(string); ok {
+		isReloadFlag = isMetadataValueTruthyString(reloadStr)
+	}
+
+	if spsStatusStr, ok := m["sps_status"].(string); ok {
+		spsStatus = spsStatusStr
+	}
 
 	return &DeviceMetadata{
-		isReloadFlag: isMetadataValueTruthyString(reloadStr),
-		spsStatus:    m["sps_status"].(string),
+		isReloadFlag: isReloadFlag,
+		spsStatus:    spsStatus,
 	}, nil
 }
 
