@@ -3,12 +3,13 @@ package hivelocity
 import (
 	"context"
 	"fmt"
+	"strconv"
+	"time"
+
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
-	"strconv"
-	"time"
 )
 
 // BareMetalDeviceTimeout is the timeout for creating/updating devices
@@ -132,6 +133,12 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 				Type:        schema.TypeInt,
 				Optional:    true,
 			},
+			"bonded": {
+				Description: "When set, only prefer bonded devices",
+				Type:        schema.TypeBool,
+				Optional:    true,
+				ForceNew:    true,
+			},
 			// "private_network": {
 			// 	Description: "Private network and IP of device in CIDR notation",
 			// 	Type:        schema.TypeString,
@@ -178,6 +185,7 @@ func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, 
 			PublicSshKeyId: int32(d.Get("public_ssh_key_id").(int)),
 			ForceDeviceId:  int32(d.Get("force_device_id").(int)),
 			IgnitionId:     int32(d.Get("ignition_id").(int)),
+			BondingSupport: d.Get("bonded").(bool),
 			// PrivateNetwork: d.Get("private_network").(string),
 			Tags: tags,
 		}

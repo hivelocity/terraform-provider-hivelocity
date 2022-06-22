@@ -50,8 +50,9 @@ func resourceIgnitionConfig(forceNew bool) *schema.Resource {
 				},
 				StateFunc: func(i interface{}) string {
 					normStr, err := normalizeJsonString(i.(string))
+					// If an error happened then it's probably not a json string, so just return it
 					if err != nil {
-						panic(err)
+						return i.(string)
 					}
 					return normStr
 				},
