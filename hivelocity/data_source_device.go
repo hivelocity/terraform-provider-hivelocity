@@ -116,7 +116,7 @@ func dataSourceDeviceRead(ctx context.Context, d *schema.ResourceData, m interfa
 	devices = forceValuesToStringOfList(devices, "metadata")
 	devices = filterNonSchemaKeysForList(devices, buildDeviceSchema())
 
-	device, err := doFiltering(d, devices)
+	device, err := doFiltering(d, devices, nil)
 	if err != nil {
 		return diag.FromErr(err)
 	}

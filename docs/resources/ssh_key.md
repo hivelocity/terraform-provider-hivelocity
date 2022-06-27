@@ -37,20 +37,23 @@ output "demo_device" {
 
 ### Required
 
-- **name** (String)
-- **public_key** (String)
+- `name` (String)
+- `public_key` (String)
 
 ### Optional
 
-- **id** (String) The ID of this resource.
-- **ssh_key_id** (Number)
-- **timeouts** (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
+- `ssh_key_id` (Number)
+- `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
+
+### Read-Only
+
+- `id` (String) The ID of this resource.
 
 <a id="nestedblock--timeouts"></a>
 ### Nested Schema for `timeouts`
 
 Optional:
 
-- **create** (String)
+- `create` (String)
 
 

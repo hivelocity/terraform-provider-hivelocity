@@ -1,6 +1,7 @@
 package hivelocity
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/iancoleman/strcase"
@@ -67,4 +68,18 @@ func filterNonSchemaKeysForList(l []map[string]interface{}, schema map[string]*s
 		l[i] = filterNonSchemaKeys(l[i], schema)
 	}
 	return l
+}
+
+func normalizeJsonString(jsonStr string) (string, error) {
+	var config interface{}
+	if err := json.Unmarshal([]byte(jsonStr), &config); err != nil {
+		return "", err
+	}
+
+	normalized, err := json.MarshalIndent(config, "", "    ")
+	if err != nil {
+		return "", err
+	}
+
+	return string(normalized), nil
 }

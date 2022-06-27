@@ -124,7 +124,7 @@ func dataSourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, 
 
 	bareMetalDevices = convertKeysOfList(bareMetalDevices)
 
-	bareMetalDevice, err := doFiltering(d, bareMetalDevices)
+	bareMetalDevice, err := doFiltering(d, bareMetalDevices, nil)
 	if err != nil {
 		return diag.FromErr(err)
 	}

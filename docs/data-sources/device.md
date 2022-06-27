@@ -48,32 +48,32 @@ output "ip_find" {
 
 ### Optional
 
-- **filter** (Block Set) (see [below for nested schema](#nestedblock--filter))
-- **first** (Boolean)
-- **id** (String) The ID of this resource.
+- `filter` (Block Set) (see [below for nested schema](#nestedblock--filter))
+- `first` (Boolean)
 
 ### Read-Only
 
-- **device_id** (Number)
-- **device_type** (String)
-- **hostname** (String)
-- **ip_addresses** (List of String)
-- **ipmi_address** (String)
-- **ipmi_enabled** (Boolean)
-- **location** (Map of String)
-- **metadata** (Map of String)
-- **name** (String)
-- **power_status** (String)
-- **service_plan** (Number)
-- **status** (String)
-- **tags** (List of String)
+- `device_id` (Number)
+- `device_type` (String)
+- `hostname` (String)
+- `id` (String) The ID of this resource.
+- `ip_addresses` (List of String)
+- `ipmi_address` (String)
+- `ipmi_enabled` (Boolean)
+- `location` (Map of String)
+- `metadata` (Map of String)
+- `name` (String)
+- `power_status` (String)
+- `service_plan` (Number)
+- `status` (String)
+- `tags` (List of String)
 
 <a id="nestedblock--filter"></a>
 ### Nested Schema for `filter`
 
 Required:
 
-- **name** (String)
-- **values** (List of String)
+- `name` (String)
+- `values` (List of String)
 
 

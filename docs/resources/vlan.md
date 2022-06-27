@@ -37,10 +37,6 @@ resource "hivelocity_bare_metal_device" "database" {
 }
 
 resource "hivelocity_vlan" "demo" {
-  device_ids    = [
-      hivelocity_bare_metal_device.webserver.device_id,
-      hivelocity_bare_metal_device.database.device_id,
-  ]
 }
 
 output "demo_vlan" {
@@ -53,18 +49,24 @@ output "demo_vlan" {
 
 ### Required
 
-- **device_ids** (List of Number) IDs of devices to include in this VLAN
+- `facility_code` (String)
+- `private_networking_only` (Boolean)
 
 ### Optional
 
-- **id** (String) The ID of this resource.
-- **timeouts** (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
+- `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
+
+### Read-Only
+
+- `id` (String) The ID of this resource.
+- `port_ids` (Set of Number) IDs of ports to include in this VLAN
+- `tag_id` (Number) Tag ID of VLAN
 
 <a id="nestedblock--timeouts"></a>
 ### Nested Schema for `timeouts`
 
 Optional:
 
-- **create** (String)
+- `create` (String)
 
 

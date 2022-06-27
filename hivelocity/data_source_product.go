@@ -76,7 +76,7 @@ func dataSourceProductRead(ctx context.Context, d *schema.ResourceData, m interf
 
 	products = convertKeysOfList(products)
 
-	product, err := doFiltering(d, products)
+	product, err := doFiltering(d, products, nil)
 	if err != nil {
 		return diag.FromErr(err)
 	}

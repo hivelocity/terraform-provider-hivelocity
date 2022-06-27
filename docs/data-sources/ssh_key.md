@@ -40,22 +40,22 @@ output "ssh_keys_demo" {
 
 ### Optional
 
-- **filter** (Block Set) (see [below for nested schema](#nestedblock--filter))
-- **first** (Boolean)
-- **id** (String) The ID of this resource.
+- `filter` (Block Set) (see [below for nested schema](#nestedblock--filter))
+- `first` (Boolean)
 
 ### Read-Only
 
-- **name** (String)
-- **public_key** (String)
-- **ssh_key_id** (Number)
+- `id` (String) The ID of this resource.
+- `name` (String)
+- `public_key` (String)
+- `ssh_key_id` (Number)
 
 <a id="nestedblock--filter"></a>
 ### Nested Schema for `filter`
 
 Required:
 
-- **name** (String)
-- **values** (List of String)
+- `name` (String)
+- `values` (List of String)
 
 

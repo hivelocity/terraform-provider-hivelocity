@@ -4,15 +4,15 @@ import (
 	"context"
 	"fmt"
 	"strconv"
-	"strings"
 	"time"
 
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
 
-// Timeout for creating/updating devices
+// BareMetalDeviceTimeout is the timeout for creating/updating devices
 const BareMetalDeviceTimeout = 60 * time.Minute
 
 func resourceBareMetalDevice(forceNew bool) *schema.Resource {
@@ -128,62 +128,99 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 				Optional:    true,
 				Default:     nil,
 			},
+			"ignition_id": {
+				Description: "IgnitionConfig ID",
+				Type:        schema.TypeInt,
+				Optional:    true,
+			},
+			"bonded": {
+				Description: "When set, prefer only bonded devices",
+				Type:        schema.TypeBool,
+				Optional:    true,
+				ForceNew:    true,
+			},
+			// "private_network": {
+			// 	Description: "Private network and IP of device in CIDR notation",
+			// 	Type:        schema.TypeString,
+			// 	Optional:    true,
+			// },
 		},
 	}
 }
 
 func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	hv, _ := m.(*Client)
-
 	var tags []string
 	for _, tag := range d.Get("tags").([]interface{}) {
 		tags = append(tags, tag.(string))
 	}
 
-	payload := swagger.BareMetalDeviceCreate{
-		ProductId:      int32(d.Get("product_id").(int)),
-		Hostname:       d.Get("hostname").(string),
-		OsName:         d.Get("os_name").(string),
-		LocationName:   d.Get("location_name").(string),
-		Script:         d.Get("script").(string),
-		Period:         d.Get("period").(string),
-		PublicSshKeyId: int32(d.Get("public_ssh_key_id").(int)),
-		ForceDeviceId:  int32(d.Get("force_device_id").(int)),
-		Tags:           tags,
-	}
+	// Load existing deviceId if any
+	var deviceId, orderId int32
+	if d.Id() != "" && d.Get("order_id") != "" {
+		deviceId_, deviceErr := strconv.Atoi(d.Id())
+		orderId_, orderErr := strconv.Atoi(d.Get("order_id").(string))
 
-	bareMetalDevice, _, err := hv.client.BareMetalDevicesApi.PostBareMetalDeviceResource(hv.auth, payload, nil)
-	if err != nil {
-		d.SetId("")
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("POST /bare-metal-devices failed! (%s)\n\n %s", err, myErr.Body())
-	}
-
-	timeout := d.Timeout(schema.TimeoutCreate)
-	_, err = waitForOrder(timeout, hv, bareMetalDevice.OrderId)
-	if err != nil {
-		d.SetId("")
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		if strings.Contains(fmt.Sprint(err), "'cancelled'") {
-			return diag.Errorf("Your deployment (order %d) has been 'cancelled'. Please contact Hivelocity support if you believe this is a mistake.\n\n %s",
-				bareMetalDevice.OrderId, myErr.Body())
+		if deviceErr == nil && orderErr == nil {
+			deviceId = int32(deviceId_)
+			orderId = int32(orderId_)
+			tflog.Warn(ctx, "Device was tainted and may have failed after deployment")
+		} else {
+			tflog.Error(ctx, "Invalid device ID or order ID from tainted device")
+			d.SetId("")
 		}
-		return diag.Errorf("Error provisioning order %d. The Hivelocity team will investigate:\n\n%s\n\n %s",
-			bareMetalDevice.OrderId, err, myErr.Body())
+	} else {
+		tflog.Info(ctx, "Creating new device device resource")
 	}
 
-	newDevice := []swagger.BareMetalDevice{bareMetalDevice}
-	devices, err := waitForDevices(timeout, hv, bareMetalDevice.OrderId, newDevice)
-	if err != nil {
-		d.SetId("")
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("Error finding devices for order %d. The Hivelocity team will investigate:\n\n%s\n\n %s",
-			bareMetalDevice.OrderId, err, myErr.Body())
+	if deviceId == 0 {
+		// Create if no existing ID
+		payload := swagger.BareMetalDeviceCreate{
+			ProductId:      int32(d.Get("product_id").(int)),
+			Hostname:       d.Get("hostname").(string),
+			OsName:         d.Get("os_name").(string),
+			LocationName:   d.Get("location_name").(string),
+			Script:         d.Get("script").(string),
+			Period:         d.Get("period").(string),
+			PublicSshKeyId: int32(d.Get("public_ssh_key_id").(int)),
+			ForceDeviceId:  int32(d.Get("force_device_id").(int)),
+			IgnitionId:     int32(d.Get("ignition_id").(int)),
+			BondingSupport: d.Get("bonded").(bool),
+			// PrivateNetwork: d.Get("private_network").(string),
+			Tags: tags,
+		}
+
+		bareMetalDevice, _, err := hv.client.BareMetalDevicesApi.PostBareMetalDeviceResource(hv.auth, payload, nil)
+		if err != nil {
+			d.SetId("")
+			err = formatSwaggerError(err, "POST /bare-metal-devices")
+			return diag.FromErr(err)
+		}
+		deviceId = bareMetalDevice.DeviceId
+		orderId = bareMetalDevice.OrderId
+
+		// Set device ID and order ID after creation so any errors before the function completes will mark it as
+		// "tainted" so we can wait on the device again. Though this does not work at the moment because of device
+		// statuses being inaccessible for new devices
+		d.SetId(fmt.Sprintf("%d", deviceId))
+		d.Set("order_id", orderId)
 	}
 
-	newDeviceId := devices.([]swagger.BareMetalDevice)[0].DeviceId
-	d.SetId(fmt.Sprint(newDeviceId))
-	d.Set("device_id", newDeviceId)
+	// Wait for order if not complete
+	timeout := d.Timeout(schema.TimeoutCreate)
+	if status, err := waitForOrder(timeout, hv, orderId); err != nil {
+		if status == "cancelled" {
+			return diag.Errorf("Your deployment (order %d) has been 'cancelled'. Please contact Hivelocity"+
+				"support if you believe this is a mistake.\n\n%s",
+				orderId, err)
+		}
+		return diag.FromErr(err)
+	}
+
+	// Wait for device, if not provisioned
+	if _, err := hv.waitForDevice(deviceId, timeout); err != nil {
+		return diag.FromErr(err)
+	}
 
 	return resourceBareMetalDeviceRead(ctx, d, m)
 }
@@ -219,6 +256,7 @@ func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m 
 	d.Set("tags", deviceResponse.Tags)
 	d.Set("public_ssh_key_id", deviceResponse.PublicSshKeyId)
 	d.Set("script", deviceResponse.Script)
+	// d.Set("private_network", deviceResponse.PrivateNetwork)
 
 	return nil
 }
@@ -226,74 +264,16 @@ func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m 
 func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	hv, _ := m.(*Client)
 
-	deviceId, err := strconv.Atoi(d.Id())
-	if err != nil {
+	var deviceId int32
+	if deviceId_, err := strconv.Atoi(d.Id()); err == nil {
+		deviceId = int32(deviceId_)
+	} else {
 		return diag.FromErr(err)
 	}
 
-	payload := swagger.BareMetalDeviceUpdate{}
-	reload_required := false
-
-	payload.Tags = getTags(d, "")
-
-	hostname := d.Get("hostname").(string)
-	payload.Hostname = hostname
-	if d.HasChange("hostname") {
-		reload_required = true
-	}
-
-	osName := d.Get("os_name").(string)
-	payload.OsName = osName
-	if d.HasChange("os_name") {
-		reload_required = true
-	}
-
-	publicSshKeyId := d.Get("public_ssh_key_id").(int)
-	payload.PublicSshKeyId = int32(publicSshKeyId)
-	if d.HasChange("public_ssh_key_id") {
-		reload_required = true
-	}
-
-	script := d.Get("script").(string)
-	payload.Script = script
-	if d.HasChange("script") {
-		reload_required = true
-	}
-
-	// If a reload is required, it's necessary to turn the device off first
-	if reload_required {
-		devicePower, _, err := hv.client.DeviceApi.GetPowerResource(hv.auth, int32(deviceId), nil)
-		if err != nil {
-			myErr, _ := err.(swagger.GenericSwaggerError)
-			return diag.Errorf("GET /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
-		}
-
-		if devicePower.PowerStatus == "ON" {
-			_, _, err = hv.client.DeviceApi.PostPowerResource(hv.auth, int32(deviceId), "shutdown", nil)
-			if err != nil {
-				myErr, _ := err.(swagger.GenericSwaggerError)
-				return diag.Errorf("POST /device/%s/power failed! (%s)\n\n %s", fmt.Sprint(deviceId), err, myErr.Body())
-			}
-
-			// Power status will transition to PENDING, then OFF
-			_, err := waitForDevicePowerOff(d, hv, int32(deviceId))
-			if err != nil {
-				return diag.Errorf("error powering off device %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(deviceId), err)
-			}
-		}
-	}
-
-	_, _, err = hv.client.BareMetalDevicesApi.PutBareMetalDeviceIdResource(hv.auth, int32(deviceId), payload, nil)
-	if err != nil {
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("PUT /bare-metal-devices/%d failed! (%s)\n\n %s", deviceId, err, myErr.Body())
-	}
-
-	if reload_required {
-		_, err := waitForDeviceReload(d, hv, int32(deviceId))
-		if err != nil {
-			return diag.Errorf("error reloading device %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(deviceId), err)
-		}
+	updatePayload := getBareMetalUpdatePayload(d)
+	if err := hv._updateDevice(deviceId, updatePayload, d); err != nil {
+		return diag.FromErr(err)
 	}
 
 	d.Set("last_updated", time.Now().Format(time.RFC850))
