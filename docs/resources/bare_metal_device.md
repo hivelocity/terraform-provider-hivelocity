@@ -48,6 +48,7 @@ output "demo_device" {
 
 ### Optional
 
+- `bonded` (Boolean) When set, prefer only bonded devices
 - `device_id` (Number) Device ID
 - `force_device_id` (Number) Force deployment of this Device ID (internal use only)
 - `ignition_id` (Number) IgnitionConfig ID

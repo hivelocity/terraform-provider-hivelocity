@@ -134,7 +134,7 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 				Optional:    true,
 			},
 			"bonded": {
-				Description: "When set, only prefer bonded devices",
+				Description: "When set, prefer only bonded devices",
 				Type:        schema.TypeBool,
 				Optional:    true,
 				ForceNew:    true,
