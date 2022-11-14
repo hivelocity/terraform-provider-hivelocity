@@ -24,6 +24,9 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 		ReadContext:   resourceBareMetalDeviceRead,
 		UpdateContext: resourceBareMetalDeviceUpdate,
 		DeleteContext: resourceBareMetalDeviceDelete,
+		Importer: &schema.ResourceImporter{
+			StateContext: schema.ImportStatePassthroughContext,
+		},
 		Schema: map[string]*schema.Schema{
 			"last_updated": {
 				Description: "Last time this device was updated",

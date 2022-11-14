@@ -54,16 +54,17 @@ func dataSourceProduct() *schema.Resource {
 	}
 }
 
+/* TODO FIX - CURRENTLY BROKEN */
 func dataSourceProductRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	hv, _ := m.(*Client)
 
-	productInfo, _, err := hv.client.ProductApi.GetProductListResource(hv.auth, nil)
+	inventory, _, err := hv.client.InventoryApi.GetStockResource(hv.auth, nil)
 	if err != nil {
 		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("GET /product/list failed! (%s)\n\n %s", err, myErr.Body())
+		return diag.Errorf("GET /inventory/product failed! (%s)\n\n %s", err, myErr.Body())
 	}
 
-	jsonProductInfo, err := json.Marshal(productInfo)
+	jsonProductInfo, err := json.Marshal(inventory)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -97,6 +98,5 @@ func dataSourceProductRead(ctx context.Context, d *schema.ResourceData, m interf
 	}
 
 	d.SetId(fmt.Sprint(product["product_id"]))
-
 	return nil
 }
