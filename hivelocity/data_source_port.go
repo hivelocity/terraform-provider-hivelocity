@@ -3,11 +3,12 @@ package hivelocity
 import (
 	"context"
 	"fmt"
+	"sort"
+	"strings"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
-	"sort"
-	"strings"
 )
 
 // dataSourceDevicePort is a resource for retrieving a device's port.
@@ -20,23 +21,23 @@ func dataSourceDevicePort() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"filter": dataSourceFiltersSchema(),
 			"first":  dataSourceFilterFirstSchema(),
-			"private": &schema.Schema{
+			"private": {
 				Type:     schema.TypeBool,
 				Computed: true,
 			},
-			"name": &schema.Schema{
+			"name": {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"port_id": &schema.Schema{
+			"port_id": {
 				Type:     schema.TypeInt,
 				Computed: true,
 			},
-			"device_id": &schema.Schema{
+			"device_id": {
 				Type:     schema.TypeInt,
 				Required: true,
 			},
-			"is_bond": &schema.Schema{
+			"is_bond": {
 				Type:     schema.TypeBool,
 				Computed: true,
 			},

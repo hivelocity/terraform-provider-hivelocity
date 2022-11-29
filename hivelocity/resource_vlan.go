@@ -4,13 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
+	"strconv"
+	"time"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
-	"log"
-	"strconv"
-	"time"
 )
 
 func resourceVlan() *schema.Resource {
@@ -20,28 +21,33 @@ func resourceVlan() *schema.Resource {
 		},
 		CreateContext: resourceVlanCreate,
 		ReadContext:   resourceVlanRead,
-		// UpdateContext: resourceVlanUpdate,
+		UpdateContext: resourceVlanUpdate,
 		DeleteContext: resourceVlanDelete,
+		Importer: &schema.ResourceImporter{
+			StateContext: schema.ImportStatePassthroughContext,
+		},
 		Schema: map[string]*schema.Schema{
-			"facility_code": &schema.Schema{
+			"facility_code": {
+				Description: "Location where to create this VLAN",
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
-			"private_networking_only": &schema.Schema{
-				Type:     schema.TypeBool,
+			"type": {
+				Description: "Type of VLAN to be created, can be either `private` or `public`",
+				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
-			"port_ids": &schema.Schema{
+			"port_ids": {
 				Description: "IDs of ports to include in this VLAN",
 				Type:        schema.TypeSet,
 				Elem: &schema.Schema{
 					Type: schema.TypeInt,
 				},
-				Computed: true,
+				Required: true,
 			},
-			"tag_id": &schema.Schema{
+			"tag_id": {
 				Description: "Tag ID of VLAN",
 				Type:        schema.TypeInt,
 				Computed:    true,
@@ -107,7 +113,7 @@ func resourceVlanRead(ctx context.Context, d *schema.ResourceData, m interface{}
 	valuesToSet := map[string]interface{}{
 		"port_ids":                SetFromInt32List(vlan.PortIds),
 		"facility_code":           vlan.FacilityCode,
-		"private_networking_only": vlan.PrivateNetworkingOnly,
+		"type":                    vlan.Type_,
 		"tag_id":                  vlan.VlanTag,
 	}
 
@@ -222,7 +228,7 @@ func resourceVlanDelete(ctx context.Context, d *schema.ResourceData, m interface
 func makeVlanCreatePayload(d *schema.ResourceData) swagger.VlanCreate {
 	return swagger.VlanCreate{
 		FacilityCode:          d.Get("facility_code").(string),
-		PrivateNetworkingOnly: d.Get("private_networking_only").(bool),
+		Type_: d.Get("type").(string),
 	}
 }
 

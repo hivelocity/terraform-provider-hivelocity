@@ -24,6 +24,9 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 		ReadContext:   resourceBareMetalDeviceRead,
 		UpdateContext: resourceBareMetalDeviceUpdate,
 		DeleteContext: resourceBareMetalDeviceDelete,
+		Importer: &schema.ResourceImporter{
+			StateContext: schema.ImportStatePassthroughContext,
+		},
 		Schema: map[string]*schema.Schema{
 			"last_updated": {
 				Description: "Last time this device was updated",
@@ -139,11 +142,6 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 				Optional:    true,
 				ForceNew:    true,
 			},
-			// "private_network": {
-			// 	Description: "Private network and IP of device in CIDR notation",
-			// 	Type:        schema.TypeString,
-			// 	Optional:    true,
-			// },
 		},
 	}
 }
@@ -186,7 +184,6 @@ func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, 
 			ForceDeviceId:  int32(d.Get("force_device_id").(int)),
 			IgnitionId:     int32(d.Get("ignition_id").(int)),
 			BondingSupport: d.Get("bonded").(bool),
-			// PrivateNetwork: d.Get("private_network").(string),
 			Tags: tags,
 		}
 
@@ -256,7 +253,6 @@ func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m 
 	d.Set("tags", deviceResponse.Tags)
 	d.Set("public_ssh_key_id", deviceResponse.PublicSshKeyId)
 	d.Set("script", deviceResponse.Script)
-	// d.Set("private_network", deviceResponse.PrivateNetwork)
 
 	return nil
 }

@@ -372,7 +372,6 @@ func (hv *Client) getDeviceMetadata(deviceId int32) (*DeviceMetadata, error) {
 
 func getBareMetalUpdatePayloadFromGroup(d *schema.ResourceData, deviceKey string) swagger.BareMetalDeviceUpdate {
 	var ignitionId int32 = 0
-	var privateNetwork string = ""
 	var publicSshKeyId int32 = 0
 	var script string = ""
 
@@ -381,9 +380,6 @@ func getBareMetalUpdatePayloadFromGroup(d *schema.ResourceData, deviceKey string
 	}
 	if value := fieldGet("ignition_id", d, deviceKey); value != nil {
 		ignitionId = int32(value.(int))
-	}
-	if value := fieldGet("private_network", d, deviceKey); value != nil {
-		privateNetwork = value.(string)
 	}
 	if value := fieldGet("public_ssh_key_id", d, deviceKey); value != nil {
 		publicSshKeyId = int32(value.(int))
@@ -395,7 +391,6 @@ func getBareMetalUpdatePayloadFromGroup(d *schema.ResourceData, deviceKey string
 		Tags:           getTags(d, deviceKey),
 		Script:         script,
 		IgnitionId:     ignitionId,
-		PrivateNetwork: privateNetwork,
 		PublicSshKeyId: publicSshKeyId,
 	}
 }
