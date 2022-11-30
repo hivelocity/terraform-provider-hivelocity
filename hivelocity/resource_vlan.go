@@ -2,7 +2,6 @@ package hivelocity
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log"
 	"strconv"
@@ -193,9 +192,19 @@ func resourceVlanDelete(ctx context.Context, d *schema.ResourceData, m interface
 		vlanId = int32(vlanId_)
 	}
 
-	// Remove ports if need be
-	if len(makeUpdateVlanPayload(d).PortIds) > 0 {
-		log.Printf("Removing ports before deleting vlan")
+	vlan, response, err := hv.client.VLANApi.GetVlanIdResource(hv.auth, int32(vlanId), nil)
+	if err != nil {
+		// If resource was deleted outside terraform, remove it from state and exit gracefully
+		if response != nil && response.StatusCode == 404 {
+			log.Printf("[WARN] Vlan ID not found: (%s)", d.Id())
+			d.SetId("")
+			return diags
+		}
+		return diag.FromErr(formatSwaggerError(err, "GET /vlan/%d", vlanId))
+	}
+
+	if len(vlan.PortIds) > 0 {
+		log.Printf("[INFO] Removing ports before deleting vlan")
 
 		if err := d.Set("port_ids", SetFromInt32List([]int32{})); err != nil {
 			return diag.FromErr(err)
@@ -208,14 +217,8 @@ func resourceVlanDelete(ctx context.Context, d *schema.ResourceData, m interface
 		}
 	}
 
-	response, err := hv.client.VLANApi.DeleteVlanIdResource(hv.auth, vlanId)
+	_, err = hv.client.VLANApi.DeleteVlanIdResource(hv.auth, vlanId)
 	if err != nil {
-		// If resource was deleted outside terraform, remove it from state and exit gracefully
-		if response != nil && response.StatusCode == 404 {
-			log.Printf("[WARN] Vlan ID not found: (%s)", d.Id())
-			d.SetId("")
-			return diags
-		}
 		return diag.FromErr(formatSwaggerError(err, "DELETE /vlan/%d", vlanId))
 	}
 
@@ -270,23 +273,12 @@ func waitForNetworkTaskByClient(
 		Pending: []string{"Pending", ""},
 		Target:  []string{"Success"},
 		Refresh: func() (interface{}, string, error) {
-			var matchedTask *swagger.NetworkTaskDump
-			tasks, _, err := hv.client.NetworkApi.GetNetworkTaskClientResource(ctx, nil)
+			task, _, err := hv.client.NetworkApi.GetNetworkTaskIdResource(ctx, taskId, nil)
 			if err != nil {
-				return nil, "", formatSwaggerError(err, "network/status (taskId %s)", taskId)
+				return nil, "", formatSwaggerError(err, "network/status/%s", taskId)
 			}
 
-			for _, task := range tasks {
-				if task.TaskId == taskId {
-					matchedTask = &task
-				}
-			}
-
-			if matchedTask == nil {
-				return nil, "Failed", errors.New(fmt.Sprintf("could not find network task %s", taskId))
-			}
-
-			return matchedTask, matchedTask.Result, nil
+			return &task, task.Result, nil
 		},
 		Timeout:                   timeout,
 		Delay:                     10 * time.Second,
