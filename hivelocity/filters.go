@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"reflect"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/prometheus/common/log"
-	"reflect"
 )
 
 func dataSourceFiltersSchema() *schema.Schema {
@@ -58,7 +59,7 @@ func buildFilters(set *schema.Set) ([]filter, error) {
 		name := m["name"].(string)
 
 		if name == "filter" {
-			return nil, errors.New(fmt.Sprintf("Cannot filter on %v"))
+			return nil, errors.New(fmt.Sprintf("Cannot filter on %v", values))
 		}
 
 		filters = append(filters, filter{
