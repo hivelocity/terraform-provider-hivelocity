@@ -60,6 +60,7 @@ func init() {
 func configureProvider(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
 	apiKey := d.Get("api_key").(string)
 	apiURL := d.Get("api_url").(string)
+	referer := "Terraform"
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
@@ -67,6 +68,7 @@ func configureProvider(ctx context.Context, d *schema.ResourceData) (interface{}
 	config := Config{
 		ApiKey: apiKey,
 		ApiUrl: apiURL,
+		Referer: referer,
 	}
 
 	client, err := config.Client()
