@@ -14,6 +14,7 @@ import (
 type Config struct {
 	ApiKey string
 	ApiUrl string
+	Referer string
 }
 
 // Client wraps the Hivelocity Client
@@ -34,6 +35,8 @@ func (c *Config) Client() (*Client, error) {
 
 	conf := hv.NewConfiguration()
 	conf.BasePath = c.ApiUrl
+	conf.DefaultHeader = make(map[string]string)
+	conf.DefaultHeader["Referer"] = c.Referer // convert Referer to map[string]string
 	hvClient := hv.NewAPIClient(conf)
 	authContext := context.WithValue(context.Background(), hv.ContextAPIKey, hv.APIKey{
 		Key: c.ApiKey,
