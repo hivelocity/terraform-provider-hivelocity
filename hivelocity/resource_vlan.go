@@ -1,13 +1,16 @@
 package hivelocity
 
 import (
+	"context"
 	"fmt"
-	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
-	"github.com/hivelocity/terraform-provider-hivelocity/hivelocity/pkg/mod/github.com/hashicorp/terraform-plugin-sdk/v2@v2.17.0/diag"
-	"github.com/hivelocity/terraform-provider-hivelocity/hivelocity/pkg/mod/github.com/hashicorp/terraform-plugin-sdk/v2@v2.17.0/helper/schema"
+	"github.com/hivelocity/terraform-provider-hivelocity/hivelocity/pkg/mod/github.com/hashicorp/terraform-plugin-sdk/v2@v2.17.0/helper/resource"
 	"log"
 	"strconv"
 	"time"
+
+	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
+	"github.com/hivelocity/terraform-provider-hivelocity/hivelocity/pkg/mod/github.com/hashicorp/terraform-plugin-sdk/v2@v2.17.0/diag"
+	"github.com/hivelocity/terraform-provider-hivelocity/hivelocity/pkg/mod/github.com/hashicorp/terraform-plugin-sdk/v2@v2.17.0/helper/schema"
 )
 
 func resourceVLAN() *schema.Resource {
@@ -87,7 +90,7 @@ func resourceVLANRead(ctx context.Context, d *schema.ResourceData, m interface{}
 func resourceVLANCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
 	hv, _ := m.(*Client)
-
+	log.Printf("[INFO] Creating")
 	payload := swagger.VlanCreate{
 		FacilityCode: d.Get("facility_code").(string),
 		Type_:        d.Get("type").(string),
@@ -107,14 +110,17 @@ func resourceVLANCreate(ctx context.Context, d *schema.ResourceData, m interface
 	}
 	log.Printf("[INFO] Created VLAN ID: %d", vlan.VlanId)
 	d.SetId(fmt.Sprint(vlan.VlanId))
-	return resourceVlanRead(ctx, d, m)
+	return resourceVLANRead(ctx, d, m)
 }
 
 // resourceVLANUpdate updates a VLAN
 func resourceVLANUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	var payload swagger.VlanUpdate
 	hv, _ := m.(*Client)
-
 	_vlanId, err := strconv.Atoi(d.Id())
+
+	log.Printf("[INFO] Updating VLAN ID: %s", d.Id())
+
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -125,21 +131,24 @@ func resourceVLANUpdate(ctx context.Context, d *schema.ResourceData, m interface
 
 	if portIdSet, ok := d.GetOk("port_ids"); ok {
 		portIds = Int32ListFromSet(portIdSet.(*schema.Set))
+		payload.IpIds = portIds
 	}
 
 	if ipIdSet, ok := d.GetOk("ip_ids"); ok {
 		ipIds = Int32ListFromSet(ipIdSet.(*schema.Set))
+		payload.IpIds = ipIds
 	}
 
-	payload := swagger.VlanUpdate{
-		PortIds: portIds,
-		IpIds:   ipIds,
-	}
-
-	_, _, err = hv.client.VLANApi.PutVlanIdResource(hv.auth, vlanId, payload, nil)
+	// Update VLAN
+	task, _, err := hv.client.VLANApi.PutVlanIdResource(hv.auth, vlanId, payload, nil)
 	if err != nil {
 		myErr, _ := err.(swagger.GenericSwaggerError)
 		return diag.Errorf("PUT /vlan/%d: %s\n\n %s", fmt.Sprint(vlanId), err, myErr.Body())
+	}
+
+	//wait for task to complete
+	if _, err := waitForNetworkTaskByClient(hv.auth, timeout, hv, task.TaskId); err != nil {
+		return diag.FromErr(err)
 	}
 
 	return resourceVLANRead(ctx, d, m)
@@ -160,14 +169,14 @@ func resourceVLANDelete(ctx context.Context, d *schema.ResourceData, m interface
 		vlanId = int32(vlanId_)
 	}
 
-	resp, err = hv.client.VLANApi.DeleteVlanIdResource(hv.auth, vlanId)
+	resp, err := hv.client.VLANApi.DeleteVlanIdResource(hv.auth, vlanId)
 	if err != nil {
-		if response != nil && response.StatusCode == 404 {
+		if resp != nil && resp.StatusCode == 404 {
 			d.SetId("")
 			return diags
 		}
 		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("DELETE /vlan/%d failed! (%s)\n\n %s", ipAssignmentId, err, myErr.Body())
+		return diag.Errorf("DELETE /vlan/%d failed! (%s)\n\n %s", vlanId, err, myErr.Body())
 	}
 	// Delete resource from state
 	d.SetId("")
@@ -189,4 +198,34 @@ func SetFromInt32List(items []int32) *schema.Set {
 		intList[i] = int(n)
 	}
 	return schema.NewSet(schema.HashInt, intList)
+}
+
+func waitForNetworkTaskByClient(
+	ctx context.Context,
+	timeout time.Duration,
+	hv *Client,
+	taskId string,
+) (*swagger.NetworkTaskDump, error) {
+	stateChangeConf := &resource.StateChangeConf{
+		Pending: []string{"Pending", ""},
+		Target:  []string{"Success"},
+		Refresh: func() (interface{}, string, error) {
+			task, _, err := hv.client.NetworkApi.GetNetworkTaskIdResource(ctx, taskId, nil)
+			if err != nil {
+				return nil, "", formatSwaggerError(err, "network/status/%s", taskId)
+			}
+
+			return &task, task.Result, nil
+		},
+		Timeout:                   timeout,
+		Delay:                     10 * time.Second,
+		MinTimeout:                30 * time.Second,
+		ContinuousTargetOccurence: 1,
+	}
+
+	r, err := stateChangeConf.WaitForStateContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return r.(*swagger.NetworkTaskDump), err
 }
