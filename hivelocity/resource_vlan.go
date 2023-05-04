@@ -52,6 +52,33 @@ func resourceVLAN() *schema.Resource {
 	}
 }
 
+// resourceVLANCreate creates a VLAN
+func resourceVLANCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	var diags diag.Diagnostics
+	hv, _ := m.(*Client)
+	log.Printf("[INFO] Creating")
+	payload := swagger.VlanCreate{
+		FacilityCode: d.Get("facility_code").(string),
+		Type_:        d.Get("type").(string),
+	}
+
+	vlan, _, err := hv.client.VLANApi.PostVlanResource(hv.auth, payload, nil)
+	if err != nil {
+		d.SetId("")
+		return diag.FromErr(formatSwaggerError(err, "POST /vlan"))
+	}
+
+	if diags.HasError() {
+		d.SetId(fmt.Sprint(vlan.VlanId))
+		diags = append(diags, resourceVLANRead(ctx, d, m)...)
+		d.SetId("")
+		return diags
+	}
+	log.Printf("[INFO] Created VLAN ID: %d", vlan.VlanId)
+	d.SetId(fmt.Sprint(vlan.VlanId))
+	return resourceVLANRead(ctx, d, m)
+}
+
 // resourceVLANRead reads a VLAN
 func resourceVLANRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
@@ -84,33 +111,6 @@ func resourceVLANRead(ctx context.Context, d *schema.ResourceData, m interface{}
 	d.Set("vlan_id", vlan.VlanId)
 
 	return diags
-}
-
-// resourceVLANCreate creates a VLAN
-func resourceVLANCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	var diags diag.Diagnostics
-	hv, _ := m.(*Client)
-	log.Printf("[INFO] Creating")
-	payload := swagger.VlanCreate{
-		FacilityCode: d.Get("facility_code").(string),
-		Type_:        d.Get("type").(string),
-	}
-
-	vlan, _, err := hv.client.VLANApi.PostVlanResource(hv.auth, payload, nil)
-	if err != nil {
-		d.SetId("")
-		return diag.FromErr(formatSwaggerError(err, "POST /vlan"))
-	}
-
-	if diags.HasError() {
-		d.SetId(fmt.Sprint(vlan.VlanId))
-		diags = append(diags, resourceVLANRead(ctx, d, m)...)
-		d.SetId("")
-		return diags
-	}
-	log.Printf("[INFO] Created VLAN ID: %d", vlan.VlanId)
-	d.SetId(fmt.Sprint(vlan.VlanId))
-	return resourceVLANRead(ctx, d, m)
 }
 
 // resourceVLANUpdate updates a VLAN
