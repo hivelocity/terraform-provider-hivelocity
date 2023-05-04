@@ -8,9 +8,10 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
-	"github.com/hivelocity/terraform-provider-hivelocity/hivelocity/pkg/mod/github.com/hashicorp/terraform-plugin-sdk/v2@v2.17.0/diag"
-	"github.com/hivelocity/terraform-provider-hivelocity/hivelocity/pkg/mod/github.com/hashicorp/terraform-plugin-sdk/v2@v2.17.0/helper/schema"
 )
 
 func resourceVLAN() *schema.Resource {
@@ -18,10 +19,10 @@ func resourceVLAN() *schema.Resource {
 		Timeouts: &schema.ResourceTimeout{
 			Create: schema.DefaultTimeout(15 * time.Minute),
 		},
-		CreateContext: resourceVLANCreate,
-		ReadContext:   resourceVLANRead,
-		UpdateContext: resourceVLANUpdate,
-		DeleteContext: resourceVLANDelete,
+		CreateContext: resourceVlanCreate,
+		ReadContext:   resourceVlanRead,
+		UpdateContext: resourceVlanUpdate,
+		DeleteContext: resourceVlanDelete,
 		Schema: map[string]*schema.Schema{
 			"type": &schema.Schema{
 				Description: "Type of VLAN to be created, can be either `private` or `public`",
@@ -53,7 +54,7 @@ func resourceVLAN() *schema.Resource {
 }
 
 // resourceVLANCreate creates a VLAN
-func resourceVLANCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceVlanCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
 	hv, _ := m.(*Client)
 	log.Printf("[INFO] Creating")
@@ -70,17 +71,17 @@ func resourceVLANCreate(ctx context.Context, d *schema.ResourceData, m interface
 
 	if diags.HasError() {
 		d.SetId(fmt.Sprint(vlan.VlanId))
-		diags = append(diags, resourceVLANRead(ctx, d, m)...)
+		diags = append(diags, resourceVlanDelete(ctx, d, m)...)
 		d.SetId("")
 		return diags
 	}
 	log.Printf("[INFO] Created VLAN ID: %d", vlan.VlanId)
 	d.SetId(fmt.Sprint(vlan.VlanId))
-	return resourceVLANRead(ctx, d, m)
+	return resourceVlanRead(ctx, d, m)
 }
 
 // resourceVLANRead reads a VLAN
-func resourceVLANRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceVlanRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
 	hv, _ := m.(*Client)
 
@@ -113,8 +114,8 @@ func resourceVLANRead(ctx context.Context, d *schema.ResourceData, m interface{}
 	return diags
 }
 
-// resourceVLANUpdate updates a VLAN
-func resourceVLANUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+// resourceVlanUpdate updates a VLAN
+func resourceVlanUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	var payload swagger.VlanUpdate
 	hv, _ := m.(*Client)
 	_vlanId, err := strconv.Atoi(d.Id())
@@ -147,15 +148,15 @@ func resourceVLANUpdate(ctx context.Context, d *schema.ResourceData, m interface
 	}
 
 	//wait for task to complete
-	if _, err := waitForNetworkTaskByClient(hv.auth, timeout, hv, task.TaskId); err != nil {
+	if _, err := waitForNetworkTaskByClient(hv.auth, d.Timeout(schema.TimeoutCreate), hv, task.TaskId); err != nil {
 		return diag.FromErr(err)
 	}
 
-	return resourceVLANRead(ctx, d, m)
+	return resourceVlanRead(ctx, d, m)
 }
 
-// resourceVLANDelete deletes a VLAN
-func resourceVLANDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+// resourceVlanDelete deletes a VLAN
+func resourceVlanDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	hv, _ := m.(*Client)
