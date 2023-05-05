@@ -43,6 +43,7 @@ func Provider() *schema.Provider {
 			"hivelocity_order_group":       resourceOrderGroup(),
 			"hivelocity_ignition":          resourceIgnitionConfig(true),
 			"hivelocity_ip":                resourceIP(),
+			"hivelocity_bond":              resourceBond(),
 		},
 		ConfigureContextFunc: configureProvider,
 	}

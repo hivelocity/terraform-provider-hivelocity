@@ -3,13 +3,13 @@ package hivelocity
 import (
 	"context"
 	"fmt"
-	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 	"log"
 	"strconv"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
 
 func resourceIP() *schema.Resource {

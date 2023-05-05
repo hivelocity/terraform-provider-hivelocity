@@ -3,7 +3,6 @@ package hivelocity
 import (
 	"context"
 	"fmt"
-	"github.com/hivelocity/terraform-provider-hivelocity/hivelocity/pkg/mod/github.com/hashicorp/terraform-plugin-sdk/v2@v2.17.0/helper/resource"
 	"log"
 	"strconv"
 	"time"
