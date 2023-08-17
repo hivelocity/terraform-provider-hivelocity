@@ -45,5 +45,3 @@ output "initial_creds" {
 - `password` (String)
 - `port` (Number)
 - `user` (String)
-
-

@@ -26,30 +26,48 @@ func resourceVlan() *schema.Resource {
 			StateContext: schema.ImportStatePassthroughContext,
 		},
 		Schema: map[string]*schema.Schema{
-			"facility_code": {
-				Description: "Location where to create this VLAN",
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
+			"vlan_tag": {
+				Type:     schema.TypeInt,
+				Computed: true,
+				Description: "The VLAN Tag id from the switch. Use this value when configuring" +
+					" your OS interfaces to use the VLAN.",
 			},
 			"type": {
-				Description: "Type of VLAN to be created, can be either `private` or `public`",
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: true,
+				Description: "If `public`, this VLAN can have IPs assigned to become reachable " +
+					" from the internet. If `private`, this VLAN can not have IPs assigned and " +
+					" will never be reachabled from the internet. All VLANs are subject to traffic " +
+					" billing and overages, with the exception of private VLAN traffic on unbonded " +
+					" Devices.",
+			},
+			"ip_ids": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Elem:        &schema.Schema{Type: schema.TypeInt},
+				Description: "Unique IDs of IP Assignments.",
+			},
+			"automated": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: "If true, VLAN can be automated via API. If false, contact support to enable automation.",
+			},
+			"facility_code": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "For example: `NYC1`.",
+			},
+			"q_in_q": {
+				Type:     schema.TypeBool,
+				Optional: true,
+				Description: "If true, VLAN is configured in Q-in-Q Mode. Automation is not" +
+					" currently supported on Q-in-Q VLANs.",
 			},
 			"port_ids": {
-				Description: "IDs of ports to include in this VLAN",
-				Type:        schema.TypeSet,
-				Elem: &schema.Schema{
-					Type: schema.TypeInt,
-				},
-				Required: true,
-			},
-			"tag_id": {
-				Description: "Tag ID of VLAN",
-				Type:        schema.TypeInt,
-				Computed:    true,
+				Type:        schema.TypeList,
+				Optional:    true,
+				Elem:        &schema.Schema{Type: schema.TypeInt},
+				Description: "Unique IDs of ports or bonds.",
 			},
 		},
 	}
@@ -59,7 +77,11 @@ func resourceVlanCreate(ctx context.Context, d *schema.ResourceData, m interface
 	var diags diag.Diagnostics
 	hv, _ := m.(*Client)
 
-	payload := makeVlanCreatePayload(d)
+	log.Printf("[INFO] Creating VLAN")
+	payload := swagger.VlanCreate{
+		FacilityCode: d.Get("facility_code").(string),
+		Type_:        d.Get("type").(string),
+	}
 
 	vlan, _, err := hv.client.VLANApi.PostVlanResource(hv.auth, payload, nil)
 	if err != nil {
@@ -67,112 +89,83 @@ func resourceVlanCreate(ctx context.Context, d *schema.ResourceData, m interface
 		return diag.FromErr(formatSwaggerError(err, "POST /vlan"))
 	}
 
-	// Update ports
-	if len(makeUpdateVlanPayload(d).PortIds) > 0 {
-		diags = append(diags, _updateVlanPorts(ctx, hv, d, vlan.VlanId)...)
-	}
-
-	// If any errors happened, delete VLAN
 	if diags.HasError() {
-		// Set ID for delete to run
 		d.SetId(fmt.Sprint(vlan.VlanId))
 		diags = append(diags, resourceVlanDelete(ctx, d, m)...)
 		d.SetId("")
-
 		return diags
 	}
 
 	log.Printf("[INFO] Created VLAN ID: %d", vlan.VlanId)
 	d.SetId(fmt.Sprint(vlan.VlanId))
-
 	return resourceVlanRead(ctx, d, m)
+
 }
 
 func resourceVlanRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
-
 	hv, _ := m.(*Client)
 
+	log.Printf("[INFO] Reading VLAN %s", d.Id())
 	vlanId, err := strconv.Atoi(d.Id())
+
 	if err != nil {
 		return diag.FromErr(err)
 	}
-
-	vlan, response, err := hv.client.VLANApi.GetVlanIdResource(hv.auth, int32(vlanId), nil)
+	vlan, resp, err := hv.client.VLANApi.GetVlanIdResource(hv.auth, int32(vlanId), nil)
 	if err != nil {
-		// If resource was deleted outside terraform, remove it from state and exit gracefully
-		if response != nil && response.StatusCode == 404 {
-			log.Printf("[WARN] Vlan ID not found: (%s)", d.Id())
+		if resp != nil && resp.StatusCode == 404 {
+			log.Printf("[WARN] VLAN %s not found", d.Id())
 			d.SetId("")
 			return diags
 		}
 		return diag.FromErr(formatSwaggerError(err, "GET /vlan/%d", vlanId))
 	}
-
-	valuesToSet := map[string]interface{}{
-		"port_ids":                SetFromInt32List(vlan.PortIds),
-		"facility_code":           vlan.FacilityCode,
-		"type":                    vlan.Type_,
-		"tag_id":                  vlan.VlanTag,
-	}
-
-	for k, v := range valuesToSet {
-		if err := d.Set(k, v); err != nil {
-			return diag.FromErr(err)
-		}
-	}
+	d.Set("q_in_q", vlan.QInQ)
+	d.Set("port_ids", SetFromInt32List(vlan.PortIds))
+	d.Set("ip_ids", SetFromInt32List(vlan.IpIds))
+	d.Set("automated", vlan.Automated)
+	d.Set("vlan_tag", vlan.VlanTag)
+	d.Set("facility_code", vlan.FacilityCode)
+	d.Set("type", vlan.Type_)
+	d.Set("vlan_id", vlan.VlanId)
 
 	return diags
 }
 
-func (hv *Client) updateVlanPorts(
-	payload swagger.VlanUpdate,
-	timeout time.Duration,
-	vlanId int32,
-) error {
-	// Update ports
-	task, _, err := hv.client.VLANApi.PutVlanIdResource(hv.auth, vlanId, payload, nil)
-	if err != nil {
-		return formatSwaggerError(err, "PUT /vlan/%d", vlanId)
-	}
-
-	// Wait for task to finish
-	if _, err := waitForNetworkTaskByClient(hv.auth, timeout, hv, task.TaskId); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func _updateVlanPorts(
-	ctx context.Context,
-	hv *Client,
-	d *schema.ResourceData,
-	vlanId int32,
-) diag.Diagnostics {
-	// Update ports
-	updatePayload := makeUpdateVlanPayload(d)
-
-	if err := hv.updateVlanPorts(updatePayload, d.Timeout(schema.TimeoutCreate), vlanId); err != nil {
-		return diag.FromErr(err)
-	}
-	return nil
-}
-
 func resourceVlanUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	var payload swagger.VlanUpdate
 	hv, _ := m.(*Client)
-
-	log.Printf("[INFO] Updating VLAN ID: %s", d.Id())
-
 	_vlanId, err := strconv.Atoi(d.Id())
+
 	if err != nil {
 		return diag.FromErr(err)
 	}
 	vlanId := int32(_vlanId)
 
-	diags := _updateVlanPorts(ctx, hv, d, vlanId)
-	if diags.HasError() {
-		return diags
+	log.Printf("[INFO] Updating VLAN ID: %s", d.Id())
+
+	// Construct payload for VLAN update
+	if portIdSet, ok := d.GetOk("port_ids"); ok {
+		portIds := Int32ListFromSet(portIdSet.(*schema.Set))
+		payload.PortIds = portIds
+	}
+
+	if ipIdSet, ok := d.GetOk("ip_ids"); ok {
+		ipIds := Int32ListFromSet(ipIdSet.(*schema.Set))
+		payload.IpIds = ipIds
+	}
+
+	// Update VLAN
+	task, _, err := hv.client.VLANApi.PutVlanIdResource(hv.auth, vlanId, payload, nil)
+	if err != nil {
+		myErr, _ := err.(swagger.GenericSwaggerError)
+		return diag.Errorf("PUT /vlan/%d: %s\n\n %s", vlanId, err, myErr.Body())
+	}
+
+	// Wait for task to complete
+	if _, err := waitForNetworkTaskByClient(hv.auth, d.Timeout(schema.TimeoutUpdate), hv, task.TaskId); err != nil {
+		return diag.FromErr(err)
 	}
 
 	return resourceVlanRead(ctx, d, m)
@@ -180,59 +173,33 @@ func resourceVlanUpdate(ctx context.Context, d *schema.ResourceData, m interface
 
 func resourceVlanDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
-
 	hv, _ := m.(*Client)
 
 	log.Printf("[INFO] Deleting VLAN ID: %s", d.Id())
 
 	var vlanId int32
+
 	if vlanId_, err := strconv.Atoi(d.Id()); err != nil {
 		return diag.FromErr(err)
 	} else {
 		vlanId = int32(vlanId_)
 	}
 
-	vlan, response, err := hv.client.VLANApi.GetVlanIdResource(hv.auth, int32(vlanId), nil)
+	resp, err := hv.client.VLANApi.DeleteVlanIdResource(hv.auth, vlanId)
+
 	if err != nil {
-		// If resource was deleted outside terraform, remove it from state and exit gracefully
-		if response != nil && response.StatusCode == 404 {
-			log.Printf("[WARN] Vlan ID not found: (%s)", d.Id())
+		if resp != nil && resp.StatusCode == 404 {
 			d.SetId("")
 			return diags
 		}
-		return diag.FromErr(formatSwaggerError(err, "GET /vlan/%d", vlanId))
-	}
-
-	if len(vlan.PortIds) > 0 {
-		log.Printf("[INFO] Removing ports before deleting vlan")
-
-		if err := d.Set("port_ids", SetFromInt32List([]int32{})); err != nil {
-			return diag.FromErr(err)
-		}
-
-		diags = append(diags, _updateVlanPorts(ctx, hv, d, vlanId)...)
-
-		if diags.HasError() {
-			return diags
-		}
-	}
-
-	_, err = hv.client.VLANApi.DeleteVlanIdResource(hv.auth, vlanId)
-	if err != nil {
-		return diag.FromErr(formatSwaggerError(err, "DELETE /vlan/%d", vlanId))
+		myErr, _ := err.(swagger.GenericSwaggerError)
+		return diag.Errorf("DELETE /vlan/%d failed! (%s)\n\n %s", vlanId, err, myErr.Body())
 	}
 
 	// Delete resource from state
 	d.SetId("")
 
 	return diags
-}
-
-func makeVlanCreatePayload(d *schema.ResourceData) swagger.VlanCreate {
-	return swagger.VlanCreate{
-		FacilityCode:          d.Get("facility_code").(string),
-		Type_: d.Get("type").(string),
-	}
 }
 
 func Int32ListFromSet(s *schema.Set) []int32 {
@@ -249,18 +216,6 @@ func SetFromInt32List(items []int32) *schema.Set {
 		intList[i] = int(n)
 	}
 	return schema.NewSet(schema.HashInt, intList)
-}
-
-func makeUpdateVlanPayload(d *schema.ResourceData) swagger.VlanUpdate {
-	portIds := make([]int32, 0)
-
-	if portIdSet, ok := d.GetOk("port_ids"); ok {
-		portIds = Int32ListFromSet(portIdSet.(*schema.Set))
-	}
-
-	return swagger.VlanUpdate{
-		PortIds: portIds,
-	}
 }
 
 func waitForNetworkTaskByClient(

@@ -23,5 +23,3 @@ description: |-
 
 - `contents` (String)
 - `id` (String) The ID of this resource.
-
-

@@ -55,5 +55,3 @@ output "demo_device" {
 Optional:
 
 - `create` (String)
-
-

@@ -34,5 +34,3 @@ description: |-
 Optional:
 
 - `create` (String)
-
-

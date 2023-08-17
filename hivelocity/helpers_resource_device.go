@@ -426,8 +426,11 @@ func (hv *Client) removeVlanPorts(
 
 		payload := swagger.VlanUpdate{PortIds: newPortIds}
 
-		if err := hv.updateVlanPorts(payload, timeout, entry.vlan.VlanId); err != nil {
-			return err
+		_, _, err := hv.client.VLANApi.PutVlanIdResource(hv.auth, entry.vlan.VlanId, payload, nil)
+
+		if err != nil {
+			myErr, _ := err.(swagger.GenericSwaggerError)
+			return formatSwaggerError(myErr, "PUT /vlan/%d: %s\n\n %s", entry.vlan.VlanId, err, myErr.Body())
 		}
 	}
 	return nil
@@ -441,8 +444,10 @@ func (hv *Client) restoreVlanPorts(
 	for _, entry := range *vlanPorts {
 		payload := swagger.VlanUpdate{PortIds: entry.vlan.PortIds}
 
-		if err := hv.updateVlanPorts(payload, timeout, entry.vlan.VlanId); err != nil {
-			return err
+		_, _, err := hv.client.VLANApi.PutVlanIdResource(hv.auth, entry.vlan.VlanId, payload, nil)
+		if err != nil {
+			myErr, _ := err.(swagger.GenericSwaggerError)
+			return formatSwaggerError(myErr, "PUT /vlan/%d: %s\n\n %s", entry.vlan.VlanId, err, myErr.Body())
 		}
 	}
 	return nil
