@@ -75,7 +75,7 @@ func dataSourceProductRead(ctx context.Context, d *schema.ResourceData, m interf
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return diag.Errorf("Failed to call the API! (%s)", err)
+		return diag.Errorf("Failed to call the API: (%s)", err)
 	}
 	defer resp.Body.Close()
 
