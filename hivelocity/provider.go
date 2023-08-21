@@ -33,8 +33,8 @@ func Provider() *schema.Provider {
 			"hivelocity_device_initial_creds": dataSourceDeviceInitialCreds(),
 			"hivelocity_ssh_key":              dataSourceSshKey(),
 			"hivelocity_effective_ignition":   dataSourceEffectiveIgnition(),
-			// "hivelocity_ignition":             dataSourceIgnitionConfig(),
 			"hivelocity_device_port":          dataSourceDevicePort(),
+			// "hivelocity_ignition":             dataSourceIgnitionConfig(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"hivelocity_bare_metal_device": resourceBareMetalDevice(true),
@@ -42,6 +42,8 @@ func Provider() *schema.Provider {
 			"hivelocity_vlan":              resourceVlan(),
 			"hivelocity_order_group":       resourceOrderGroup(),
 			"hivelocity_ignition":          resourceIgnitionConfig(true),
+			"hivelocity_ip_assignment":     resourceIPAssignment(),
+			"hivelocity_device_port_bond":  resourceBond(),
 		},
 		ConfigureContextFunc: configureProvider,
 	}
@@ -66,8 +68,8 @@ func configureProvider(ctx context.Context, d *schema.ResourceData) (interface{}
 	var diags diag.Diagnostics
 
 	config := Config{
-		ApiKey: apiKey,
-		ApiUrl: apiURL,
+		ApiKey:  apiKey,
+		ApiUrl:  apiURL,
 		Referer: referer,
 	}
 

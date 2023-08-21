@@ -73,18 +73,21 @@ output "vlan_info" {
 
 ### Required
 
-- `facility_code` (String) Location where to create this VLAN
-- `port_ids` (Set of Number) IDs of ports to include in this VLAN
-- `type` (String) Type of VLAN to be created, can be either `private` or `public`
+- `facility_code` (String) For example: `NYC1`.
+- `type` (String) If `public`, this VLAN can have IPs assigned to become reachable  from the internet. If `private`, this VLAN can not have IPs assigned and  will never be reachabled from the internet. All VLANs are subject to traffic  billing and overages, with the exception of private VLAN traffic on unbonded  Devices.
 
 ### Optional
 
+- `automated` (Boolean) If true, VLAN can be automated via API. If false, contact support to enable automation.
+- `ip_ids` (List of Number) Unique IDs of IP Assignments.
+- `port_ids` (List of Number) Unique IDs of ports or bonds.
+- `q_in_q` (Boolean) If true, VLAN is configured in Q-in-Q Mode. Automation is not currently supported on Q-in-Q VLANs.
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
 
 ### Read-Only
 
 - `id` (String) The ID of this resource.
-- `tag_id` (Number) Tag ID of VLAN
+- `vlan_tag` (Number) The VLAN Tag id from the switch. Use this value when configuring your OS interfaces to use the VLAN.
 
 <a id="nestedblock--timeouts"></a>
 ### Nested Schema for `timeouts`
@@ -92,5 +95,3 @@ output "vlan_info" {
 Optional:
 
 - `create` (String)
-
-

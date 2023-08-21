@@ -64,5 +64,3 @@ Required:
 
 - `name` (String)
 - `values` (List of String)
-
-
