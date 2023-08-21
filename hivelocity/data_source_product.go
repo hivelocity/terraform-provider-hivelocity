@@ -4,10 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"os"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
 
 func dataSourceProduct() *schema.Resource {
@@ -54,29 +56,62 @@ func dataSourceProduct() *schema.Resource {
 	}
 }
 
-/* TODO FIX - CURRENTLY BROKEN */
+// Calling the API endpoint directly due to the dynamic types causing issues with the generated client
 func dataSourceProductRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	hv, _ := m.(*Client)
-
-	inventory, _, err := hv.client.InventoryApi.GetStockResource(hv.auth, nil)
-	if err != nil {
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("GET /inventory/product failed! (%s)\n\n %s", err, myErr.Body())
+	c, ok := m.(*Client)
+	if !ok {
+		return diag.Errorf("Failed to get configuration")
 	}
+	apiEndpoint := c.ApiUrl + "/inventory/product"
 
-	jsonProductInfo, err := json.Marshal(inventory)
+	req, err := http.NewRequest("GET", apiEndpoint, nil)
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
-	products := make([]map[string]interface{}, 0)
-	err = json.Unmarshal(jsonProductInfo, &products)
+	req.Header.Add("X-API-KEY", c.ApiKey)
+	req.Header.Add("Referer", c.Referer)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return diag.Errorf("Failed to call the API! (%s)", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	fmt.Println("API Response:", string(body))
+	fmt.Fprintf(os.Stderr, "API Response: %s\n", string(body))
+
 	if err != nil {
 		return diag.FromErr(err)
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return diag.Errorf("API returned non-200 status code: %d. Response: %s", resp.StatusCode, body)
+	}
+
+	var nestedResponse map[string][]map[string]interface{}
+	errNested := json.Unmarshal(body, &nestedResponse)
+
+	var flatResponse []map[string]interface{}
+	errFlat := json.Unmarshal(body, &flatResponse)
+
+	if errNested != nil && errFlat != nil {
+		return diag.Errorf("Failed to parse API response")
+	}
+
+	var products []map[string]interface{}
+
+	if errNested == nil {
+		for _, v := range nestedResponse {
+			products = append(products, v...)
+		}
+	} else {
+		products = flatResponse
 	}
 
 	products = convertKeysOfList(products)
-
 	product, err := doFiltering(d, products, nil)
 	if err != nil {
 		return diag.FromErr(err)

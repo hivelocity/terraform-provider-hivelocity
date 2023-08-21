@@ -12,15 +12,18 @@ import (
 // Config is the configuration structure used to instantiate the Hivelocity
 // provider.
 type Config struct {
-	ApiKey string
-	ApiUrl string
+	ApiKey  string
+	ApiUrl  string
 	Referer string
 }
 
 // Client wraps the Hivelocity Client
 type Client struct {
-	client *hv.APIClient
-	auth   context.Context
+	client  *hv.APIClient
+	auth    context.Context
+	ApiUrl  string
+	ApiKey  string
+	Referer string
 }
 
 // Client configures govultr and returns an initialized client
@@ -42,5 +45,5 @@ func (c *Config) Client() (*Client, error) {
 		Key: c.ApiKey,
 	})
 
-	return &Client{client: hvClient, auth: authContext}, nil
+	return &Client{client: hvClient, auth: authContext, ApiUrl: c.ApiUrl, ApiKey: c.ApiKey, Referer: c.Referer}, nil
 }
