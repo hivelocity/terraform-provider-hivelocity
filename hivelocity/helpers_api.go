@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"sort"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -161,4 +163,74 @@ func expandStringMap(v interface{}) map[string]string {
 		}
 	}
 	return out
+}
+
+// waitForNetworkTasks waits for every task in the list, in order.
+func (hv *Client) waitForNetworkTasks(ctx context.Context, tasks []swagger.NetworkTaskDump, timeout time.Duration) error {
+	deadline := time.Now().Add(timeout)
+	for _, task := range tasks {
+		remaining := time.Until(deadline)
+		if remaining <= 0 {
+			return fmt.Errorf("timed out waiting for network tasks")
+		}
+		if _, err := hv.waitForNetworkTask(ctx, task.TaskId, remaining); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// stringMapFromInterface converts a decoded JSON object into map[string]string
+// (non-string values are formatted with %v).
+func stringMapFromInterface(v interface{}) map[string]string {
+	out := map[string]string{}
+	if v == nil {
+		return out
+	}
+	if m, ok := v.(map[string]interface{}); ok {
+		for k, val := range m {
+			out[k] = fmt.Sprintf("%v", val)
+		}
+	}
+	return out
+}
+
+// timeString formats an API timestamp for state, using "" for the zero value.
+func timeString(t time.Time) string {
+	if t.IsZero() {
+		return ""
+	}
+	return t.UTC().Format(time.RFC3339)
+}
+
+// parseTwoPartId splits an import ID of the form "<a>:<b>" into two ints.
+func parseTwoPartId(id, format string) (int, int, error) {
+	parts := strings.SplitN(id, ":", 2)
+	if len(parts) != 2 || parts[0] == "" || parts[1] == "" {
+		return 0, 0, fmt.Errorf("unexpected ID format %q, expected %s", id, format)
+	}
+	a, err := strconv.Atoi(parts[0])
+	if err != nil {
+		return 0, 0, fmt.Errorf("unexpected ID format %q, expected %s: %w", id, format, err)
+	}
+	b, err := strconv.Atoi(parts[1])
+	if err != nil {
+		return 0, 0, fmt.Errorf("unexpected ID format %q, expected %s: %w", id, format, err)
+	}
+	return a, b, nil
+}
+
+// configHas reports whether the attribute was explicitly set in the
+// configuration (as opposed to being unset/null). Useful for Optional+Computed
+// attributes whose zero value is meaningful (false, 0).
+func configHas(d *schema.ResourceData, key string) bool {
+	raw := d.GetRawConfig()
+	if raw.IsNull() || !raw.IsKnown() {
+		return false
+	}
+	if !raw.Type().IsObjectType() || !raw.Type().HasAttribute(key) {
+		return false
+	}
+	attr := raw.GetAttr(key)
+	return !attr.IsNull()
 }

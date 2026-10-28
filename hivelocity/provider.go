@@ -32,21 +32,38 @@ func Provider() *schema.Provider {
 			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
+			// Devices and provisioning
 			"hivelocity_bare_metal_device":    dataSourceBareMetalDevice(),
 			"hivelocity_device":               dataSourceDevice(),
-			"hivelocity_product":              dataSourceProduct(),
 			"hivelocity_device_initial_creds": dataSourceDeviceInitialCreds(),
-			"hivelocity_ssh_key":              dataSourceSshKey(),
 			"hivelocity_effective_ignition":   dataSourceEffectiveIgnition(),
 			"hivelocity_ignition":             dataSourceIgnitionConfig(),
-			"hivelocity_device_port":          dataSourceDevicePort(),
+			"hivelocity_ssh_key":              dataSourceSshKey(),
+			"hivelocity_product":              dataSourceProduct(),
+			// Networking
+			"hivelocity_device_port":   dataSourceDevicePort(),
+			"hivelocity_device_ips":    dataSourceDeviceIps(),
+			"hivelocity_ip_assignment": dataSourceIpAssignment(),
+			"hivelocity_vlan":          dataSourceVlan(),
+			// DNS
+			// VPS
+			// Account
 		},
 		ResourcesMap: map[string]*schema.Resource{
+			// Devices and provisioning
 			"hivelocity_bare_metal_device": resourceBareMetalDevice(true),
-			"hivelocity_ssh_key":           resourceSSHKey(),
-			"hivelocity_vlan":              resourceVlan(),
 			"hivelocity_order_group":       resourceOrderGroup(),
+			"hivelocity_ssh_key":           resourceSSHKey(),
 			"hivelocity_ignition":          resourceIgnitionConfig(true),
+			// Networking
+			"hivelocity_vlan":                resourceVlan(),
+			"hivelocity_device_port_bond":    resourceDevicePortBond(),
+			"hivelocity_device_port":         resourceDevicePort(),
+			"hivelocity_ip_assignment_route": resourceIpAssignmentRoute(),
+			"hivelocity_null_route":          resourceNullRoute(),
+			// DNS
+			// VPS
+			// Account
 		},
 		ConfigureContextFunc: configureProvider,
 	}
