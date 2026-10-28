@@ -46,6 +46,8 @@ func Provider() *schema.Provider {
 			"hivelocity_ip_assignment": dataSourceIpAssignment(),
 			"hivelocity_vlan":          dataSourceVlan(),
 			// DNS
+			"hivelocity_dns_domain":     dataSourceDnsDomain(),
+			"hivelocity_dns_record_ptr": dataSourceDnsRecordPTR(),
 			// VPS
 			// Account
 		},
@@ -62,6 +64,11 @@ func Provider() *schema.Provider {
 			"hivelocity_ip_assignment_route": resourceIpAssignmentRoute(),
 			"hivelocity_null_route":          resourceNullRoute(),
 			// DNS
+			"hivelocity_dns_domain":      resourceDnsDomain(),
+			"hivelocity_dns_record_a":    resourceDnsRecordA(),
+			"hivelocity_dns_record_aaaa": resourceDnsRecordAAAA(),
+			"hivelocity_dns_record_mx":   resourceDnsRecordMX(),
+			"hivelocity_dns_record_ptr":  resourceDnsRecordPTR(),
 			// VPS
 			// Account
 		},
