@@ -87,6 +87,18 @@ func TestFlattenVpsNics(t *testing.T) {
 	}
 }
 
+func TestApiTimeString(t *testing.T) {
+	if got := apiTimeString(nil); got != "" {
+		t.Fatalf("nil: %q", got)
+	}
+	if got := apiTimeString("2027-01-01T00:00:00Z"); got != "2027-01-01T00:00:00Z" {
+		t.Fatalf("string: %q", got)
+	}
+	if got := apiTimeString(float64(1767225600)); got != "2026-01-01T00:00:00Z" {
+		t.Fatalf("number: %q", got)
+	}
+}
+
 func TestStringMapFromInterface(t *testing.T) {
 	got := stringMapFromInterface(map[string]interface{}{"a": "x", "b": 2})
 	if got["a"] != "x" || got["b"] != "2" {

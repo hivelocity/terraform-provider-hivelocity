@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -44,7 +45,8 @@ func resourceApiToken() *schema.Resource {
 				Optional:    true,
 				ForceNew:    true,
 			},
-			"api_token_id": computedString("Unique ID of the token."),
+			"api_token_id":    computedString("Unique ID of the token."),
+			"time_expiration": computedString("Expiration of the token as reported by the API."),
 			"token": {
 				Description: "The token value. Only available on creation.",
 				Type:        schema.TypeString,
@@ -62,17 +64,33 @@ func resourceApiToken() *schema.Resource {
 // timeExpiration as time.Time while the API documents it as a string, so the
 // token endpoints are called directly.
 type apiToken struct {
-	ApiTokenId     string `json:"apiTokenId,omitempty"`
-	Name           string `json:"name,omitempty"`
-	Token          string `json:"token,omitempty"`
-	TimeExpiration string `json:"timeExpiration,omitempty"`
-	TimeCreated    string `json:"timeCreated,omitempty"`
-	TimeUpdated    string `json:"timeUpdated,omitempty"`
-	TimeLastUsed   string `json:"timeLastUsed,omitempty"`
+	ApiTokenId string `json:"apiTokenId,omitempty"`
+	Name       string `json:"name,omitempty"`
+	Token      string `json:"token,omitempty"`
+	// Timestamps are documented as strings but typed as date-times in the
+	// spec; accept either and format them for state.
+	TimeExpiration interface{} `json:"timeExpiration,omitempty"`
+	TimeCreated    interface{} `json:"timeCreated,omitempty"`
+	TimeUpdated    interface{} `json:"timeUpdated,omitempty"`
+	TimeLastUsed   interface{} `json:"timeLastUsed,omitempty"`
 	IpAddresses    *struct {
 		Name string   `json:"name,omitempty"`
 		Ips  []string `json:"ips"`
 	} `json:"ipAddresses,omitempty"`
+}
+
+// apiTimeString formats a loosely typed API timestamp (string or number) for state.
+func apiTimeString(v interface{}) string {
+	switch t := v.(type) {
+	case nil:
+		return ""
+	case string:
+		return t
+	case float64:
+		return time.Unix(int64(t), 0).UTC().Format(time.RFC3339)
+	default:
+		return fmt.Sprint(t)
+	}
 }
 
 func resourceApiTokenCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
@@ -122,13 +140,15 @@ func resourceApiTokenRead(ctx context.Context, d *schema.ResourceData, m interfa
 		if t.ApiTokenId != d.Id() {
 			continue
 		}
+		// expires_at keeps the configured value: it forces replacement, and
+		// the API may echo the timestamp back in a different format.
 		values := map[string]interface{}{
-			"api_token_id":   t.ApiTokenId,
-			"name":           t.Name,
-			"expires_at":     t.TimeExpiration,
-			"time_created":   t.TimeCreated,
-			"time_updated":   t.TimeUpdated,
-			"time_last_used": t.TimeLastUsed,
+			"api_token_id":    t.ApiTokenId,
+			"name":            t.Name,
+			"time_expiration": apiTimeString(t.TimeExpiration),
+			"time_created":    apiTimeString(t.TimeCreated),
+			"time_updated":    apiTimeString(t.TimeUpdated),
+			"time_last_used":  apiTimeString(t.TimeLastUsed),
 		}
 		if t.IpAddresses != nil {
 			values["allowed_ips"] = flattenStringList(t.IpAddresses.Ips)

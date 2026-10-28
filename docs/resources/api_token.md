@@ -43,6 +43,7 @@ output "ci_token" {
 - `api_token_id` (String) Unique ID of the token.
 - `id` (String) The ID of this resource.
 - `time_created` (String) When the token was created.
+- `time_expiration` (String) Expiration of the token as reported by the API.
 - `time_last_used` (String) When the token was last used.
 - `time_updated` (String) When the token was last updated.
 - `token` (String, Sensitive) The token value. Only available on creation.
