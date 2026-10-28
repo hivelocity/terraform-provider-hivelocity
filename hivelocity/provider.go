@@ -49,6 +49,12 @@ func Provider() *schema.Provider {
 			"hivelocity_dns_domain":     dataSourceDnsDomain(),
 			"hivelocity_dns_record_ptr": dataSourceDnsRecordPTR(),
 			// VPS
+			"hivelocity_vps":          dataSourceVps(),
+			"hivelocity_vps_events":   dataSourceVpsEvents(),
+			"hivelocity_vps_volume":   dataSourceVpsVolume(),
+			"hivelocity_vps_snapshot": dataSourceVpsSnapshot(),
+			"hivelocity_vps_iso":      dataSourceVpsIso(),
+			"hivelocity_vps_network":  dataSourceVpsNetwork(),
 			// Account
 		},
 		ResourcesMap: map[string]*schema.Resource{
@@ -70,6 +76,13 @@ func Provider() *schema.Provider {
 			"hivelocity_dns_record_mx":   resourceDnsRecordMX(),
 			"hivelocity_dns_record_ptr":  resourceDnsRecordPTR(),
 			// VPS
+			"hivelocity_vps":                    resourceVps(),
+			"hivelocity_vps_volume":             resourceVpsVolume(),
+			"hivelocity_vps_snapshot":           resourceVpsSnapshot(),
+			"hivelocity_vps_snapshot_schedule":  resourceVpsSnapshotSchedule(),
+			"hivelocity_vps_iso":                resourceVpsIso(),
+			"hivelocity_vps_network":            resourceVpsNetwork(),
+			"hivelocity_vps_network_attachment": resourceVpsNetworkAttachment(),
 			// Account
 		},
 		ConfigureContextFunc: configureProvider,
