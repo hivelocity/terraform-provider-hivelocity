@@ -5,6 +5,8 @@
 *.tfstate
 *.tfstate.*
 
+.DS_Store
+
 # Crash log files
 crash.log
 
@@ -32,6 +34,9 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Local credentials for acceptance tests
+.env*
 
 
 # Binaries for programs and plugins

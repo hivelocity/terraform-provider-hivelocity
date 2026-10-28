@@ -24,18 +24,18 @@ func resourceIgnitionConfig(forceNew bool) *schema.Resource {
 		DeleteContext: resourceIgnitionDelete,
 		UpdateContext: resourceIgnitionUpdate,
 		Schema: map[string]*schema.Schema{
-			"id": &schema.Schema{
+			"id": {
 				Type:     schema.TypeString,
 				Computed: true,
 				Optional: true,
 			},
-			"name": &schema.Schema{
+			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    forceNew,
 				Description: "Name of ignition file resource",
 			},
-			"contents": &schema.Schema{
+			"contents": {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: false,

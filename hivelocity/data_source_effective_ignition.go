@@ -11,11 +11,11 @@ func dataSourceEffectiveIgnition() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataSourceEffectiveIgnitionRead,
 		Schema: map[string]*schema.Schema{
-			"device_id": &schema.Schema{
+			"device_id": {
 				Type:     schema.TypeInt,
 				Required: true,
 			},
-			"contents": &schema.Schema{
+			"contents": {
 				Type:     schema.TypeString,
 				Computed: true,
 			},

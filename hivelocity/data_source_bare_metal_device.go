@@ -16,84 +16,84 @@ func dataSourceBareMetalDevice() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"filter": dataSourceFiltersSchema(),
 			"first":  dataSourceFilterFirstSchema(),
-			"last_updated": &schema.Schema{
+			"last_updated": {
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
 			},
-			"device_id": &schema.Schema{
+			"device_id": {
 				Type:     schema.TypeInt,
 				Computed: true,
 				Optional: true,
 			},
-			"order_id": &schema.Schema{
+			"order_id": {
 				Type:     schema.TypeInt,
 				Computed: true,
 				Optional: true,
 			},
-			"service_id": &schema.Schema{
+			"service_id": {
 				Type:     schema.TypeInt,
 				Computed: true,
 				Optional: true,
 			},
-			"product_id": &schema.Schema{
+			"product_id": {
 				Type:     schema.TypeInt,
 				Computed: true,
 				Optional: true,
 			},
-			"product_name": &schema.Schema{
+			"product_name": {
 				Type:     schema.TypeString,
 				Computed: true,
 				Optional: true,
 			},
-			"os_name": &schema.Schema{
+			"os_name": {
 				Type:     schema.TypeString,
 				Computed: true,
 				Optional: true,
 			},
-			"location_name": &schema.Schema{
+			"location_name": {
 				Type:     schema.TypeString,
 				Computed: true,
 				Optional: true,
 			},
-			"hostname": &schema.Schema{
+			"hostname": {
 				Type:     schema.TypeString,
 				Computed: true,
 				Optional: true,
 			},
-			"power_status": &schema.Schema{
+			"power_status": {
 				Type:     schema.TypeString,
 				Computed: true,
 				Optional: true,
 			},
-			"vlan_id": &schema.Schema{
+			"vlan_id": {
 				Type:     schema.TypeInt,
 				Optional: true,
 				Default:  nil,
 			},
-			"primary_ip": &schema.Schema{
+			"primary_ip": {
 				Type:     schema.TypeString,
 				Computed: true,
 				Optional: true,
 			},
-			"tags": &schema.Schema{
+			"tags": {
 				Type:     schema.TypeList,
 				Optional: true,
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
 				},
 			},
-			"public_ssh_key_id": &schema.Schema{
+			"public_ssh_key_id": {
 				Type:     schema.TypeInt,
 				Optional: true,
 				Default:  nil,
 			},
-			"script": &schema.Schema{
+			"script": {
 				Type:     schema.TypeString,
 				Computed: true,
 				Optional: true,
 			},
-			"period": &schema.Schema{
+			"period": {
 				Type:     schema.TypeString,
 				Computed: true,
 				Optional: true,

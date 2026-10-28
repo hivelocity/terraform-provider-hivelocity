@@ -1,10 +1,20 @@
 terraform {
   required_providers {
     hivelocity = {
-      version  = "0.5.0"
-      source   = "hivelocity/hivelocity"
+      source  = "hivelocity/hivelocity"
+      version = "~> 0.8"
     }
   }
+}
+
+// The API key can also be supplied with the HIVELOCITY_API_KEY environment variable.
+provider "hivelocity" {
+  api_key = var.hivelocity_api_key
+}
+
+variable "hivelocity_api_key" {
+  type      = string
+  sensitive = true
 }
 
 // Find a plan with 16GB of memory in Tampa.
@@ -30,13 +40,13 @@ data "hivelocity_product" "tampa_product" {
 // Create a SSH Key
 resource "hivelocity_ssh_key" "my_ssh_key" {
   name       = "This is my Terraform SSH Key"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDYYGqXPIJ1yQ7pMTSmdB+LrjvnPh2jSJewvinxYwuk/CBvbsUgFxOTBtjzfU0kHIlo5QyIhJ7tjh8PhT8LdJPGB86ItwTg3Lmt1q5UFxbHmZ0kPmmzaDI/9aakOal3P93D14HDCzBnkTHfC8/JZ5JpDxp86XM+gWQ9sFMkLx83ZOwONNu3E8PowTEpsp0jMx2B2aFeSM+T4bLkJJQtA5Cp6lgRAc5AklXaqmpdAil/fIL/+gvRf8kJIccAe/2oVj4flaMK7mgZ39qhzYYUjTEokEYvJf17QbdtFTxxtIQ+hTxzKzwT6p8cMu6DNQLfq6oxzbuBVGTvKD79MR5vjx+RNpaIru8wzIspHTez9eGDzdR0316GWDcxmMwVIDMM+3pjopDJV6DILfs6hVlAuH11yCX8YwwGHYpsdzLLd00FEEaGLGVRDr/hvduZ1caQIvdNln6Gr7k6W51U1VTC3NRq49yoxYSsXxn30PfTe2IxFaZyhQXHunCLaMCF+TrAOc0= someone@somewhere.com"
+  public_key = file("~/.ssh/id_ed25519.pub")
 }
 
-// Provision your devices with CentOS 7.
+// Provision your devices with Ubuntu.
 resource "hivelocity_bare_metal_device" "webserver" {
   product_id        = data.hivelocity_product.tampa_product.product_id
-  os_name           = "CentOS 7.x"
+  os_name           = "Ubuntu 22.04"
   location_name     = data.hivelocity_product.tampa_product.data_center
   hostname          = "webserver.terraform.test"
   tags              = ["hello", "world"]
@@ -46,7 +56,7 @@ resource "hivelocity_bare_metal_device" "webserver" {
 
 resource "hivelocity_bare_metal_device" "database" {
   product_id        = data.hivelocity_product.tampa_product.product_id
-  os_name           = "CentOS 7.x"
+  os_name           = "Ubuntu 22.04"
   location_name     = data.hivelocity_product.tampa_product.data_center
   hostname          = "database.terraform.test"
   tags              = ["hello", "world"]
@@ -54,10 +64,21 @@ resource "hivelocity_bare_metal_device" "database" {
   public_ssh_key_id = hivelocity_ssh_key.my_ssh_key.ssh_key_id
 }
 
-// Create a VLAN connecting servers
+// Look up each device's private port (defaults to the bond, or eth1 on unbonded devices).
+data "hivelocity_device_port" "webserver" {
+  device_id = hivelocity_bare_metal_device.webserver.device_id
+}
+
+data "hivelocity_device_port" "database" {
+  device_id = hivelocity_bare_metal_device.database.device_id
+}
+
+// Create a private VLAN connecting the servers.
 resource "hivelocity_vlan" "private_vlan" {
-  device_ids    = [
-      hivelocity_bare_metal_device.webserver.device_id,
-      hivelocity_bare_metal_device.database.device_id,
+  facility_code = data.hivelocity_product.tampa_product.data_center
+  type          = "private"
+  port_ids = [
+    data.hivelocity_device_port.webserver.port_id,
+    data.hivelocity_device_port.database.port_id,
   ]
 }

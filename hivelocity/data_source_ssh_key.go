@@ -14,15 +14,15 @@ func sshKeySchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"filter": dataSourceFiltersSchema(),
 		"first":  dataSourceFilterFirstSchema(),
-		"ssh_key_id": &schema.Schema{
+		"ssh_key_id": {
 			Type:     schema.TypeInt,
 			Computed: true,
 		},
-		"name": &schema.Schema{
+		"name": {
 			Type:     schema.TypeString,
 			Computed: true,
 		},
-		"public_key": &schema.Schema{
+		"public_key": {
 			Type:     schema.TypeString,
 			Computed: true,
 		},

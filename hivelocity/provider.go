@@ -15,15 +15,20 @@ func Provider() *schema.Provider {
 				Type:        schema.TypeString,
 				Required:    true,
 				Sensitive:   true,
-				Description: descriptions["api_key"],
+				Description: "Your API key from the https://my.hivelocity.net portal. Can also be set with the `HIVELOCITY_API_KEY` environment variable.",
 				DefaultFunc: schema.EnvDefaultFunc("HIVELOCITY_API_KEY", nil),
 			},
 			"api_url": {
 				Type:        schema.TypeString,
-				Required:    true,
-				Sensitive:   false,
-				Description: descriptions["api_url"],
+				Optional:    true,
+				Description: "The API endpoint to communicate with. Defaults to `https://core.hivelocity.net/api/v2`. Can also be set with the `HIVELOCITY_API_URL` environment variable.",
 				DefaultFunc: schema.EnvDefaultFunc("HIVELOCITY_API_URL", "https://core.hivelocity.net/api/v2"),
+			},
+			"referer": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "Value sent in the `Referer` header so API calls can be attributed. Defaults to `Terraform`. Can also be set with the `HIVELOCITY_REFERER` environment variable.",
+				DefaultFunc: schema.EnvDefaultFunc("HIVELOCITY_REFERER", "Terraform"),
 			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
@@ -33,7 +38,7 @@ func Provider() *schema.Provider {
 			"hivelocity_device_initial_creds": dataSourceDeviceInitialCreds(),
 			"hivelocity_ssh_key":              dataSourceSshKey(),
 			"hivelocity_effective_ignition":   dataSourceEffectiveIgnition(),
-			// "hivelocity_ignition":             dataSourceIgnitionConfig(),
+			"hivelocity_ignition":             dataSourceIgnitionConfig(),
 			"hivelocity_device_port":          dataSourceDevicePort(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
@@ -47,40 +52,21 @@ func Provider() *schema.Provider {
 	}
 }
 
-var descriptions map[string]string
-
-func init() {
-	descriptions = map[string]string{
-		"api_key": "Your API Key from the https://my.hivelocity.net portal.",
-		"api_url": "The API instance to communicate with defaults to https://core.hivelocity.net/api/v2",
-	}
-
-}
-
 func configureProvider(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
-	apiKey := d.Get("api_key").(string)
-	apiURL := d.Get("api_url").(string)
-	referer := "Terraform"
-
-	// Warning or errors can be collected in a slice type
-	var diags diag.Diagnostics
-
 	config := Config{
-		ApiKey: apiKey,
-		ApiUrl: apiURL,
-		Referer: referer,
+		ApiKey:  d.Get("api_key").(string),
+		ApiUrl:  d.Get("api_url").(string),
+		Referer: d.Get("referer").(string),
 	}
 
 	client, err := config.Client()
 	if err != nil {
-		diags = append(diags, diag.Diagnostic{
+		return nil, diag.Diagnostics{{
 			Severity: diag.Error,
 			Summary:  "Unable to create the Hivelocity client",
-			Detail:   "Unable to create the Hivelocity client",
-		})
-
-		return nil, diags
+			Detail:   err.Error(),
+		}}
 	}
 
-	return client, diags
+	return client, nil
 }

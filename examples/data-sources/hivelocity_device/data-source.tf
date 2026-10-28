@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    hivelocity = {
-      versions = ["0.1.0"]
-      source   = "hivelocity/hivelocity"
-    }
-  }
-}
-
 data "hivelocity_device" "reg_device" {
   first = true
 }
