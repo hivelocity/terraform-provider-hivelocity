@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build, lint and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Generate API client
+        run: make client
+
+      - name: Build
+        run: go build ./...
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: latest
+
+      - name: Unit tests
+        run: go test ./... -race -cover
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: Check example formatting
+        run: terraform fmt -check -recursive examples/
+
+      - name: Check generated docs are current
+        run: |
+          make docs
+          git diff --exit-code -- docs/ || (echo "::error::docs/ is out of date, run 'make docs' and commit the result" && exit 1)
+
+  # Acceptance tests need a real account and provision billable resources, so
+  # they only run when triggered by hand.
+  acceptance:
+    name: Acceptance tests
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+      - run: make client
+      - run: make testacc
+        env:
+          HIVELOCITY_API_KEY: ${{ secrets.HIVELOCITY_API_KEY }}
+          HIVELOCITY_API_URL: ${{ secrets.HIVELOCITY_API_URL }}

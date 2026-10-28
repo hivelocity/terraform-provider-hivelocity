@@ -9,8 +9,9 @@ Terraform Provider Hivelocity
 Requirements
 ------------
 
--	[Terraform](https://www.terraform.io/downloads.html) 0.13.x
--	[Go](https://golang.org/doc/install) 1.15+ (to build the provider plugin)
+-	[Terraform](https://www.terraform.io/downloads.html) 1.0+
+-	[Go](https://golang.org/doc/install) 1.24+ (to build the provider plugin)
+-	Java 8+ (to regenerate the API client with swagger-codegen, e.g. `brew install openjdk@17`)
 
 Official Documentation
 ----------------------
@@ -64,10 +65,10 @@ resource "hivelocity_ssh_key" "my_ssh_key" {
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDYYGqXPIJ1yQ7pMTSmdB+LrjvnPh2jSJewvinxYwuk/CBvbsUgFxOTBtjzfU0kHIlo5QyIhJ7tjh8PhT8LdJPGB86ItwTg3Lmt1q5UFxbHmZ0kPmmzaDI/9aakOal3P93D14HDCzBnkTHfC8/JZ5JpDxp86XM+gWQ9sFMkLx83ZOwONNu3E8PowTEpsp0jMx2B2aFeSM+T4bLkJJQtA5Cp6lgRAc5AklXaqmpdAil/fIL/+gvRf8kJIccAe/2oVj4flaMK7mgZ39qhzYYUjTEokEYvJf17QbdtFTxxtIQ+hTxzKzwT6p8cMu6DNQLfq6oxzbuBVGTvKD79MR5vjx+RNpaIru8wzIspHTez9eGDzdR0316GWDcxmMwVIDMM+3pjopDJV6DILfs6hVlAuH11yCX8YwwGHYpsdzLLd00FEEaGLGVRDr/hvduZ1caQIvdNln6Gr7k6W51U1VTC3NRq49yoxYSsXxn30PfTe2IxFaZyhQXHunCLaMCF+TrAOc0= someone@somewhere.com"
 }
 
-// Provision your devices with CentOS 7.
+// Provision your devices with Ubuntu.
 resource "hivelocity_bare_metal_device" "webserver" {
   product_id        = data.hivelocity_product.tampa_product.product_id
-  os_name           = "CentOS 7.x"
+  os_name           = "Ubuntu 22.04"
   location_name     = data.hivelocity_product.tampa_product.data_center
   hostname          = "webserver.terraform.test"
   tags              = ["hello", "world"]
@@ -77,7 +78,7 @@ resource "hivelocity_bare_metal_device" "webserver" {
 
 resource "hivelocity_bare_metal_device" "database" {
   product_id        = data.hivelocity_product.tampa_product.product_id
-  os_name           = "CentOS 7.x"
+  os_name           = "Ubuntu 22.04"
   location_name     = data.hivelocity_product.tampa_product.data_center
   hostname          = "database.terraform.test"
   tags              = ["hello", "world"]
@@ -85,17 +86,28 @@ resource "hivelocity_bare_metal_device" "database" {
   public_ssh_key_id = hivelocity_ssh_key.my_ssh_key.ssh_key_id
 }
 
-// Create a VLAN connecting servers
+// Look up each device's private port (defaults to the bond, or eth1 on unbonded devices).
+data "hivelocity_device_port" "webserver" {
+  device_id = hivelocity_bare_metal_device.webserver.device_id
+}
+
+data "hivelocity_device_port" "database" {
+  device_id = hivelocity_bare_metal_device.database.device_id
+}
+
+// Create a private VLAN connecting the servers.
 resource "hivelocity_vlan" "private_vlan" {
-  device_ids    = [
-      hivelocity_bare_metal_device.webserver.device_id,
-      hivelocity_bare_metal_device.database.device_id,
+  facility_code = data.hivelocity_product.tampa_product.data_center
+  type          = "private"
+  port_ids = [
+    data.hivelocity_device_port.webserver.port_id,
+    data.hivelocity_device_port.database.port_id,
   ]
 }
 ```
 
 The above provider will deploy and provision 2 units of the first found in stock (`limited` or `available`) device with `16GB` of memory in the `TPA1`.
-They will be provisioned with `CentOS7.x` as the OS and received the tags `hello` and `world`.  The hostname will be set to
+They will be provisioned with `Ubuntu 22.04` as the OS and received the tags `hello` and `world`.  The hostname will be set to
 `webserver.terraform.test` for the first device and `database.terraform.test` for the second. Both will use a cloud-init user-data script to be executed on the device first boot.
 
 Cloud-init script start with #cloud-init, must be a valid YAML script.
@@ -143,6 +155,22 @@ The filter will check if `66.165.245.226` or `66.165.245.225` is in the `ip_addr
 
 You can pass strings, integers, or booleans to the `values` array on the filter. The type must match the returned type of the
 data source schema.
+
+What is covered
+---------------
+
+| Area | Resources | Data sources |
+|---|---|---|
+| Bare metal | `hivelocity_bare_metal_device`, `hivelocity_order_group`, `hivelocity_device_tags`, `hivelocity_ssh_key`, `hivelocity_ignition` | `hivelocity_bare_metal_device`, `hivelocity_device`, `hivelocity_device_initial_creds`, `hivelocity_device_hardware`, `hivelocity_device_ipmi`, `hivelocity_device_tags`, `hivelocity_effective_ignition`, `hivelocity_ignition`, `hivelocity_ssh_key` |
+| Catalog | | `hivelocity_product`, `hivelocity_product_operating_systems`, `hivelocity_product_options` |
+| Networking | `hivelocity_vlan`, `hivelocity_device_port_bond`, `hivelocity_device_port`, `hivelocity_ip_assignment_route`, `hivelocity_null_route` | `hivelocity_vlan`, `hivelocity_device_port`, `hivelocity_device_ips`, `hivelocity_ip_assignment` |
+| DNS | `hivelocity_dns_domain`, `hivelocity_dns_record_a`, `hivelocity_dns_record_aaaa`, `hivelocity_dns_record_mx`, `hivelocity_dns_record_ptr` | `hivelocity_dns_domain`, `hivelocity_dns_record_ptr` |
+| VPS | `hivelocity_vps`, `hivelocity_vps_volume`, `hivelocity_vps_snapshot`, `hivelocity_vps_snapshot_schedule`, `hivelocity_vps_iso`, `hivelocity_vps_network`, `hivelocity_vps_network_attachment` | `hivelocity_vps`, `hivelocity_vps_events`, `hivelocity_vps_volume`, `hivelocity_vps_snapshot`, `hivelocity_vps_iso`, `hivelocity_vps_network` |
+| Account | `hivelocity_webhook`, `hivelocity_contact`, `hivelocity_contact_permissions`, `hivelocity_api_token` | `hivelocity_webhook_events`, `hivelocity_contact`, `hivelocity_permissions`, `hivelocity_user_permissions`, `hivelocity_service`, `hivelocity_services`, `hivelocity_service_types`, `hivelocity_order`, `hivelocity_orders`, `hivelocity_maintenance_events` |
+
+Deliberately not modelled: billing info, bandwidth graphs, the `/deploy` cart workflow (superseded by
+`/bare-metal-devices` and `/compute`), power actions, console access, snapshot restores, IPMI
+whitelist/thresholds and other one-shot operational endpoints.
 
 How to test Cloud-Init script locally
 ---------------------------

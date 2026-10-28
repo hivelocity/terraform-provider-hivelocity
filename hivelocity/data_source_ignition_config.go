@@ -14,15 +14,15 @@ func ignitionConfigSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"filter": dataSourceFiltersSchema(),
 		"first":  dataSourceFilterFirstSchema(),
-		"id": &schema.Schema{
+		"id": {
 			Type:     schema.TypeInt,
 			Computed: true,
 		},
-		"name": &schema.Schema{
+		"name": {
 			Type:     schema.TypeString,
 			Computed: true,
 		},
-		"contents": &schema.Schema{
+		"contents": {
 			Type:     schema.TypeString,
 			Computed: true,
 		},

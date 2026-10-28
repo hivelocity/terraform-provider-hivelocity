@@ -69,7 +69,7 @@ func resourceOrderGroupCreate(ctx context.Context, d *schema.ResourceData, m int
 	for i, device := range d.Get("bare_metal_device").([]interface{}) {
 		devicesToCreate[i] = device.(map[string]interface{})
 	}
-	err = createDevices(hv, orderGroup.Id, devicesToCreate)
+	err = createDevices(ctx, hv, orderGroup.Id, devicesToCreate)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -200,7 +200,7 @@ func resourceOrderGroupUpdate(ctx context.Context, d *schema.ResourceData, m int
 			deviceId := int32(fieldGet("device_id", d, deviceKey).(int))
 			updatePayload := getBareMetalUpdatePayloadFromGroup(d, deviceKey)
 
-			if err := hv._updateDevice(deviceId, updatePayload, d); err == nil {
+			if err := hv._updateDevice(ctx, deviceId, updatePayload, d); err == nil {
 				diags = append(diags, diag.Diagnostic{
 					Severity: diag.Warning,
 					Summary:  fmt.Sprintf("Device updated (%d)", deviceId),
@@ -216,7 +216,7 @@ func resourceOrderGroupUpdate(ctx context.Context, d *schema.ResourceData, m int
 
 	if len(devicesToCreate) > 0 {
 		// Create all new devices and set them in the same position they were found
-		err := createDevices(hv, int32(orderGroupId), devicesToCreate)
+		err := createDevices(ctx, hv, int32(orderGroupId), devicesToCreate)
 		if err == nil {
 			// Warn user about newly provisioned devices
 			for _, device := range devicesToCreate {
@@ -246,7 +246,7 @@ func resourceOrderGroupDelete(ctx context.Context, d *schema.ResourceData, m int
 	for _, bareMetalDevice := range bareMetalDevices {
 		device := bareMetalDevice.(map[string]interface{})
 		deviceId := device["device_id"].(int)
-		httpResponse, err := hv.client.BareMetalDevicesApi.DeleteBareMetalDeviceIdResource(hv.auth, int32(deviceId), nil)
+		httpResponse, err := hv.client.BareMetalDevicesApi.DeleteBareMetalDeviceIdResource(hv.auth, int32(deviceId))
 		if err != nil {
 			if httpResponse != nil && httpResponse.StatusCode == 404 {
 				log.Printf("[WARN] Device (%d) not found", deviceId)
@@ -286,10 +286,14 @@ func resourceOrderGroupDiff(ctx context.Context, d *schema.ResourceDiff, m inter
 
 		if d.Get(keyDeviceId).(int) > 0 {
 			if d.HasChange(keyLocation) {
-				d.ForceNew(keyLocation)
+				if err := d.ForceNew(keyLocation); err != nil {
+					return err
+				}
 			}
 			if d.HasChange(keyProduct) {
-				d.ForceNew(keyProduct)
+				if err := d.ForceNew(keyProduct); err != nil {
+					return err
+				}
 			}
 		}
 	}

@@ -21,16 +21,16 @@ func resourceSSHKey() *schema.Resource {
 		UpdateContext: resourceSSHKeyUpdate,
 		DeleteContext: resourceSSHKeyDelete,
 		Schema: map[string]*schema.Schema{
-			"ssh_key_id": &schema.Schema{
+			"ssh_key_id": {
 				Type:     schema.TypeInt,
 				Computed: true,
 				Optional: true,
 			},
-			"name": &schema.Schema{
+			"name": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
-			"public_key": &schema.Schema{
+			"public_key": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
@@ -110,7 +110,6 @@ func resourceSSHKeyUpdate(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.Errorf("PUT /ssh_key/%s failed! (%s)\n\n %s", fmt.Sprint(SSHKeyID), err, myErr.Body())
 	}
 
-	d.Set("last_updated", time.Now().Format(time.RFC850))
 	return resourceSSHKeyRead(ctx, d, m)
 }
 
@@ -125,7 +124,7 @@ func resourceSSHKeyDelete(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.FromErr(err)
 	}
 
-	response, err := hv.client.SshKeyApi.DeleteSshKeyIdResource(hv.auth, int32(SSHKeyID))
+	response, err := hv.client.SshKeyApi.DeleteSshKeyIdResource(hv.auth, int32(SSHKeyID), nil)
 	if err != nil {
 		if response != nil && response.StatusCode == 404 {
 			d.SetId("")

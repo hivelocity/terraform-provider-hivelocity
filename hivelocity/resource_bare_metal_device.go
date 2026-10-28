@@ -9,16 +9,34 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
 
 // BareMetalDeviceTimeout is the timeout for creating/updating devices
 const BareMetalDeviceTimeout = 60 * time.Minute
 
+var billingPeriods = []string{"hourly", "monthly", "quarterly", "semi-annually", "annually", "biennial", "triennial"}
+
+// conflictsWhenStandalone returns a ConflictsWith list only for the top-level
+// resource: ConflictsWith paths are resolved from the resource root, so they
+// cannot be used when this schema is nested inside hivelocity_order_group.
+func conflictsWhenStandalone(standalone bool, keys ...string) []string {
+	if !standalone {
+		return nil
+	}
+	return keys
+}
+
 func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 	return &schema.Resource{
+		Description: "Provisions a bare metal server from the instant inventory and waits until it is ready. " +
+			"Changing `os_name` reloads the device; the provider removes the device's ports from any VLANs, " +
+			"powers it off if required, waits for the reload and restores VLAN membership.",
 		Timeouts: &schema.ResourceTimeout{
 			Create: schema.DefaultTimeout(BareMetalDeviceTimeout),
+			Update: schema.DefaultTimeout(BareMetalDeviceTimeout),
+			Delete: schema.DefaultTimeout(15 * time.Minute),
 		},
 		CreateContext: resourceBareMetalDeviceCreate,
 		ReadContext:   resourceBareMetalDeviceRead,
@@ -65,12 +83,13 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 				Optional:    true,
 			},
 			"os_name": {
-				Description: "Operating system to install on device",
-				Type:        schema.TypeString,
-				Required:    true,
+				Description: "Operating system to install on device. Must match an operating system name " +
+					"returned by the `hivelocity_product_operating_systems` data source.",
+				Type:     schema.TypeString,
+				Required: true,
 			},
 			"location_name": {
-				Description: "Deploy device in this location",
+				Description: "Deploy device in this location (facility code, for example `NYC1`)",
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    forceNew,
@@ -108,16 +127,18 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 				},
 			},
 			"script": {
-				Description: "Post-install script for device",
+				Description: "Post-install script for device (cloud-init, Bash for Linux or PowerShell for Windows)",
 				Type:        schema.TypeString,
 				Optional:    true,
 				Default:     nil,
 			},
 			"period": {
-				Description: "Billing period for device",
-				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
+				Description:  "Billing period for device: hourly|monthly|quarterly|semi-annually|annually|biennial|triennial",
+				Type:         schema.TypeString,
+				Computed:     true,
+				Optional:     true,
+				ForceNew:     forceNew,
+				ValidateFunc: validation.StringInSlice(billingPeriods, false),
 			},
 			"public_ssh_key_id": {
 				Description: "ID of a SSH Key to apply for device",
@@ -142,80 +163,78 @@ func resourceBareMetalDevice(forceNew bool) *schema.Resource {
 				Optional:    true,
 				ForceNew:    true,
 			},
+			"custom_ipxe_script_url": {
+				Description:   "URL of a custom iPXE script to provision the device with (instead of `os_name`).",
+				Type:          schema.TypeString,
+				Optional:      true,
+				ConflictsWith: conflictsWhenStandalone(forceNew, "custom_ipxe_script_contents"),
+			},
+			"custom_ipxe_script_contents": {
+				Description:   "Contents of a custom iPXE script to provision the device with.",
+				Type:          schema.TypeString,
+				Optional:      true,
+				ConflictsWith: conflictsWhenStandalone(forceNew, "custom_ipxe_script_url"),
+			},
+			"force_custom_ipxe_download": {
+				Description: "Bypass validation of the custom iPXE script at `custom_ipxe_script_url` and " +
+					"download it regardless.",
+				Type:     schema.TypeBool,
+				Optional: true,
+			},
+			"app_name": {
+				Description: "If the device was deployed as an application, the name of the application used.",
+				Type:        schema.TypeString,
+				Computed:    true,
+			},
 		},
 	}
 }
 
 func resourceBareMetalDeviceCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	hv, _ := m.(*Client)
-	var tags []string
-	for _, tag := range d.Get("tags").([]interface{}) {
-		tags = append(tags, tag.(string))
+
+	tflog.Info(ctx, "Creating bare metal device")
+
+	payload := swagger.BareMetalDeviceCreate{
+		ProductId:                int32(d.Get("product_id").(int)),
+		Hostname:                 d.Get("hostname").(string),
+		OsName:                   d.Get("os_name").(string),
+		LocationName:             d.Get("location_name").(string),
+		Script:                   d.Get("script").(string),
+		Period:                   d.Get("period").(string),
+		PublicSshKeyId:           int32(d.Get("public_ssh_key_id").(int)),
+		ForceDeviceId:            int32(d.Get("force_device_id").(int)),
+		IgnitionId:               int32(d.Get("ignition_id").(int)),
+		BondingSupport:           d.Get("bonded").(bool),
+		CustomIPXEScriptURL:      d.Get("custom_ipxe_script_url").(string),
+		CustomIPXEScriptContents: d.Get("custom_ipxe_script_contents").(string),
+		ForceCustomIPXEDownload:  d.Get("force_custom_ipxe_download").(bool),
+		Tags:                     expandStringList(d.Get("tags")),
 	}
 
-	// Load existing deviceId if any
-	var deviceId, orderId int32
-	if d.Id() != "" && d.Get("order_id") != "" {
-		deviceId_, deviceErr := strconv.Atoi(d.Id())
-		orderId_, orderErr := strconv.Atoi(d.Get("order_id").(string))
-
-		if deviceErr == nil && orderErr == nil {
-			deviceId = int32(deviceId_)
-			orderId = int32(orderId_)
-			tflog.Warn(ctx, "Device was tainted and may have failed after deployment")
-		} else {
-			tflog.Error(ctx, "Invalid device ID or order ID from tainted device")
-			d.SetId("")
-		}
-	} else {
-		tflog.Info(ctx, "Creating new device device resource")
+	bareMetalDevice, _, err := hv.client.BareMetalDevicesApi.PostBareMetalDeviceResource(hv.auth, payload, nil)
+	if err != nil {
+		return apiErrorDiag(err, "POST /bare-metal-devices")
 	}
+	deviceId := bareMetalDevice.DeviceId
+	orderId := bareMetalDevice.OrderId
 
-	if deviceId == 0 {
-		// Create if no existing ID
-		payload := swagger.BareMetalDeviceCreate{
-			ProductId:      int32(d.Get("product_id").(int)),
-			Hostname:       d.Get("hostname").(string),
-			OsName:         d.Get("os_name").(string),
-			LocationName:   d.Get("location_name").(string),
-			Script:         d.Get("script").(string),
-			Period:         d.Get("period").(string),
-			PublicSshKeyId: int32(d.Get("public_ssh_key_id").(int)),
-			ForceDeviceId:  int32(d.Get("force_device_id").(int)),
-			IgnitionId:     int32(d.Get("ignition_id").(int)),
-			BondingSupport: d.Get("bonded").(bool),
-			Tags: tags,
-		}
+	// Record the IDs right away so a failure while waiting leaves a tainted
+	// resource that destroy can clean up instead of an orphaned order.
+	d.SetId(fmt.Sprintf("%d", deviceId))
+	d.Set("order_id", int(orderId))
 
-		bareMetalDevice, _, err := hv.client.BareMetalDevicesApi.PostBareMetalDeviceResource(hv.auth, payload, nil)
-		if err != nil {
-			d.SetId("")
-			err = formatSwaggerError(err, "POST /bare-metal-devices")
-			return diag.FromErr(err)
-		}
-		deviceId = bareMetalDevice.DeviceId
-		orderId = bareMetalDevice.OrderId
-
-		// Set device ID and order ID after creation so any errors before the function completes will mark it as
-		// "tainted" so we can wait on the device again. Though this does not work at the moment because of device
-		// statuses being inaccessible for new devices
-		d.SetId(fmt.Sprintf("%d", deviceId))
-		d.Set("order_id", orderId)
-	}
-
-	// Wait for order if not complete
 	timeout := d.Timeout(schema.TimeoutCreate)
-	if status, err := waitForOrder(timeout, hv, orderId); err != nil {
+	if status, err := waitForOrder(ctx, timeout, hv, orderId); err != nil {
 		if status == "cancelled" {
-			return diag.Errorf("Your deployment (order %d) has been 'cancelled'. Please contact Hivelocity"+
+			return diag.Errorf("Your deployment (order %d) has been 'cancelled'. Please contact Hivelocity "+
 				"support if you believe this is a mistake.\n\n%s",
 				orderId, err)
 		}
 		return diag.FromErr(err)
 	}
 
-	// Wait for device, if not provisioned
-	if _, err := hv.waitForDevice(deviceId, timeout); err != nil {
+	if _, err := hv.waitForDevice(ctx, deviceId, timeout); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -230,29 +249,37 @@ func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m 
 		return diag.FromErr(err)
 	}
 
-	deviceResponse, httpResponse, err := hv.client.BareMetalDevicesApi.GetBareMetalDeviceIdResource(hv.auth, int32(deviceId), nil)
+	device, httpResponse, err := hv.client.BareMetalDevicesApi.GetBareMetalDeviceIdResource(hv.auth, int32(deviceId), nil)
 	if err != nil {
-		if httpResponse != nil && httpResponse.StatusCode == 404 {
+		if isNotFound(httpResponse) {
 			d.SetId("")
 			return nil
 		}
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("GET /bare-metal-devices/%d failed! (%s)\n\n %s", deviceId, err, myErr.Body())
+		return apiErrorDiag(err, "GET /bare-metal-devices/%d", deviceId)
 	}
 
-	d.Set("device_id", deviceResponse.DeviceId)
-	d.Set("hostname", deviceResponse.Hostname)
-	d.Set("location_name", deviceResponse.LocationName)
-	d.Set("order_id", deviceResponse.OrderId)
-	d.Set("os_name", deviceResponse.OsName)
-	d.Set("power_status", deviceResponse.PowerStatus)
-	d.Set("primary_ip", deviceResponse.PrimaryIp)
-	d.Set("product_id", deviceResponse.ProductId)
-	d.Set("product_name", deviceResponse.ProductName)
-	d.Set("service_id", deviceResponse.ServiceId)
-	d.Set("tags", deviceResponse.Tags)
-	d.Set("public_ssh_key_id", deviceResponse.PublicSshKeyId)
-	d.Set("script", deviceResponse.Script)
+	values := map[string]interface{}{
+		"device_id":                   int(device.DeviceId),
+		"hostname":                    device.Hostname,
+		"location_name":               device.LocationName,
+		"order_id":                    int(device.OrderId),
+		"os_name":                     device.OsName,
+		"power_status":                device.PowerStatus,
+		"primary_ip":                  device.PrimaryIp,
+		"product_id":                  int(device.ProductId),
+		"product_name":                device.ProductName,
+		"service_id":                  int(device.ServiceId),
+		"tags":                        flattenStringList(device.Tags),
+		"public_ssh_key_id":           int(device.PublicSshKeyId),
+		"script":                      device.Script,
+		"period":                      device.Period,
+		"custom_ipxe_script_url":      device.CustomIPXEScriptURL,
+		"custom_ipxe_script_contents": device.CustomIPXEScriptContents,
+		"app_name":                    device.AppName,
+	}
+	if err := setResourceData(d, values); err != nil {
+		return diag.FromErr(err)
+	}
 
 	return nil
 }
@@ -260,15 +287,13 @@ func resourceBareMetalDeviceRead(ctx context.Context, d *schema.ResourceData, m 
 func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	hv, _ := m.(*Client)
 
-	var deviceId int32
-	if deviceId_, err := strconv.Atoi(d.Id()); err == nil {
-		deviceId = int32(deviceId_)
-	} else {
+	deviceId, err := strconv.Atoi(d.Id())
+	if err != nil {
 		return diag.FromErr(err)
 	}
 
 	updatePayload := getBareMetalUpdatePayload(d)
-	if err := hv._updateDevice(deviceId, updatePayload, d); err != nil {
+	if err := hv._updateDevice(ctx, int32(deviceId), updatePayload, d); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -277,9 +302,6 @@ func resourceBareMetalDeviceUpdate(ctx context.Context, d *schema.ResourceData, 
 }
 
 func resourceBareMetalDeviceDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	// Warning or errors can be collected in a slice type
-	var diags diag.Diagnostics
-
 	hv, _ := m.(*Client)
 
 	deviceId, err := strconv.Atoi(d.Id())
@@ -287,17 +309,15 @@ func resourceBareMetalDeviceDelete(ctx context.Context, d *schema.ResourceData, 
 		return diag.FromErr(err)
 	}
 
-	response, err := hv.client.BareMetalDevicesApi.DeleteBareMetalDeviceIdResource(hv.auth, int32(deviceId), nil)
+	response, err := hv.client.BareMetalDevicesApi.DeleteBareMetalDeviceIdResource(hv.auth, int32(deviceId))
 	if err != nil {
-		if response != nil && response.StatusCode == 404 {
+		if isNotFound(response) {
 			d.SetId("")
-			return diags
+			return nil
 		}
-		myErr, _ := err.(swagger.GenericSwaggerError)
-		return diag.Errorf("DELETE /bare-metal-devices/%d failed! (%s)\n\n %s", deviceId, err, myErr.Body())
+		return apiErrorDiag(err, "DELETE /bare-metal-devices/%d", deviceId)
 	}
 
 	d.SetId("")
-
-	return diags
+	return nil
 }

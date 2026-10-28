@@ -1,12 +1,13 @@
 package hivelocity
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"strings"
 	"time"
 
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/retry"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	swagger "github.com/hivelocity/terraform-provider-hivelocity/hivelocity-client-go"
 )
@@ -32,8 +33,8 @@ func getTags(d *schema.ResourceData, deviceKey string) []string {
 	return tags
 }
 
-func waitForDevices(timeout time.Duration, hv *Client, orderId int32, newDevices []swagger.BareMetalDevice) (interface{}, error) {
-	waitForDevice := &resource.StateChangeConf{
+func waitForDevices(ctx context.Context, timeout time.Duration, hv *Client, orderId int32, newDevices []swagger.BareMetalDevice) (interface{}, error) {
+	waitForDevice := &retry.StateChangeConf{
 		Pending: []string{
 			"waiting",
 		},
@@ -63,11 +64,11 @@ func waitForDevices(timeout time.Duration, hv *Client, orderId int32, newDevices
 		MinTimeout:                10 * time.Second,
 		ContinuousTargetOccurence: 1,
 	}
-	return waitForDevice.WaitForState()
+	return waitForDevice.WaitForStateContext(ctx)
 }
 
-func waitForOrder(timeout time.Duration, hv *Client, orderId int32) (string, error) {
-	waitForOrder := &resource.StateChangeConf{
+func waitForOrder(ctx context.Context, timeout time.Duration, hv *Client, orderId int32) (string, error) {
+	waitForOrder := &retry.StateChangeConf{
 		Pending: []string{
 			"verification",
 			"lead",
@@ -89,15 +90,15 @@ func waitForOrder(timeout time.Duration, hv *Client, orderId int32) (string, err
 		MinTimeout:                5 * time.Second,
 		ContinuousTargetOccurence: 1,
 	}
-	status, err := waitForOrder.WaitForState()
+	status, err := waitForOrder.WaitForStateContext(ctx)
 	if statusStr, ok := status.(string); ok {
 		return statusStr, err
 	}
 	return "", err
 }
 
-func waitForDevicePowerOff(d *schema.ResourceData, hv *Client, deviceId int32) (interface{}, error) {
-	waitForDevice := &resource.StateChangeConf{
+func waitForDevicePowerOff(ctx context.Context, d *schema.ResourceData, hv *Client, deviceId int32) (interface{}, error) {
+	waitForDevice := &retry.StateChangeConf{
 		Pending: []string{
 			"waiting",
 		},
@@ -122,11 +123,11 @@ func waitForDevicePowerOff(d *schema.ResourceData, hv *Client, deviceId int32) (
 		MinTimeout:                5 * time.Second,
 		ContinuousTargetOccurence: 1,
 	}
-	return waitForDevice.WaitForState()
+	return waitForDevice.WaitForStateContext(ctx)
 }
 
-func (hv *Client) waitForDevice(deviceId int32, timeout time.Duration) (string, error) {
-	waitForDevice := &resource.StateChangeConf{
+func (hv *Client) waitForDevice(ctx context.Context, deviceId int32, timeout time.Duration) (string, error) {
+	waitForDevice := &retry.StateChangeConf{
 		Pending: []string{"waiting"},
 		Target:  []string{"ok"},
 		Refresh: func() (interface{}, string, error) {
@@ -149,7 +150,7 @@ func (hv *Client) waitForDevice(deviceId int32, timeout time.Duration) (string, 
 		ContinuousTargetOccurence: 1,
 		NotFoundChecks:            360, // 1h timeout / 10s delay between requests
 	}
-	ret, err := waitForDevice.WaitForState()
+	ret, err := waitForDevice.WaitForStateContext(ctx)
 	if err != nil {
 		return "", err
 	}
@@ -186,12 +187,16 @@ func buildDeviceForState(device swagger.BareMetalDevice) map[string]interface{} 
 	stateDevice["tags"] = device.Tags
 	stateDevice["public_ssh_key_id"] = int(device.PublicSshKeyId)
 	stateDevice["script"] = device.Script
+	stateDevice["period"] = device.Period
+	stateDevice["custom_ipxe_script_url"] = device.CustomIPXEScriptURL
+	stateDevice["custom_ipxe_script_contents"] = device.CustomIPXEScriptContents
+	stateDevice["app_name"] = device.AppName
 
 	return stateDevice
 }
 
 // Creates a list of devices
-func createDevices(hv *Client, orderGroupId int32, devicesToCreate []map[string]interface{}) error {
+func createDevices(ctx context.Context, hv *Client, orderGroupId int32, devicesToCreate []map[string]interface{}) error {
 	// Use the batch endpoint to create the Bare Metal Devices all at once
 	var bareMetalDevicesPayload []swagger.BareMetalDeviceCreate
 
@@ -202,15 +207,19 @@ func createDevices(hv *Client, orderGroupId int32, devicesToCreate []map[string]
 		}
 
 		bareMetalDeviceCreate := swagger.BareMetalDeviceCreate{
-			ProductId:      int32(device["product_id"].(int)),
-			Hostname:       device["hostname"].(string),
-			OsName:         device["os_name"].(string),
-			LocationName:   device["location_name"].(string),
-			Script:         device["script"].(string),
-			Period:         device["period"].(string),
-			PublicSshKeyId: int32(device["public_ssh_key_id"].(int)),
-			ForceDeviceId:  int32(device["force_device_id"].(int)),
-			Tags:           tags,
+			ProductId:                int32(device["product_id"].(int)),
+			Hostname:                 device["hostname"].(string),
+			OsName:                   device["os_name"].(string),
+			LocationName:             device["location_name"].(string),
+			Script:                   device["script"].(string),
+			Period:                   device["period"].(string),
+			PublicSshKeyId:           int32(device["public_ssh_key_id"].(int)),
+			ForceDeviceId:            int32(device["force_device_id"].(int)),
+			IgnitionId:               int32(device["ignition_id"].(int)),
+			CustomIPXEScriptURL:      device["custom_ipxe_script_url"].(string),
+			CustomIPXEScriptContents: device["custom_ipxe_script_contents"].(string),
+			ForceCustomIPXEDownload:  device["force_custom_ipxe_download"].(bool),
+			Tags:                     tags,
 		}
 		bareMetalDevicesPayload = append(bareMetalDevicesPayload, bareMetalDeviceCreate)
 	}
@@ -243,7 +252,7 @@ func createDevices(hv *Client, orderGroupId int32, devicesToCreate []map[string]
 
 	// Wait for for order to start provisioning
 	orderId := bareMetalDeviceResponse.Devices[0].OrderId
-	if status, err := waitForOrder(BareMetalDeviceTimeout, hv, orderId); err != nil {
+	if status, err := waitForOrder(ctx, BareMetalDeviceTimeout, hv, orderId); err != nil {
 		if status == "cancelled" {
 			return fmt.Errorf("your deployment (order %d) has been 'cancelled'. Please contact Hivelocity"+
 				" support if you believe this is a mistake.\n\n %s",
@@ -253,7 +262,7 @@ func createDevices(hv *Client, orderGroupId int32, devicesToCreate []map[string]
 	}
 
 	// Wait for devices to finish provisioning
-	_, err = waitForDevices(BareMetalDeviceTimeout, hv, orderId, bareMetalDeviceResponse.Devices)
+	_, err = waitForDevices(ctx, BareMetalDeviceTimeout, hv, orderId, bareMetalDeviceResponse.Devices)
 	if err != nil {
 		myErr, _ := err.(swagger.GenericSwaggerError)
 		return fmt.Errorf("error finding devices for order %d. The Hivelocity team will investigate:\n\n%s\n\n %s",
@@ -280,7 +289,7 @@ func isPowerOffError(err error) bool {
 	return false
 }
 
-func (hv *Client) doPowerOff(deviceId int32, d *schema.ResourceData) error {
+func (hv *Client) doPowerOff(ctx context.Context, deviceId int32, d *schema.ResourceData) error {
 	devicePower, _, err := hv.client.DeviceApi.GetPowerResource(hv.auth, int32(deviceId), nil)
 	if err != nil {
 		myErr, _ := err.(swagger.GenericSwaggerError)
@@ -294,7 +303,7 @@ func (hv *Client) doPowerOff(deviceId int32, d *schema.ResourceData) error {
 		}
 
 		// Power status will transition to PENDING, then OFF
-		if _, err := waitForDevicePowerOff(d, hv, int32(deviceId)); err != nil {
+		if _, err := waitForDevicePowerOff(ctx, d, hv, int32(deviceId)); err != nil {
 			return fmt.Errorf("error powering off device %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(deviceId), err)
 		}
 	}
@@ -373,7 +382,7 @@ func (hv *Client) getDeviceMetadata(deviceId int32) (*DeviceMetadata, error) {
 func getBareMetalUpdatePayloadFromGroup(d *schema.ResourceData, deviceKey string) swagger.BareMetalDeviceUpdate {
 	var ignitionId int32 = 0
 	var publicSshKeyId int32 = 0
-	var script string = ""
+	var script string
 
 	if value := fieldGet("script", d, deviceKey); value != nil {
 		script = value.(string)
@@ -385,13 +394,23 @@ func getBareMetalUpdatePayloadFromGroup(d *schema.ResourceData, deviceKey string
 		publicSshKeyId = int32(value.(int))
 	}
 
+	var ipxeURL, ipxeContents string
+	if value := fieldGet("custom_ipxe_script_url", d, deviceKey); value != nil {
+		ipxeURL = value.(string)
+	}
+	if value := fieldGet("custom_ipxe_script_contents", d, deviceKey); value != nil {
+		ipxeContents = value.(string)
+	}
+
 	return swagger.BareMetalDeviceUpdate{
-		Hostname:       fieldGet("hostname", d, deviceKey).(string),
-		OsName:         fieldGet("os_name", d, deviceKey).(string),
-		Tags:           getTags(d, deviceKey),
-		Script:         script,
-		IgnitionId:     ignitionId,
-		PublicSshKeyId: publicSshKeyId,
+		Hostname:                 fieldGet("hostname", d, deviceKey).(string),
+		OsName:                   fieldGet("os_name", d, deviceKey).(string),
+		Tags:                     getTags(d, deviceKey),
+		Script:                   script,
+		IgnitionId:               ignitionId,
+		PublicSshKeyId:           publicSshKeyId,
+		CustomIPXEScriptURL:      ipxeURL,
+		CustomIPXEScriptContents: ipxeContents,
 	}
 }
 
@@ -418,15 +437,14 @@ func (vp *VlanPorts) getPortIdListWithoutDevicePorts() []int32 {
 
 // removeVlanPorts removes all ports from designated VLANs in vlanPorts
 func (hv *Client) removeVlanPorts(
+	ctx context.Context,
 	vlanPorts *map[int32]VlanPorts,
 	timeout time.Duration,
 ) error {
 	for _, entry := range *vlanPorts {
 		newPortIds := entry.getPortIdListWithoutDevicePorts()
 
-		payload := swagger.VlanUpdate{PortIds: newPortIds}
-
-		if err := hv.updateVlanPorts(payload, timeout, entry.vlan.VlanId); err != nil {
+		if err := hv.updateVlanMembers(ctx, entry.vlan.VlanId, newPortIds, entry.vlan.IpIds, timeout); err != nil {
 			return err
 		}
 	}
@@ -435,13 +453,12 @@ func (hv *Client) removeVlanPorts(
 
 // restoreVlanPorts restores ports that were removed with removeVlanPorts
 func (hv *Client) restoreVlanPorts(
+	ctx context.Context,
 	vlanPorts *map[int32]VlanPorts,
 	timeout time.Duration,
 ) error {
 	for _, entry := range *vlanPorts {
-		payload := swagger.VlanUpdate{PortIds: entry.vlan.PortIds}
-
-		if err := hv.updateVlanPorts(payload, timeout, entry.vlan.VlanId); err != nil {
+		if err := hv.updateVlanMembers(ctx, entry.vlan.VlanId, entry.vlan.PortIds, entry.vlan.IpIds, timeout); err != nil {
 			return err
 		}
 	}
@@ -493,6 +510,7 @@ func (hv *Client) getVlanIdToVlanPortMap(deviceId int32) (map[int32]VlanPorts, e
 
 // Update/Reload a device, making sure to remove device ports from any VLAN and turning off device if necessary
 func (hv *Client) _updateDevice(
+	ctx context.Context,
 	deviceId int32,
 	updatePayload swagger.BareMetalDeviceUpdate,
 	d *schema.ResourceData,
@@ -518,7 +536,7 @@ func (hv *Client) _updateDevice(
 
 	// Remove device's ports from all assigned vlans
 	if len(vlanPortResults) > 0 {
-		if err := hv.removeVlanPorts(&vlanPortResults, d.Timeout(schema.TimeoutDelete)); err != nil {
+		if err := hv.removeVlanPorts(ctx, &vlanPortResults, d.Timeout(schema.TimeoutUpdate)); err != nil {
 			return err
 		}
 	}
@@ -534,7 +552,7 @@ func (hv *Client) _updateDevice(
 
 	// If a reload is required, it's necessary to turn the device off first
 	if requiresPowerOff {
-		if err := hv.doPowerOff(deviceId, d); err != nil {
+		if err := hv.doPowerOff(ctx, deviceId, d); err != nil {
 			return err
 		}
 
@@ -552,14 +570,14 @@ func (hv *Client) _updateDevice(
 
 	// If device metadata indicates a reload is taking place, then wait
 	if metadata.isReload() {
-		if _, err := hv.waitForDevice(deviceId, d.Timeout(schema.TimeoutUpdate)); err != nil {
+		if _, err := hv.waitForDevice(ctx, deviceId, d.Timeout(schema.TimeoutUpdate)); err != nil {
 			return fmt.Errorf("error reloading device %s. The Hivelocity team will investigate:\n\n%s", fmt.Sprint(deviceId), err)
 		}
 	}
 
 	// Restore VLAN ports if any
 	if len(vlanPortResults) > 0 {
-		if err := hv.restoreVlanPorts(&vlanPortResults, d.Timeout(schema.TimeoutDelete)); err != nil {
+		if err := hv.restoreVlanPorts(ctx, &vlanPortResults, d.Timeout(schema.TimeoutUpdate)); err != nil {
 			return err
 		}
 	}
@@ -569,7 +587,7 @@ func (hv *Client) _updateDevice(
 
 // Delete a device
 func deleteDevice(hv *Client, deviceId int) error {
-	httpResponse, err := hv.client.BareMetalDevicesApi.DeleteBareMetalDeviceIdResource(hv.auth, int32(deviceId), nil)
+	httpResponse, err := hv.client.BareMetalDevicesApi.DeleteBareMetalDeviceIdResource(hv.auth, int32(deviceId))
 	if err != nil {
 		if httpResponse != nil && httpResponse.StatusCode == 404 {
 			log.Printf("[WARN] Device (%d) not found", deviceId)

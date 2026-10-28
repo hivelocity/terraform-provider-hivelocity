@@ -12,23 +12,23 @@ import (
 
 func buildDeviceInitialCredsSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
-		"device_id": &schema.Schema{
+		"device_id": {
 			Type:     schema.TypeInt,
 			Required: true,
 		},
-		"user": &schema.Schema{
+		"user": {
 			Type:     schema.TypeString,
 			Computed: true,
 		},
-		"locker_url": &schema.Schema{
+		"locker_url": {
 			Type:     schema.TypeString,
 			Computed: true,
 		},
-		"port": &schema.Schema{
+		"port": {
 			Type:     schema.TypeInt,
 			Computed: true,
 		},
-		"password": &schema.Schema{
+		"password": {
 			Type:     schema.TypeString,
 			Computed: true,
 		},

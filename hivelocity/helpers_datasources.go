@@ -44,7 +44,7 @@ func forceValuesToStringOfList(l []map[string]interface{}, key string) []map[str
 
 func getSchemaKeys(schemas map[string]*schema.Schema) []string {
 	keys := make([]string, 0)
-	for k, _ := range schemas {
+	for k := range schemas {
 		keys = append(keys, k)
 	}
 	return keys

@@ -14,64 +14,64 @@ func buildDeviceSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"filter": dataSourceFiltersSchema(),
 		"first":  dataSourceFilterFirstSchema(),
-		"device_id": &schema.Schema{
+		"device_id": {
 			Type:     schema.TypeInt,
 			Computed: true,
 		},
-		"device_type": &schema.Schema{
+		"device_type": {
 			Type:     schema.TypeString,
 			Computed: true,
 		},
-		"hostname": &schema.Schema{
+		"hostname": {
 			Type:     schema.TypeString,
 			Computed: true,
 		},
-		"ip_addresses": &schema.Schema{
+		"ip_addresses": {
 			Type:     schema.TypeList,
 			Computed: true,
 			Elem: &schema.Schema{
 				Type: schema.TypeString,
 			},
 		},
-		"ipmi_address": &schema.Schema{
+		"ipmi_address": {
 			Type:     schema.TypeString,
 			Computed: true,
 		},
-		"ipmi_enabled": &schema.Schema{
+		"ipmi_enabled": {
 			Type:     schema.TypeBool,
 			Computed: true,
 		},
-		"location": &schema.Schema{
+		"location": {
 			Type:     schema.TypeMap,
 			Computed: true,
 			Elem: &schema.Schema{
 				Type: schema.TypeString,
 			},
 		},
-		"metadata": &schema.Schema{
+		"metadata": {
 			Type:     schema.TypeMap,
 			Computed: true,
 			Elem: &schema.Schema{
 				Type: schema.TypeString,
 			},
 		},
-		"name": &schema.Schema{
+		"name": {
 			Type:     schema.TypeString,
 			Computed: true,
 		},
-		"power_status": &schema.Schema{
+		"power_status": {
 			Type:     schema.TypeString,
 			Computed: true,
 		},
-		"service_plan": &schema.Schema{
+		"service_plan": {
 			Type:     schema.TypeInt,
 			Computed: true,
 		},
-		"status": &schema.Schema{
+		"status": {
 			Type:     schema.TypeString,
 			Computed: true,
 		},
-		"tags": &schema.Schema{
+		"tags": {
 			Type:     schema.TypeList,
 			Computed: true,
 			Elem: &schema.Schema{

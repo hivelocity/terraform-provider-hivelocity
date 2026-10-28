@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    hivelocity = {
-      version = "0.1.0"
-      source   = "hivelocity/hivelocity"
-    }
-  }
-}
-
 data "hivelocity_product" "tampa" {
   filter {
     name   = "data_center"
