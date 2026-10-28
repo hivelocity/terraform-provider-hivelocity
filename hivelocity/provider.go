@@ -33,13 +33,18 @@ func Provider() *schema.Provider {
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			// Devices and provisioning
-			"hivelocity_bare_metal_device":    dataSourceBareMetalDevice(),
-			"hivelocity_device":               dataSourceDevice(),
-			"hivelocity_device_initial_creds": dataSourceDeviceInitialCreds(),
-			"hivelocity_effective_ignition":   dataSourceEffectiveIgnition(),
-			"hivelocity_ignition":             dataSourceIgnitionConfig(),
-			"hivelocity_ssh_key":              dataSourceSshKey(),
-			"hivelocity_product":              dataSourceProduct(),
+			"hivelocity_bare_metal_device":         dataSourceBareMetalDevice(),
+			"hivelocity_device":                    dataSourceDevice(),
+			"hivelocity_device_initial_creds":      dataSourceDeviceInitialCreds(),
+			"hivelocity_device_hardware":           dataSourceDeviceHardware(),
+			"hivelocity_device_ipmi":               dataSourceDeviceIpmi(),
+			"hivelocity_device_tags":               dataSourceDeviceTags(),
+			"hivelocity_effective_ignition":        dataSourceEffectiveIgnition(),
+			"hivelocity_ignition":                  dataSourceIgnitionConfig(),
+			"hivelocity_ssh_key":                   dataSourceSshKey(),
+			"hivelocity_product":                   dataSourceProduct(),
+			"hivelocity_product_operating_systems": dataSourceProductOperatingSystems(),
+			"hivelocity_product_options":           dataSourceProductOptions(),
 			// Networking
 			"hivelocity_device_port":   dataSourceDevicePort(),
 			"hivelocity_device_ips":    dataSourceDeviceIps(),
@@ -56,11 +61,22 @@ func Provider() *schema.Provider {
 			"hivelocity_vps_iso":      dataSourceVpsIso(),
 			"hivelocity_vps_network":  dataSourceVpsNetwork(),
 			// Account
+			"hivelocity_contact":            dataSourceContact(),
+			"hivelocity_permissions":        dataSourcePermissions(),
+			"hivelocity_user_permissions":   dataSourceUserPermissions(),
+			"hivelocity_webhook_events":     dataSourceWebhookEvents(),
+			"hivelocity_service":            dataSourceService(),
+			"hivelocity_services":           dataSourceServices(),
+			"hivelocity_service_types":      dataSourceServiceTypes(),
+			"hivelocity_order":              dataSourceOrder(),
+			"hivelocity_orders":             dataSourceOrders(),
+			"hivelocity_maintenance_events": dataSourceMaintenanceEvents(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			// Devices and provisioning
 			"hivelocity_bare_metal_device": resourceBareMetalDevice(true),
 			"hivelocity_order_group":       resourceOrderGroup(),
+			"hivelocity_device_tags":       resourceDeviceTags(),
 			"hivelocity_ssh_key":           resourceSSHKey(),
 			"hivelocity_ignition":          resourceIgnitionConfig(true),
 			// Networking
@@ -84,6 +100,10 @@ func Provider() *schema.Provider {
 			"hivelocity_vps_network":            resourceVpsNetwork(),
 			"hivelocity_vps_network_attachment": resourceVpsNetworkAttachment(),
 			// Account
+			"hivelocity_webhook":             resourceWebhook(),
+			"hivelocity_contact":             resourceContact(),
+			"hivelocity_contact_permissions": resourceContactPermissions(),
+			"hivelocity_api_token":           resourceApiToken(),
 		},
 		ConfigureContextFunc: configureProvider,
 	}
