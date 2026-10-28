@@ -11,6 +11,13 @@ This document contains instructions and best practices for developing against `t
 3. You are familiar with the basics of using Terraform to create custom API calls: https://learn.hashicorp.com/tutorials/terraform/provider-use?in=terraform/providers
 4. You are familiar with the best practices for extending Terraform: https://www.terraform.io/docs/extend/best-practices/index.html
 
+## Requirements
+
+- Go 1.24+
+- Java 8+ for swagger-codegen (`brew install openjdk@17`, then put `/opt/homebrew/opt/openjdk@17/bin` on your `PATH`)
+- Terraform 1.0+ (`brew install hashicorp/tap/terraform`) for running examples, formatting them and generating docs
+- [golangci-lint](https://golangci-lint.run) v2 (`brew install golangci-lint`) to run the same lint as CI
+
 ## ENV VARS
 
 You may set `HIVELOCITY_API_URL` to `http://localhost:5065/api/v2` for development.
@@ -50,6 +57,25 @@ $ make docs
 ```
 
 Remember to always run this command after making changes to the examples or the provider sources, then commit the changes to the repository.
+
+## Linting and tests
+
+CI runs `go build`, `go vet`, `golangci-lint run`, the unit tests, `terraform fmt -check` on `examples/` and checks that
+`docs/` is up to date. Run the same locally with:
+
+```sh
+$ make lint
+$ make test
+$ terraform fmt -check -recursive examples/
+$ make docs && git diff --exit-code docs/
+```
+
+Acceptance tests (`make testacc`) talk to a real account and may provision billable resources. They need
+`HIVELOCITY_API_KEY` (and optionally `HIVELOCITY_API_URL` for a staging API). Tests that touch existing
+resources skip themselves unless the corresponding `HIVELOCITY_TEST_*` variable is set, for example
+`HIVELOCITY_TEST_DEVICE_ID`, `HIVELOCITY_TEST_PRODUCT_ID`, `HIVELOCITY_TEST_FACILITY_CODE`,
+`HIVELOCITY_TEST_PORT_ID` and `HIVELOCITY_TEST_WEBHOOK_EVENT`. Put them in a `.env.acc` file (ignored by git) and
+`source` it before running.
 
 ## Rebuilding the project
 

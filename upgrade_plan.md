@@ -1,8 +1,16 @@
 # Hivelocity Terraform Provider — Upgrade Plan
 
-> **Status:** Analysis & roadmap (not yet committed work)
-> **Spec source of truth:** [`swagger.json`](./swagger.json) — OpenAPI 2.0, 97 paths, 158 operations, 21 tag groups
-> **Provider today:** 5 resources, 7 active data sources (1 disabled), most files unchanged since Dec 2022 / Aug 2023
+> **Status (2026-10-28):** Phases 0–5 implemented on the `api-refresh` branch (26 resources, 34 data sources);
+> Phase 6 (Plugin Framework migration) deliberately not started. The new resources have not yet been
+> exercised against a live account — see the PR description for what still needs acceptance testing.
+> **Spec source of truth:** [`swagger.json`](./swagger.json) — OpenAPI 2.0, now 136 paths, 153 definitions, 27 tag groups
+> **Provider before this work:** 5 resources, 7 active data sources (1 disabled), most files unchanged since Dec 2022 / Aug 2023
+
+The analysis below describes the state of the provider *before* the refresh and is kept for context.
+Still intentionally unmodelled after the refresh: billing info, bandwidth graphs, the `/deploy` cart
+workflow, `/account/controlled-client`, IPMI whitelist/thresholds, private cloud, rapid restore, Veeam
+backup status, VPS metrics/console/password reset, and `POST /ip` (which opens a support ticket rather
+than returning an assignment).
 
 This is the top-level overview. Detail lives in `upgrade_plan/`:
 

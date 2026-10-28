@@ -33,6 +33,11 @@ func testAccRequireEnv(t *testing.T, names ...string) {
 	}
 }
 
+// testAccEnv returns an environment variable for use inside test configs.
+func testAccEnv(name string) string {
+	return os.Getenv(name)
+}
+
 func TestProvider(t *testing.T) {
 	if err := Provider().InternalValidate(); err != nil {
 		t.Fatalf("provider schema failed validation: %s", err)

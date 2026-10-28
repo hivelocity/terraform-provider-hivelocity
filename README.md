@@ -156,6 +156,22 @@ The filter will check if `66.165.245.226` or `66.165.245.225` is in the `ip_addr
 You can pass strings, integers, or booleans to the `values` array on the filter. The type must match the returned type of the
 data source schema.
 
+What is covered
+---------------
+
+| Area | Resources | Data sources |
+|---|---|---|
+| Bare metal | `hivelocity_bare_metal_device`, `hivelocity_order_group`, `hivelocity_device_tags`, `hivelocity_ssh_key`, `hivelocity_ignition` | `hivelocity_bare_metal_device`, `hivelocity_device`, `hivelocity_device_initial_creds`, `hivelocity_device_hardware`, `hivelocity_device_ipmi`, `hivelocity_device_tags`, `hivelocity_effective_ignition`, `hivelocity_ignition`, `hivelocity_ssh_key` |
+| Catalog | | `hivelocity_product`, `hivelocity_product_operating_systems`, `hivelocity_product_options` |
+| Networking | `hivelocity_vlan`, `hivelocity_device_port_bond`, `hivelocity_device_port`, `hivelocity_ip_assignment_route`, `hivelocity_null_route` | `hivelocity_vlan`, `hivelocity_device_port`, `hivelocity_device_ips`, `hivelocity_ip_assignment` |
+| DNS | `hivelocity_dns_domain`, `hivelocity_dns_record_a`, `hivelocity_dns_record_aaaa`, `hivelocity_dns_record_mx`, `hivelocity_dns_record_ptr` | `hivelocity_dns_domain`, `hivelocity_dns_record_ptr` |
+| VPS | `hivelocity_vps`, `hivelocity_vps_volume`, `hivelocity_vps_snapshot`, `hivelocity_vps_snapshot_schedule`, `hivelocity_vps_iso`, `hivelocity_vps_network`, `hivelocity_vps_network_attachment` | `hivelocity_vps`, `hivelocity_vps_events`, `hivelocity_vps_volume`, `hivelocity_vps_snapshot`, `hivelocity_vps_iso`, `hivelocity_vps_network` |
+| Account | `hivelocity_webhook`, `hivelocity_contact`, `hivelocity_contact_permissions`, `hivelocity_api_token` | `hivelocity_webhook_events`, `hivelocity_contact`, `hivelocity_permissions`, `hivelocity_user_permissions`, `hivelocity_service`, `hivelocity_services`, `hivelocity_service_types`, `hivelocity_order`, `hivelocity_orders`, `hivelocity_maintenance_events` |
+
+Deliberately not modelled: billing info, bandwidth graphs, the `/deploy` cart workflow (superseded by
+`/bare-metal-devices` and `/compute`), power actions, console access, snapshot restores, IPMI
+whitelist/thresholds and other one-shot operational endpoints.
+
 How to test Cloud-Init script locally
 ---------------------------
 
